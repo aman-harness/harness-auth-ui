@@ -20,13 +20,14 @@ import {
   BillingFrequency,
   Edition,
   getCookieByName,
+  getSavedRefererURL,
   SignupAction
 } from "utils/SignUpUtils";
 import { CATEGORY, PAGE, EVENT } from "utils/TelemetryUtils";
 import SignupFormWithCredentials from "./SignupFormWithCredentials";
 import SignupFormOAuth from "./SignupFormOAuth";
 import BasicLayoutExperimental from "./BasicLayout/BasicLayoutExperimental";
-import { getModuleDetails } from "./utils";
+import { getModuleDetails, updateReferer } from "./utils";
 import { URLS } from "interfaces/OAuthProviders";
 import css from "../SignUp.module.css";
 
@@ -178,6 +179,8 @@ const SignUpExperimental: React.FC = () => {
   };
 
   useEffect(() => {
+    updateReferer();
+    const refererURL = getSavedRefererURL();
     telemetry.page({
       name: PAGE.SIGNUP_PAGE,
       properties: {
@@ -186,7 +189,8 @@ const SignUpExperimental: React.FC = () => {
         utm_medium: utm_medium || "",
         utm_campaign: utm_campaign || "",
         utm_term: utm_term || "",
-        utm_content: utm_content || ""
+        utm_content: utm_content || "",
+        ...(refererURL ? { refererURL } : {})
       }
     });
   }, []);

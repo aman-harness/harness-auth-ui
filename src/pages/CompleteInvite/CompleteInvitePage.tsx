@@ -6,13 +6,13 @@
  */
 
 import React, { useEffect } from "react";
+import cx from "classnames";
 import logo from "static/images/harness-logo.svg";
 import Spinner from "static/icons/spinner/Spinner";
 import { useParams } from "react-router-dom";
 import BasicLayout from "components/BasicLayout/BasicLayout";
-import cx from "classnames";
 import { EMAIL_VERIFY_STATUS } from "utils/StringUtils";
-import { handleSignUpSuccess } from "utils/SignUpUtils";
+import { getSavedRefererURL, handleSignUpSuccess } from "utils/SignUpUtils";
 import { handleError } from "utils/ErrorUtils";
 import Text from "components/Text/Text";
 import {
@@ -118,13 +118,15 @@ const VerifyFailed = (
 
 const CompleteInvitePage = (): React.ReactElement => {
   const { token } = useParams<CompleteSignupInvitePathParams>();
+  const refererURL = getSavedRefererURL();
   const {
     mutate: completeSignupInvite,
     loading,
     error
   } = useCompleteSignupInvite({
     token: token,
-    requestOptions: { headers: { "content-type": "application/json" } }
+    requestOptions: { headers: { "content-type": "application/json" } },
+    queryParams: { ...(refererURL ? { referer: refererURL } : {}) }
   });
 
   function getEmailFromUrlSearchParam(): string | null {

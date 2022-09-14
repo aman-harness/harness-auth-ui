@@ -13,7 +13,7 @@ import { getUTMInfoParams } from "./TrackingUtils";
 
 export async function handleSignUpSuccess(resource?: UserInfo): Promise<void> {
   const baseUrl = window.location.pathname.replace("auth/", "");
-
+  const refererURL = getSavedRefererURL();
   if (resource) {
     const intent = resource.intent;
     SecureStorage.setItem("token", resource.token);
@@ -24,7 +24,10 @@ export async function handleSignUpSuccess(resource?: UserInfo): Promise<void> {
 
     // send identify user event to telemetry to update the identity
     if (resource.email) {
-      telemetry.identify({ userId: resource.email });
+      telemetry.identify({
+        userId: resource.email,
+        properties: { ...(refererURL ? { refererURL } : {}) }
+      });
     }
 
     // Disabling this to avoid overloading LS with Harness Support usergroup accounts
@@ -120,3 +123,7 @@ export const getOAuthFinalUrl = (
       ? `&accountId=${accountId}`
       : ""
   }`;
+
+export const REFERER_URL_KEY = "refererURL";
+export const getSavedRefererURL = (): string =>
+  localStorage.getItem(REFERER_URL_KEY) || "";

@@ -18,6 +18,7 @@ import PathCCM from "static/images/path-ccm.svg";
 import PathFF from "static/images/path-ff.svg";
 import PathChaos from "static/images/path-chaos.svg";
 import PathHarness from "static/images/path-harness.svg";
+import { getSavedRefererURL, REFERER_URL_KEY } from "utils/SignUpUtils";
 
 interface ModuleDetailsMap {
   [key: string]: ModuleDetail;
@@ -128,4 +129,27 @@ const getModuleDetails = (moduleName = "default"): ModuleDetail => {
   return MODULE_TO_DETAILS_MAP.default;
 };
 
-export { getModuleDetails };
+const getURL = (str: string): URL | undefined => {
+  try {
+    return new URL(str);
+  } catch (e) {
+    return undefined;
+  }
+};
+
+const updateReferer = (): void => {
+  const prevRefererURL = getSavedRefererURL();
+  const currentReferrerURL = document.referrer
+    ? getURL(document.referrer)
+    : getURL(prevRefererURL as string);
+
+  const currentSiteURL = getURL(window.location.href);
+  if (
+    document.referrer &&
+    !currentReferrerURL?.host?.includes(currentSiteURL?.host as string)
+  ) {
+    localStorage.setItem(REFERER_URL_KEY, document.referrer);
+  }
+};
+
+export { getModuleDetails, updateReferer };

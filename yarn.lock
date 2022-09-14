@@ -6984,9 +6984,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite-plugin-bugsnag@^2.0.2:
+vite-plugin-bugsnag@2.0.2:
   version "2.0.2"
-  resolved "https://registry.npmjs.org/vite-plugin-bugsnag/-/vite-plugin-bugsnag-2.0.2.tgz#e1b98df013a69c3b1aa5ce7f0d5428cc3d882c0c"
+  resolved "https://registry.yarnpkg.com/vite-plugin-bugsnag/-/vite-plugin-bugsnag-2.0.2.tgz#e1b98df013a69c3b1aa5ce7f0d5428cc3d882c0c"
   integrity sha512-r9pJnpeK2Rfe6zca+9m0oCTyb1XmvXBDWdUgiQhIQ/nBknJ04CaKZUBmg9+cdqR1lA5B/xlFSM3KynowQ2kjqA==
   dependencies:
     "@bugsnag/source-maps" "^2.3.0"

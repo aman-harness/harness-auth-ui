@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Harness Inc. All rights reserved.
+ * Copyright 2022 Harness Inc. All rights reserved.
  * Use of this source code is governed by the PolyForm Shield 1.0.0 license
  * that can be found in the licenses directory at the root of this repository, also available at
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
@@ -20,6 +20,7 @@ export interface AccountDTO {
   defaultExperience?: "NG" | "CG";
   authenticationMechanism?: "USER_PASSWORD" | "SAML" | "LDAP" | "OAUTH";
   serviceAccountConfig?: ServiceAccountConfig;
+  productLed?: boolean;
   nextGenEnabled?: boolean;
 }
 
@@ -62,6 +63,7 @@ export interface Failure {
     | "USER_DOMAIN_NOT_ALLOWED"
     | "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED"
     | "RESOURCE_NOT_FOUND"
+    | "INVALID_FORMAT"
     | "ROLE_DOES_NOT_EXIST"
     | "EMAIL_NOT_VERIFIED"
     | "EMAIL_VERIFICATION_TOKEN_NOT_FOUND"
@@ -70,6 +72,7 @@ export interface Failure {
     | "INVALID_CAPTCHA_TOKEN"
     | "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS"
     | "EXPIRED_TOKEN"
+    | "INVALID_AGENT_MTLS_AUTHORITY"
     | "TOKEN_ALREADY_REFRESHED_ONCE"
     | "ACCESS_DENIED"
     | "NG_ACCESS_DENIED"
@@ -86,6 +89,7 @@ export interface Failure {
     | "SOCKET_CONNECTION_ERROR"
     | "CONNECTION_ERROR"
     | "SOCKET_CONNECTION_TIMEOUT"
+    | "WINRM_COMMAND_EXECUTION_TIMEOUT"
     | "CONNECTION_TIMEOUT"
     | "SSH_CONNECTION_ERROR"
     | "USER_GROUP_ERROR"
@@ -196,7 +200,6 @@ export interface Failure {
     | "VAULT_OPERATION_ERROR"
     | "AWS_SECRETS_MANAGER_OPERATION_ERROR"
     | "AZURE_KEY_VAULT_OPERATION_ERROR"
-    | "CYBERARK_OPERATION_ERROR"
     | "UNSUPPORTED_OPERATION_EXCEPTION"
     | "FEATURE_UNAVAILABLE"
     | "GENERAL_ERROR"
@@ -221,6 +224,7 @@ export interface Failure {
     | "USER_HAS_NO_PERMISSIONS"
     | "USER_NOT_AUTHORIZED"
     | "USER_ALREADY_PRESENT"
+    | "EMAIL_ERROR"
     | "INVALID_USAGE_RESTRICTION"
     | "USAGE_RESTRICTION_ERROR"
     | "STATE_EXECUTION_INSTANCE_NOT_FOUND"
@@ -233,6 +237,7 @@ export interface Failure {
     | "FILE_NOT_FOUND_ERROR"
     | "USAGE_LIMITS_EXCEEDED"
     | "EVENT_PUBLISH_FAILED"
+    | "CUSTOM_APPROVAL_ERROR"
     | "JIRA_ERROR"
     | "EXPRESSION_EVALUATION_FAILED"
     | "KUBERNETES_VALUES_ERROR"
@@ -288,6 +293,7 @@ export interface Failure {
     | "GIT_UNSEEN_REMOTE_HEAD_COMMIT"
     | "TIMEOUT_ENGINE_EXCEPTION"
     | "NO_AVAILABLE_DELEGATES"
+    | "NO_GLOBAL_DELEGATE_ACCOUNT"
     | "NO_INSTALLED_DELEGATES"
     | "DUPLICATE_DELEGATE_EXCEPTION"
     | "GCP_MARKETPLACE_EXCEPTION"
@@ -304,6 +310,7 @@ export interface Failure {
     | "TIMESCALE_NOT_AVAILABLE"
     | "MIGRATION_EXCEPTION"
     | "REQUEST_PROCESSING_INTERRUPTED"
+    | "SECRET_MANAGER_ID_NOT_FOUND"
     | "GCP_SECRET_MANAGER_OPERATION_ERROR"
     | "GCP_SECRET_OPERATION_ERROR"
     | "GIT_OPERATION_ERROR"
@@ -311,6 +318,7 @@ export interface Failure {
     | "INSTANCE_STATS_PROCESS_ERROR"
     | "INSTANCE_STATS_MIGRATION_ERROR"
     | "DEPLOYMENT_MIGRATION_ERROR"
+    | "CG_LICENSE_USAGE_ERROR"
     | "INSTANCE_STATS_AGGREGATION_ERROR"
     | "UNRESOLVED_EXPRESSIONS_ERROR"
     | "KRYO_HANDLER_NOT_FOUND_ERROR"
@@ -322,9 +330,12 @@ export interface Failure {
     | "HTTP_RESPONSE_EXCEPTION"
     | "SCM_NOT_FOUND_ERROR"
     | "SCM_CONFLICT_ERROR"
+    | "SCM_CONFLICT_ERROR_V2"
     | "SCM_UNPROCESSABLE_ENTITY"
     | "PROCESS_EXECUTION_EXCEPTION"
     | "SCM_UNAUTHORIZED"
+    | "SCM_BAD_REQUEST"
+    | "SCM_INTERNAL_SERVER_ERROR"
     | "DATA"
     | "CONTEXT"
     | "PR_CREATION_ERROR"
@@ -334,10 +345,46 @@ export interface Failure {
     | "ENGINE_FUNCTOR_ERROR"
     | "JIRA_CLIENT_ERROR"
     | "SCM_NOT_MODIFIED"
-    | "JIRA_STEP_ERROR"
+    | "APPROVAL_STEP_NG_ERROR"
     | "BUCKET_SERVER_ERROR"
     | "GIT_SYNC_ERROR"
-    | "TEMPLATE_EXCEPTION";
+    | "TEMPLATE_EXCEPTION"
+    | "ENTITY_REFERENCE_EXCEPTION"
+    | "INVALID_INPUT_SET"
+    | "INVALID_OVERLAY_INPUT_SET"
+    | "RESOURCE_ALREADY_EXISTS"
+    | "INVALID_JSON_PAYLOAD"
+    | "POLICY_EVALUATION_FAILURE"
+    | "POLICY_SET_ERROR"
+    | "INVALID_ARTIFACTORY_REGISTRY_REQUEST"
+    | "INVALID_NEXUS_REGISTRY_REQUEST"
+    | "ENTITY_NOT_FOUND"
+    | "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST"
+    | "AZURE_AUTHENTICATION_ERROR"
+    | "AZURE_CONFIG_ERROR"
+    | "DATA_PROCESSING_ERROR"
+    | "INVALID_AZURE_AKS_REQUEST"
+    | "AWS_IAM_ERROR"
+    | "AWS_CF_ERROR"
+    | "AWS_INSTANCE_ERROR"
+    | "AWS_VPC_ERROR"
+    | "AWS_TAG_ERROR"
+    | "AWS_ASG_ERROR"
+    | "AWS_LOAD_BALANCER_ERROR"
+    | "SCM_INTERNAL_SERVER_ERROR_V2"
+    | "SCM_UNAUTHORIZED_ERROR_V2"
+    | "TOO_MANY_REQUESTS"
+    | "INVALID_IDENTIFIER_REF"
+    | "SPOTINST_NULL_ERROR"
+    | "SCM_UNEXPECTED_ERROR"
+    | "DUPLICATE_FILE_IMPORT"
+    | "AZURE_APP_SERVICES_TASK_EXCEPTION"
+    | "MEDIA_NOT_SUPPORTED"
+    | "AWS_ECS_ERROR"
+    | "AWS_APPLICATION_AUTO_SCALING"
+    | "AWS_ECS_SERVICE_NOT_ACTIVE"
+    | "AWS_ECS_CLIENT_ERROR"
+    | "AWS_STS_ERROR";
   message?: string;
   correlationId?: string;
   errors?: ValidationError[];
@@ -346,6 +393,23 @@ export interface Failure {
 export interface ValidationError {
   fieldId?: string;
   error?: string;
+}
+
+export interface EntityGitDetails {
+  objectId?: string;
+  branch?: string;
+  repoIdentifier?: string;
+  rootFolder?: string;
+  filePath?: string;
+  repoName?: string;
+  commitId?: string;
+  fileUrl?: string;
+  repoUrl?: string;
+}
+
+export interface EntityValidityDetails {
+  valid?: boolean;
+  invalidYaml?: string;
 }
 
 export interface Error {
@@ -368,6 +432,7 @@ export interface Error {
     | "USER_DOMAIN_NOT_ALLOWED"
     | "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED"
     | "RESOURCE_NOT_FOUND"
+    | "INVALID_FORMAT"
     | "ROLE_DOES_NOT_EXIST"
     | "EMAIL_NOT_VERIFIED"
     | "EMAIL_VERIFICATION_TOKEN_NOT_FOUND"
@@ -376,6 +441,7 @@ export interface Error {
     | "INVALID_CAPTCHA_TOKEN"
     | "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS"
     | "EXPIRED_TOKEN"
+    | "INVALID_AGENT_MTLS_AUTHORITY"
     | "TOKEN_ALREADY_REFRESHED_ONCE"
     | "ACCESS_DENIED"
     | "NG_ACCESS_DENIED"
@@ -392,6 +458,7 @@ export interface Error {
     | "SOCKET_CONNECTION_ERROR"
     | "CONNECTION_ERROR"
     | "SOCKET_CONNECTION_TIMEOUT"
+    | "WINRM_COMMAND_EXECUTION_TIMEOUT"
     | "CONNECTION_TIMEOUT"
     | "SSH_CONNECTION_ERROR"
     | "USER_GROUP_ERROR"
@@ -502,7 +569,6 @@ export interface Error {
     | "VAULT_OPERATION_ERROR"
     | "AWS_SECRETS_MANAGER_OPERATION_ERROR"
     | "AZURE_KEY_VAULT_OPERATION_ERROR"
-    | "CYBERARK_OPERATION_ERROR"
     | "UNSUPPORTED_OPERATION_EXCEPTION"
     | "FEATURE_UNAVAILABLE"
     | "GENERAL_ERROR"
@@ -527,6 +593,7 @@ export interface Error {
     | "USER_HAS_NO_PERMISSIONS"
     | "USER_NOT_AUTHORIZED"
     | "USER_ALREADY_PRESENT"
+    | "EMAIL_ERROR"
     | "INVALID_USAGE_RESTRICTION"
     | "USAGE_RESTRICTION_ERROR"
     | "STATE_EXECUTION_INSTANCE_NOT_FOUND"
@@ -539,6 +606,7 @@ export interface Error {
     | "FILE_NOT_FOUND_ERROR"
     | "USAGE_LIMITS_EXCEEDED"
     | "EVENT_PUBLISH_FAILED"
+    | "CUSTOM_APPROVAL_ERROR"
     | "JIRA_ERROR"
     | "EXPRESSION_EVALUATION_FAILED"
     | "KUBERNETES_VALUES_ERROR"
@@ -594,6 +662,7 @@ export interface Error {
     | "GIT_UNSEEN_REMOTE_HEAD_COMMIT"
     | "TIMEOUT_ENGINE_EXCEPTION"
     | "NO_AVAILABLE_DELEGATES"
+    | "NO_GLOBAL_DELEGATE_ACCOUNT"
     | "NO_INSTALLED_DELEGATES"
     | "DUPLICATE_DELEGATE_EXCEPTION"
     | "GCP_MARKETPLACE_EXCEPTION"
@@ -610,6 +679,7 @@ export interface Error {
     | "TIMESCALE_NOT_AVAILABLE"
     | "MIGRATION_EXCEPTION"
     | "REQUEST_PROCESSING_INTERRUPTED"
+    | "SECRET_MANAGER_ID_NOT_FOUND"
     | "GCP_SECRET_MANAGER_OPERATION_ERROR"
     | "GCP_SECRET_OPERATION_ERROR"
     | "GIT_OPERATION_ERROR"
@@ -617,6 +687,7 @@ export interface Error {
     | "INSTANCE_STATS_PROCESS_ERROR"
     | "INSTANCE_STATS_MIGRATION_ERROR"
     | "DEPLOYMENT_MIGRATION_ERROR"
+    | "CG_LICENSE_USAGE_ERROR"
     | "INSTANCE_STATS_AGGREGATION_ERROR"
     | "UNRESOLVED_EXPRESSIONS_ERROR"
     | "KRYO_HANDLER_NOT_FOUND_ERROR"
@@ -628,9 +699,12 @@ export interface Error {
     | "HTTP_RESPONSE_EXCEPTION"
     | "SCM_NOT_FOUND_ERROR"
     | "SCM_CONFLICT_ERROR"
+    | "SCM_CONFLICT_ERROR_V2"
     | "SCM_UNPROCESSABLE_ENTITY"
     | "PROCESS_EXECUTION_EXCEPTION"
     | "SCM_UNAUTHORIZED"
+    | "SCM_BAD_REQUEST"
+    | "SCM_INTERNAL_SERVER_ERROR"
     | "DATA"
     | "CONTEXT"
     | "PR_CREATION_ERROR"
@@ -640,10 +714,46 @@ export interface Error {
     | "ENGINE_FUNCTOR_ERROR"
     | "JIRA_CLIENT_ERROR"
     | "SCM_NOT_MODIFIED"
-    | "JIRA_STEP_ERROR"
+    | "APPROVAL_STEP_NG_ERROR"
     | "BUCKET_SERVER_ERROR"
     | "GIT_SYNC_ERROR"
-    | "TEMPLATE_EXCEPTION";
+    | "TEMPLATE_EXCEPTION"
+    | "ENTITY_REFERENCE_EXCEPTION"
+    | "INVALID_INPUT_SET"
+    | "INVALID_OVERLAY_INPUT_SET"
+    | "RESOURCE_ALREADY_EXISTS"
+    | "INVALID_JSON_PAYLOAD"
+    | "POLICY_EVALUATION_FAILURE"
+    | "POLICY_SET_ERROR"
+    | "INVALID_ARTIFACTORY_REGISTRY_REQUEST"
+    | "INVALID_NEXUS_REGISTRY_REQUEST"
+    | "ENTITY_NOT_FOUND"
+    | "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST"
+    | "AZURE_AUTHENTICATION_ERROR"
+    | "AZURE_CONFIG_ERROR"
+    | "DATA_PROCESSING_ERROR"
+    | "INVALID_AZURE_AKS_REQUEST"
+    | "AWS_IAM_ERROR"
+    | "AWS_CF_ERROR"
+    | "AWS_INSTANCE_ERROR"
+    | "AWS_VPC_ERROR"
+    | "AWS_TAG_ERROR"
+    | "AWS_ASG_ERROR"
+    | "AWS_LOAD_BALANCER_ERROR"
+    | "SCM_INTERNAL_SERVER_ERROR_V2"
+    | "SCM_UNAUTHORIZED_ERROR_V2"
+    | "TOO_MANY_REQUESTS"
+    | "INVALID_IDENTIFIER_REF"
+    | "SPOTINST_NULL_ERROR"
+    | "SCM_UNEXPECTED_ERROR"
+    | "DUPLICATE_FILE_IMPORT"
+    | "AZURE_APP_SERVICES_TASK_EXCEPTION"
+    | "MEDIA_NOT_SUPPORTED"
+    | "AWS_ECS_ERROR"
+    | "AWS_APPLICATION_AUTO_SCALING"
+    | "AWS_ECS_SERVICE_NOT_ACTIVE"
+    | "AWS_ECS_CLIENT_ERROR"
+    | "AWS_STS_ERROR";
   message?: string;
   correlationId?: string;
   detailedMessage?: string;
@@ -651,9 +761,403 @@ export interface Error {
   metadata?: ErrorMetadataDTO;
 }
 
+export interface ErrorMetadata {
+  errorCode?:
+    | "DEFAULT_ERROR_CODE"
+    | "INVALID_ARGUMENT"
+    | "INVALID_EMAIL"
+    | "DOMAIN_NOT_ALLOWED_TO_REGISTER"
+    | "COMMNITY_EDITION_NOT_FOUND"
+    | "DEPLOY_MODE_IS_NOT_ON_PREM"
+    | "USER_ALREADY_REGISTERED"
+    | "USER_INVITATION_DOES_NOT_EXIST"
+    | "USER_DOES_NOT_EXIST"
+    | "USER_INVITE_OPERATION_FAILED"
+    | "USER_DISABLED"
+    | "ACCOUNT_DOES_NOT_EXIST"
+    | "INACTIVE_ACCOUNT"
+    | "ACCOUNT_MIGRATED"
+    | "USER_DOMAIN_NOT_ALLOWED"
+    | "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED"
+    | "RESOURCE_NOT_FOUND"
+    | "INVALID_FORMAT"
+    | "ROLE_DOES_NOT_EXIST"
+    | "EMAIL_NOT_VERIFIED"
+    | "EMAIL_VERIFICATION_TOKEN_NOT_FOUND"
+    | "INVALID_TOKEN"
+    | "REVOKED_TOKEN"
+    | "INVALID_CAPTCHA_TOKEN"
+    | "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS"
+    | "EXPIRED_TOKEN"
+    | "INVALID_AGENT_MTLS_AUTHORITY"
+    | "TOKEN_ALREADY_REFRESHED_ONCE"
+    | "ACCESS_DENIED"
+    | "NG_ACCESS_DENIED"
+    | "INVALID_CREDENTIAL"
+    | "INVALID_CREDENTIALS_THIRD_PARTY"
+    | "INVALID_KEY"
+    | "INVALID_CONNECTOR_TYPE"
+    | "INVALID_KEYPATH"
+    | "INVALID_VARIABLE"
+    | "UNKNOWN_HOST"
+    | "UNREACHABLE_HOST"
+    | "INVALID_PORT"
+    | "SSH_SESSION_TIMEOUT"
+    | "SOCKET_CONNECTION_ERROR"
+    | "CONNECTION_ERROR"
+    | "SOCKET_CONNECTION_TIMEOUT"
+    | "WINRM_COMMAND_EXECUTION_TIMEOUT"
+    | "CONNECTION_TIMEOUT"
+    | "SSH_CONNECTION_ERROR"
+    | "USER_GROUP_ERROR"
+    | "INVALID_EXECUTION_ID"
+    | "ERROR_IN_GETTING_CHANNEL_STREAMS"
+    | "UNEXPECTED"
+    | "UNKNOWN_ERROR"
+    | "UNKNOWN_EXECUTOR_TYPE_ERROR"
+    | "DUPLICATE_STATE_NAMES"
+    | "TRANSITION_NOT_LINKED"
+    | "TRANSITION_TO_INCORRECT_STATE"
+    | "TRANSITION_TYPE_NULL"
+    | "STATES_WITH_DUP_TRANSITIONS"
+    | "BARRIERS_NOT_RUNNING_CONCURRENTLY"
+    | "NON_FORK_STATES"
+    | "NON_REPEAT_STATES"
+    | "INITIAL_STATE_NOT_DEFINED"
+    | "FILE_INTEGRITY_CHECK_FAILED"
+    | "INVALID_URL"
+    | "FILE_DOWNLOAD_FAILED"
+    | "PLATFORM_SOFTWARE_DELETE_ERROR"
+    | "INVALID_CSV_FILE"
+    | "INVALID_REQUEST"
+    | "SCHEMA_VALIDATION_FAILED"
+    | "FILTER_CREATION_ERROR"
+    | "INVALID_YAML_ERROR"
+    | "PLAN_CREATION_ERROR"
+    | "INVALID_INFRA_STATE"
+    | "PIPELINE_ALREADY_TRIGGERED"
+    | "NON_EXISTING_PIPELINE"
+    | "DUPLICATE_COMMAND_NAMES"
+    | "INVALID_PIPELINE"
+    | "COMMAND_DOES_NOT_EXIST"
+    | "DUPLICATE_ARTIFACTSTREAM_NAMES"
+    | "DUPLICATE_HOST_NAMES"
+    | "STATE_NOT_FOR_TYPE"
+    | "STATE_MACHINE_ISSUE"
+    | "STATE_DISCONTINUE_FAILED"
+    | "STATE_PAUSE_FAILED"
+    | "PAUSE_ALL_ALREADY"
+    | "RESUME_ALL_ALREADY"
+    | "ROLLBACK_ALREADY"
+    | "ABORT_ALL_ALREADY"
+    | "EXPIRE_ALL_ALREADY"
+    | "RETRY_FAILED"
+    | "UNKNOWN_ARTIFACT_TYPE"
+    | "UNKNOWN_STAGE_ELEMENT_WRAPPER_TYPE"
+    | "INIT_TIMEOUT"
+    | "LICENSE_EXPIRED"
+    | "NOT_LICENSED"
+    | "REQUEST_TIMEOUT"
+    | "WORKFLOW_ALREADY_TRIGGERED"
+    | "JENKINS_ERROR"
+    | "INVALID_ARTIFACT_SOURCE"
+    | "INVALID_ARTIFACT_SERVER"
+    | "INVALID_CLOUD_PROVIDER"
+    | "UPDATE_NOT_ALLOWED"
+    | "DELETE_NOT_ALLOWED"
+    | "APPDYNAMICS_CONFIGURATION_ERROR"
+    | "APM_CONFIGURATION_ERROR"
+    | "SPLUNK_CONFIGURATION_ERROR"
+    | "ELK_CONFIGURATION_ERROR"
+    | "LOGZ_CONFIGURATION_ERROR"
+    | "SUMO_CONFIGURATION_ERROR"
+    | "INSTANA_CONFIGURATION_ERROR"
+    | "APPDYNAMICS_ERROR"
+    | "STACKDRIVER_ERROR"
+    | "STACKDRIVER_CONFIGURATION_ERROR"
+    | "NEWRELIC_CONFIGURATION_ERROR"
+    | "NEWRELIC_ERROR"
+    | "DYNA_TRACE_CONFIGURATION_ERROR"
+    | "DYNA_TRACE_ERROR"
+    | "CLOUDWATCH_ERROR"
+    | "CLOUDWATCH_CONFIGURATION_ERROR"
+    | "PROMETHEUS_CONFIGURATION_ERROR"
+    | "DATA_DOG_CONFIGURATION_ERROR"
+    | "SERVICE_GUARD_CONFIGURATION_ERROR"
+    | "ENCRYPTION_NOT_CONFIGURED"
+    | "UNAVAILABLE_DELEGATES"
+    | "WORKFLOW_EXECUTION_IN_PROGRESS"
+    | "PIPELINE_EXECUTION_IN_PROGRESS"
+    | "AWS_ACCESS_DENIED"
+    | "AWS_CLUSTER_NOT_FOUND"
+    | "AWS_SERVICE_NOT_FOUND"
+    | "IMAGE_NOT_FOUND"
+    | "ILLEGAL_ARGUMENT"
+    | "IMAGE_TAG_NOT_FOUND"
+    | "DELEGATE_NOT_AVAILABLE"
+    | "INVALID_YAML_PAYLOAD"
+    | "AUTHENTICATION_ERROR"
+    | "AUTHORIZATION_ERROR"
+    | "UNRECOGNIZED_YAML_FIELDS"
+    | "COULD_NOT_MAP_BEFORE_YAML"
+    | "MISSING_BEFORE_YAML"
+    | "MISSING_YAML"
+    | "NON_EMPTY_DELETIONS"
+    | "GENERAL_YAML_ERROR"
+    | "GENERAL_YAML_INFO"
+    | "YAML_GIT_SYNC_ERROR"
+    | "GIT_CONNECTION_ERROR"
+    | "GIT_ERROR"
+    | "ARTIFACT_SERVER_ERROR"
+    | "ENCRYPT_DECRYPT_ERROR"
+    | "SECRET_MANAGEMENT_ERROR"
+    | "SECRET_NOT_FOUND"
+    | "KMS_OPERATION_ERROR"
+    | "GCP_KMS_OPERATION_ERROR"
+    | "VAULT_OPERATION_ERROR"
+    | "AWS_SECRETS_MANAGER_OPERATION_ERROR"
+    | "AZURE_KEY_VAULT_OPERATION_ERROR"
+    | "UNSUPPORTED_OPERATION_EXCEPTION"
+    | "FEATURE_UNAVAILABLE"
+    | "GENERAL_ERROR"
+    | "BASELINE_CONFIGURATION_ERROR"
+    | "SAML_IDP_CONFIGURATION_NOT_AVAILABLE"
+    | "INVALID_AUTHENTICATION_MECHANISM"
+    | "INVALID_SAML_CONFIGURATION"
+    | "INVALID_OAUTH_CONFIGURATION"
+    | "INVALID_LDAP_CONFIGURATION"
+    | "USER_GROUP_SYNC_FAILURE"
+    | "USER_GROUP_ALREADY_EXIST"
+    | "INVALID_TWO_FACTOR_AUTHENTICATION_CONFIGURATION"
+    | "EXPLANATION"
+    | "HINT"
+    | "NOT_WHITELISTED_IP"
+    | "INVALID_TOTP_TOKEN"
+    | "EMAIL_FAILED"
+    | "SSL_HANDSHAKE_FAILED"
+    | "NO_APPS_ASSIGNED"
+    | "INVALID_INFRA_CONFIGURATION"
+    | "TEMPLATES_LINKED"
+    | "USER_HAS_NO_PERMISSIONS"
+    | "USER_NOT_AUTHORIZED"
+    | "USER_ALREADY_PRESENT"
+    | "EMAIL_ERROR"
+    | "INVALID_USAGE_RESTRICTION"
+    | "USAGE_RESTRICTION_ERROR"
+    | "STATE_EXECUTION_INSTANCE_NOT_FOUND"
+    | "DELEGATE_TASK_RETRY"
+    | "KUBERNETES_API_TASK_EXCEPTION"
+    | "KUBERNETES_TASK_EXCEPTION"
+    | "KUBERNETES_YAML_ERROR"
+    | "SAVE_FILE_INTO_GCP_STORAGE_FAILED"
+    | "READ_FILE_FROM_GCP_STORAGE_FAILED"
+    | "FILE_NOT_FOUND_ERROR"
+    | "USAGE_LIMITS_EXCEEDED"
+    | "EVENT_PUBLISH_FAILED"
+    | "CUSTOM_APPROVAL_ERROR"
+    | "JIRA_ERROR"
+    | "EXPRESSION_EVALUATION_FAILED"
+    | "KUBERNETES_VALUES_ERROR"
+    | "KUBERNETES_CLUSTER_ERROR"
+    | "INCORRECT_SIGN_IN_MECHANISM"
+    | "OAUTH_LOGIN_FAILED"
+    | "INVALID_TERRAFORM_TARGETS_REQUEST"
+    | "TERRAFORM_EXECUTION_ERROR"
+    | "FILE_READ_FAILED"
+    | "FILE_SIZE_EXCEEDS_LIMIT"
+    | "CLUSTER_NOT_FOUND"
+    | "MARKETPLACE_TOKEN_NOT_FOUND"
+    | "INVALID_MARKETPLACE_TOKEN"
+    | "INVALID_TICKETING_SERVER"
+    | "SERVICENOW_ERROR"
+    | "PASSWORD_EXPIRED"
+    | "USER_LOCKED"
+    | "PASSWORD_STRENGTH_CHECK_FAILED"
+    | "ACCOUNT_DISABLED"
+    | "INVALID_ACCOUNT_PERMISSION"
+    | "PAGERDUTY_ERROR"
+    | "HEALTH_ERROR"
+    | "SAML_TEST_SUCCESS_MECHANISM_NOT_ENABLED"
+    | "DOMAIN_WHITELIST_FILTER_CHECK_FAILED"
+    | "INVALID_DASHBOARD_UPDATE_REQUEST"
+    | "DUPLICATE_FIELD"
+    | "INVALID_AZURE_VAULT_CONFIGURATION"
+    | "USER_NOT_AUTHORIZED_DUE_TO_USAGE_RESTRICTIONS"
+    | "INVALID_ROLLBACK"
+    | "DATA_COLLECTION_ERROR"
+    | "SUMO_DATA_COLLECTION_ERROR"
+    | "DEPLOYMENT_GOVERNANCE_ERROR"
+    | "BATCH_PROCESSING_ERROR"
+    | "GRAPHQL_ERROR"
+    | "FILE_CREATE_ERROR"
+    | "ILLEGAL_STATE"
+    | "GIT_DIFF_COMMIT_NOT_IN_ORDER"
+    | "FAILED_TO_ACQUIRE_PERSISTENT_LOCK"
+    | "FAILED_TO_ACQUIRE_NON_PERSISTENT_LOCK"
+    | "POD_NOT_FOUND_ERROR"
+    | "COMMAND_EXECUTION_ERROR"
+    | "REGISTRY_EXCEPTION"
+    | "ENGINE_INTERRUPT_PROCESSING_EXCEPTION"
+    | "ENGINE_IO_EXCEPTION"
+    | "ENGINE_OUTCOME_EXCEPTION"
+    | "ENGINE_SWEEPING_OUTPUT_EXCEPTION"
+    | "CACHE_NOT_FOUND_EXCEPTION"
+    | "ENGINE_ENTITY_UPDATE_EXCEPTION"
+    | "SHELL_EXECUTION_EXCEPTION"
+    | "TEMPLATE_NOT_FOUND"
+    | "AZURE_SERVICE_EXCEPTION"
+    | "AZURE_CLIENT_EXCEPTION"
+    | "GIT_UNSEEN_REMOTE_HEAD_COMMIT"
+    | "TIMEOUT_ENGINE_EXCEPTION"
+    | "NO_AVAILABLE_DELEGATES"
+    | "NO_GLOBAL_DELEGATE_ACCOUNT"
+    | "NO_INSTALLED_DELEGATES"
+    | "DUPLICATE_DELEGATE_EXCEPTION"
+    | "GCP_MARKETPLACE_EXCEPTION"
+    | "MISSING_DEFAULT_GOOGLE_CREDENTIALS"
+    | "INCORRECT_DEFAULT_GOOGLE_CREDENTIALS"
+    | "OPTIMISTIC_LOCKING_EXCEPTION"
+    | "NG_PIPELINE_EXECUTION_EXCEPTION"
+    | "NG_PIPELINE_CREATE_EXCEPTION"
+    | "RESOURCE_NOT_FOUND_EXCEPTION"
+    | "PMS_INITIALIZE_SDK_EXCEPTION"
+    | "UNEXPECTED_SNIPPET_EXCEPTION"
+    | "UNEXPECTED_SCHEMA_EXCEPTION"
+    | "CONNECTOR_VALIDATION_EXCEPTION"
+    | "TIMESCALE_NOT_AVAILABLE"
+    | "MIGRATION_EXCEPTION"
+    | "REQUEST_PROCESSING_INTERRUPTED"
+    | "SECRET_MANAGER_ID_NOT_FOUND"
+    | "GCP_SECRET_MANAGER_OPERATION_ERROR"
+    | "GCP_SECRET_OPERATION_ERROR"
+    | "GIT_OPERATION_ERROR"
+    | "TASK_FAILURE_ERROR"
+    | "INSTANCE_STATS_PROCESS_ERROR"
+    | "INSTANCE_STATS_MIGRATION_ERROR"
+    | "DEPLOYMENT_MIGRATION_ERROR"
+    | "CG_LICENSE_USAGE_ERROR"
+    | "INSTANCE_STATS_AGGREGATION_ERROR"
+    | "UNRESOLVED_EXPRESSIONS_ERROR"
+    | "KRYO_HANDLER_NOT_FOUND_ERROR"
+    | "DELEGATE_ERROR_HANDLER_EXCEPTION"
+    | "UNEXPECTED_TYPE_ERROR"
+    | "EXCEPTION_HANDLER_NOT_FOUND"
+    | "CONNECTOR_NOT_FOUND_EXCEPTION"
+    | "GCP_SERVER_ERROR"
+    | "HTTP_RESPONSE_EXCEPTION"
+    | "SCM_NOT_FOUND_ERROR"
+    | "SCM_CONFLICT_ERROR"
+    | "SCM_CONFLICT_ERROR_V2"
+    | "SCM_UNPROCESSABLE_ENTITY"
+    | "PROCESS_EXECUTION_EXCEPTION"
+    | "SCM_UNAUTHORIZED"
+    | "SCM_BAD_REQUEST"
+    | "SCM_INTERNAL_SERVER_ERROR"
+    | "DATA"
+    | "CONTEXT"
+    | "PR_CREATION_ERROR"
+    | "URL_NOT_REACHABLE"
+    | "URL_NOT_PROVIDED"
+    | "ENGINE_EXPRESSION_EVALUATION_ERROR"
+    | "ENGINE_FUNCTOR_ERROR"
+    | "JIRA_CLIENT_ERROR"
+    | "SCM_NOT_MODIFIED"
+    | "APPROVAL_STEP_NG_ERROR"
+    | "BUCKET_SERVER_ERROR"
+    | "GIT_SYNC_ERROR"
+    | "TEMPLATE_EXCEPTION"
+    | "ENTITY_REFERENCE_EXCEPTION"
+    | "INVALID_INPUT_SET"
+    | "INVALID_OVERLAY_INPUT_SET"
+    | "RESOURCE_ALREADY_EXISTS"
+    | "INVALID_JSON_PAYLOAD"
+    | "POLICY_EVALUATION_FAILURE"
+    | "POLICY_SET_ERROR"
+    | "INVALID_ARTIFACTORY_REGISTRY_REQUEST"
+    | "INVALID_NEXUS_REGISTRY_REQUEST"
+    | "ENTITY_NOT_FOUND"
+    | "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST"
+    | "AZURE_AUTHENTICATION_ERROR"
+    | "AZURE_CONFIG_ERROR"
+    | "DATA_PROCESSING_ERROR"
+    | "INVALID_AZURE_AKS_REQUEST"
+    | "AWS_IAM_ERROR"
+    | "AWS_CF_ERROR"
+    | "AWS_INSTANCE_ERROR"
+    | "AWS_VPC_ERROR"
+    | "AWS_TAG_ERROR"
+    | "AWS_ASG_ERROR"
+    | "AWS_LOAD_BALANCER_ERROR"
+    | "SCM_INTERNAL_SERVER_ERROR_V2"
+    | "SCM_UNAUTHORIZED_ERROR_V2"
+    | "TOO_MANY_REQUESTS"
+    | "INVALID_IDENTIFIER_REF"
+    | "SPOTINST_NULL_ERROR"
+    | "SCM_UNEXPECTED_ERROR"
+    | "DUPLICATE_FILE_IMPORT"
+    | "AZURE_APP_SERVICES_TASK_EXCEPTION"
+    | "MEDIA_NOT_SUPPORTED"
+    | "AWS_ECS_ERROR"
+    | "AWS_APPLICATION_AUTO_SCALING"
+    | "AWS_ECS_SERVICE_NOT_ACTIVE"
+    | "AWS_ECS_CLIENT_ERROR"
+    | "AWS_STS_ERROR";
+  errorMessage?: string;
+}
+
 export interface ErrorMetadataDTO {
   type?: string;
 }
+
+export interface ErrorNodeSummary {
+  nodeInfo?: NodeInfo;
+  templateInfo?: TemplateInfo;
+  templateResponse?: TemplateResponse;
+  childrenErrorNodes?: ErrorNodeSummary[];
+}
+
+export type FilterCreatorErrorResponse = ErrorMetadataDTO & {
+  errorMetadataList?: ErrorMetadata[];
+};
+
+export interface InputSetError {
+  fieldName?: string;
+  message?: string;
+  identifierOfErrorSource?: string;
+}
+
+export interface InputSetErrorResponse {
+  errors?: InputSetError[];
+}
+
+export type InputSetErrorWrapper = ErrorMetadataDTO & {
+  errorPipelineYaml?: string;
+  uuidToErrorResponseMap?: {
+    [key: string]: InputSetErrorResponse;
+  };
+  invalidInputSetReferences?: string[];
+};
+
+export type InvalidFieldsDTO = ErrorMetadataDTO & {};
+
+export interface NodeErrorInfo {
+  identifier?: string;
+  type?: string;
+  name?: string;
+  fqn?: string;
+}
+
+export interface NodeInfo {
+  identifier?: string;
+  name?: string;
+  localFqn?: string;
+}
+
+export type OverlayInputSetErrorWrapper = ErrorMetadataDTO & {
+  invalidReferences?: {
+    [key: string]: string;
+  };
+};
 
 export interface ResponseMessage {
   code?:
@@ -674,6 +1178,7 @@ export interface ResponseMessage {
     | "USER_DOMAIN_NOT_ALLOWED"
     | "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED"
     | "RESOURCE_NOT_FOUND"
+    | "INVALID_FORMAT"
     | "ROLE_DOES_NOT_EXIST"
     | "EMAIL_NOT_VERIFIED"
     | "EMAIL_VERIFICATION_TOKEN_NOT_FOUND"
@@ -682,6 +1187,7 @@ export interface ResponseMessage {
     | "INVALID_CAPTCHA_TOKEN"
     | "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS"
     | "EXPIRED_TOKEN"
+    | "INVALID_AGENT_MTLS_AUTHORITY"
     | "TOKEN_ALREADY_REFRESHED_ONCE"
     | "ACCESS_DENIED"
     | "NG_ACCESS_DENIED"
@@ -698,6 +1204,7 @@ export interface ResponseMessage {
     | "SOCKET_CONNECTION_ERROR"
     | "CONNECTION_ERROR"
     | "SOCKET_CONNECTION_TIMEOUT"
+    | "WINRM_COMMAND_EXECUTION_TIMEOUT"
     | "CONNECTION_TIMEOUT"
     | "SSH_CONNECTION_ERROR"
     | "USER_GROUP_ERROR"
@@ -808,7 +1315,6 @@ export interface ResponseMessage {
     | "VAULT_OPERATION_ERROR"
     | "AWS_SECRETS_MANAGER_OPERATION_ERROR"
     | "AZURE_KEY_VAULT_OPERATION_ERROR"
-    | "CYBERARK_OPERATION_ERROR"
     | "UNSUPPORTED_OPERATION_EXCEPTION"
     | "FEATURE_UNAVAILABLE"
     | "GENERAL_ERROR"
@@ -833,6 +1339,7 @@ export interface ResponseMessage {
     | "USER_HAS_NO_PERMISSIONS"
     | "USER_NOT_AUTHORIZED"
     | "USER_ALREADY_PRESENT"
+    | "EMAIL_ERROR"
     | "INVALID_USAGE_RESTRICTION"
     | "USAGE_RESTRICTION_ERROR"
     | "STATE_EXECUTION_INSTANCE_NOT_FOUND"
@@ -845,6 +1352,7 @@ export interface ResponseMessage {
     | "FILE_NOT_FOUND_ERROR"
     | "USAGE_LIMITS_EXCEEDED"
     | "EVENT_PUBLISH_FAILED"
+    | "CUSTOM_APPROVAL_ERROR"
     | "JIRA_ERROR"
     | "EXPRESSION_EVALUATION_FAILED"
     | "KUBERNETES_VALUES_ERROR"
@@ -900,6 +1408,7 @@ export interface ResponseMessage {
     | "GIT_UNSEEN_REMOTE_HEAD_COMMIT"
     | "TIMEOUT_ENGINE_EXCEPTION"
     | "NO_AVAILABLE_DELEGATES"
+    | "NO_GLOBAL_DELEGATE_ACCOUNT"
     | "NO_INSTALLED_DELEGATES"
     | "DUPLICATE_DELEGATE_EXCEPTION"
     | "GCP_MARKETPLACE_EXCEPTION"
@@ -916,6 +1425,7 @@ export interface ResponseMessage {
     | "TIMESCALE_NOT_AVAILABLE"
     | "MIGRATION_EXCEPTION"
     | "REQUEST_PROCESSING_INTERRUPTED"
+    | "SECRET_MANAGER_ID_NOT_FOUND"
     | "GCP_SECRET_MANAGER_OPERATION_ERROR"
     | "GCP_SECRET_OPERATION_ERROR"
     | "GIT_OPERATION_ERROR"
@@ -923,6 +1433,7 @@ export interface ResponseMessage {
     | "INSTANCE_STATS_PROCESS_ERROR"
     | "INSTANCE_STATS_MIGRATION_ERROR"
     | "DEPLOYMENT_MIGRATION_ERROR"
+    | "CG_LICENSE_USAGE_ERROR"
     | "INSTANCE_STATS_AGGREGATION_ERROR"
     | "UNRESOLVED_EXPRESSIONS_ERROR"
     | "KRYO_HANDLER_NOT_FOUND_ERROR"
@@ -934,9 +1445,12 @@ export interface ResponseMessage {
     | "HTTP_RESPONSE_EXCEPTION"
     | "SCM_NOT_FOUND_ERROR"
     | "SCM_CONFLICT_ERROR"
+    | "SCM_CONFLICT_ERROR_V2"
     | "SCM_UNPROCESSABLE_ENTITY"
     | "PROCESS_EXECUTION_EXCEPTION"
     | "SCM_UNAUTHORIZED"
+    | "SCM_BAD_REQUEST"
+    | "SCM_INTERNAL_SERVER_ERROR"
     | "DATA"
     | "CONTEXT"
     | "PR_CREATION_ERROR"
@@ -946,10 +1460,46 @@ export interface ResponseMessage {
     | "ENGINE_FUNCTOR_ERROR"
     | "JIRA_CLIENT_ERROR"
     | "SCM_NOT_MODIFIED"
-    | "JIRA_STEP_ERROR"
+    | "APPROVAL_STEP_NG_ERROR"
     | "BUCKET_SERVER_ERROR"
     | "GIT_SYNC_ERROR"
-    | "TEMPLATE_EXCEPTION";
+    | "TEMPLATE_EXCEPTION"
+    | "ENTITY_REFERENCE_EXCEPTION"
+    | "INVALID_INPUT_SET"
+    | "INVALID_OVERLAY_INPUT_SET"
+    | "RESOURCE_ALREADY_EXISTS"
+    | "INVALID_JSON_PAYLOAD"
+    | "POLICY_EVALUATION_FAILURE"
+    | "POLICY_SET_ERROR"
+    | "INVALID_ARTIFACTORY_REGISTRY_REQUEST"
+    | "INVALID_NEXUS_REGISTRY_REQUEST"
+    | "ENTITY_NOT_FOUND"
+    | "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST"
+    | "AZURE_AUTHENTICATION_ERROR"
+    | "AZURE_CONFIG_ERROR"
+    | "DATA_PROCESSING_ERROR"
+    | "INVALID_AZURE_AKS_REQUEST"
+    | "AWS_IAM_ERROR"
+    | "AWS_CF_ERROR"
+    | "AWS_INSTANCE_ERROR"
+    | "AWS_VPC_ERROR"
+    | "AWS_TAG_ERROR"
+    | "AWS_ASG_ERROR"
+    | "AWS_LOAD_BALANCER_ERROR"
+    | "SCM_INTERNAL_SERVER_ERROR_V2"
+    | "SCM_UNAUTHORIZED_ERROR_V2"
+    | "TOO_MANY_REQUESTS"
+    | "INVALID_IDENTIFIER_REF"
+    | "SPOTINST_NULL_ERROR"
+    | "SCM_UNEXPECTED_ERROR"
+    | "DUPLICATE_FILE_IMPORT"
+    | "AZURE_APP_SERVICES_TASK_EXCEPTION"
+    | "MEDIA_NOT_SUPPORTED"
+    | "AWS_ECS_ERROR"
+    | "AWS_APPLICATION_AUTO_SCALING"
+    | "AWS_ECS_SERVICE_NOT_ACTIVE"
+    | "AWS_ECS_CLIENT_ERROR"
+    | "AWS_STS_ERROR";
   level?: "INFO" | "ERROR";
   message?: string;
   exception?: Throwable;
@@ -962,6 +1512,8 @@ export interface ResponseMessage {
     | "APPLICATION_ERROR"
     | "AUTHORIZATION_ERROR"
     | "TIMEOUT_ERROR"
+    | "POLICY_EVALUATION_FAILURE"
+    | "EXECUTION_INPUT_TIMEOUT_FAILURE"
   )[];
 }
 
@@ -971,7 +1523,14 @@ export type SampleErrorMetadataDTO = ErrorMetadataDTO & {
   };
 };
 
+export type ScmErrorMetadataDTO = ErrorMetadataDTO & {
+  conflictCommitId?: string;
+};
+
 export interface StackTraceElement {
+  classLoaderName?: string;
+  moduleName?: string;
+  moduleVersion?: string;
   methodName?: string;
   fileName?: string;
   lineNumber?: number;
@@ -979,12 +1538,616 @@ export interface StackTraceElement {
   nativeMethod?: boolean;
 }
 
+export interface TemplateInfo {
+  templateIdentifier?: string;
+  versionLabel?: string;
+  templateEntityType?:
+    | "Step"
+    | "Stage"
+    | "Pipeline"
+    | "CustomDeployment"
+    | "MonitoredService"
+    | "SecretManager";
+}
+
+export interface TemplateInputsErrorDTO {
+  fieldName?: string;
+  message?: string;
+  identifierOfErrorSource?: string;
+}
+
+export type TemplateInputsErrorMetadataDTO = ErrorMetadataDTO & {
+  errorYaml?: string;
+  errorMap?: {
+    [key: string]: TemplateInputsErrorDTO;
+  };
+};
+
+export interface TemplateResponse {
+  accountId: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  identifier: string;
+  name: string;
+  description?: string;
+  tags?: {
+    [key: string]: string;
+  };
+  yaml?: string;
+  versionLabel?: string;
+  templateEntityType?:
+    | "Step"
+    | "Stage"
+    | "Pipeline"
+    | "CustomDeployment"
+    | "MonitoredService"
+    | "SecretManager";
+  childType?: string;
+  templateScope?: "account" | "org" | "project" | "unknown";
+  version?: number;
+  gitDetails?: EntityGitDetails;
+  entityValidityDetails?: EntityValidityDetails;
+  lastUpdatedAt?: number;
+  storeType?: "INLINE" | "REMOTE";
+  connectorRef?: string;
+  stableTemplate?: boolean;
+}
+
 export interface Throwable {
   cause?: Throwable;
   stackTrace?: StackTraceElement[];
   message?: string;
-  localizedMessage?: string;
   suppressed?: Throwable[];
+  localizedMessage?: string;
+}
+
+export type ValidateTemplateInputsResponseDTO = ErrorMetadataDTO & {
+  validYaml?: boolean;
+  errorNodeSummary?: ErrorNodeSummary;
+};
+
+export interface YamlSchemaErrorDTO {
+  message?: string;
+  messageWithFQN?: string;
+  stageInfo?: NodeErrorInfo;
+  stepInfo?: NodeErrorInfo;
+  fqn?: string;
+  hintMessage?: string;
+}
+
+export type YamlSchemaErrorWrapperDTO = ErrorMetadataDTO & {
+  schemaErrors?: YamlSchemaErrorDTO[];
+};
+
+export interface EnvironmentGroupResponse {
+  envGroup?: EnvironmentGroupResponseDTO;
+  createdAt?: number;
+  lastModifiedAt?: number;
+}
+
+export interface EnvironmentGroupResponseDTO {
+  accountId?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  identifier?: string;
+  name?: string;
+  description?: string;
+  color?: string;
+  deleted?: boolean;
+  tags?: {
+    [key: string]: string;
+  };
+  envIdentifiers?: string[];
+  envResponse?: EnvironmentResponse[];
+  gitDetails?: EntityGitDetails;
+}
+
+export interface EnvironmentResponse {
+  environment?: EnvironmentResponseDTO;
+  createdAt?: number;
+  lastModifiedAt?: number;
+}
+
+export interface EnvironmentResponseDTO {
+  accountId?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  identifier?: string;
+  name?: string;
+  description?: string;
+  color?: string;
+  type?: "PreProduction" | "Production";
+  deleted?: boolean;
+  tags?: {
+    [key: string]: string;
+  };
+  yaml?: string;
+}
+
+export interface Page {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: { [key: string]: any }[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface PageEnvironmentGroupResponse {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: EnvironmentGroupResponse[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageEnvironmentGroupResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageEnvironmentGroupResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export type AuditFilterProperties = FilterProperties & {
+  scopes?: ResourceScopeDTO[];
+  resources?: ResourceDTO[];
+  modules?: (
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS"
+  )[];
+  actions?: (
+    | "CREATE"
+    | "UPDATE"
+    | "RESTORE"
+    | "DELETE"
+    | "UPSERT"
+    | "INVITE"
+    | "RESEND_INVITE"
+    | "REVOKE_INVITE"
+    | "ADD_COLLABORATOR"
+    | "REMOVE_COLLABORATOR"
+    | "CREATE_TOKEN"
+    | "REVOKE_TOKEN"
+    | "LOGIN"
+    | "LOGIN2FA"
+    | "UNSUCCESSFUL_LOGIN"
+    | "ADD_MEMBERSHIP"
+    | "REMOVE_MEMBERSHIP"
+    | "ERROR_BUDGET_RESET"
+  )[];
+  environments?: Environment[];
+  principals?: Principal[];
+  staticFilter?: "EXCLUDE_LOGIN_EVENTS" | "EXCLUDE_SYSTEM_EVENTS";
+  startTime?: number;
+  endTime?: number;
+};
+
+export interface CcmConnectorFilter {
+  featuresEnabled?: ("BILLING" | "OPTIMIZATION" | "VISIBILITY")[];
+  awsAccountId?: string;
+  azureSubscriptionId?: string;
+  azureTenantId?: string;
+  gcpProjectId?: string;
+  k8sConnectorRef?: string[];
+}
+
+export type ConnectorFilterProperties = FilterProperties & {
+  connectorNames?: string[];
+  connectorIdentifiers?: string[];
+  description?: string;
+  types?: (
+    | "K8sCluster"
+    | "Git"
+    | "Splunk"
+    | "AppDynamics"
+    | "Prometheus"
+    | "Dynatrace"
+    | "Vault"
+    | "AzureKeyVault"
+    | "DockerRegistry"
+    | "Local"
+    | "AwsKms"
+    | "GcpKms"
+    | "AwsSecretManager"
+    | "Gcp"
+    | "Aws"
+    | "Azure"
+    | "Artifactory"
+    | "Jira"
+    | "Nexus"
+    | "Github"
+    | "Gitlab"
+    | "Bitbucket"
+    | "Codecommit"
+    | "CEAws"
+    | "CEAzure"
+    | "GcpCloudCost"
+    | "CEK8sCluster"
+    | "HttpHelmRepo"
+    | "NewRelic"
+    | "Datadog"
+    | "SumoLogic"
+    | "PagerDuty"
+    | "CustomHealth"
+    | "ServiceNow"
+    | "ErrorTracking"
+    | "Pdc"
+    | "AzureRepo"
+    | "Jenkins"
+    | "OciHelmRepo"
+    | "CustomSecretManager"
+    | "ELK"
+  )[];
+  categories?: (
+    | "CLOUD_PROVIDER"
+    | "SECRET_MANAGER"
+    | "CLOUD_COST"
+    | "ARTIFACTORY"
+    | "CODE_REPO"
+    | "MONITORING"
+    | "TICKETING"
+  )[];
+  connectivityStatuses?: ("SUCCESS" | "FAILURE" | "PARTIAL" | "UNKNOWN")[];
+  inheritingCredentialsFromDelegate?: boolean;
+  connectorConnectivityModes?: ("DELEGATE" | "MANAGER")[];
+  ccmConnectorFilter?: CcmConnectorFilter;
+};
+
+export type DelegateFilterProperties = FilterProperties & {
+  status?:
+    | "CONNECTED"
+    | "DISCONNECTED"
+    | "ENABLED"
+    | "WAITING_FOR_APPROVAL"
+    | "DISABLED"
+    | "DELETED";
+  description?: string;
+  hostName?: string;
+  delegateName?: string;
+  delegateType?: string;
+  delegateGroupIdentifier?: string;
+  delegateTags?: string[];
+};
+
+export interface DelegateProfileFilterProperties {
+  name?: string;
+  identifier?: string;
+  description?: string;
+  approvalRequired?: boolean;
+  selectors?: string[];
+  tags?: {
+    [key: string]: string;
+  };
+  filterType?:
+    | "Connector"
+    | "DelegateProfile"
+    | "Delegate"
+    | "PipelineSetup"
+    | "PipelineExecution"
+    | "Deployment"
+    | "Audit"
+    | "Template"
+    | "EnvironmentGroup"
+    | "FileStore"
+    | "CCMRecommendation"
+    | "Anomaly"
+    | "Environment";
+}
+
+export interface EmbeddedUserDetailsDTO {
+  name?: string;
+  email?: string;
+}
+
+export interface Environment {
+  type: "PreProduction" | "Production";
+  identifier: string;
+}
+
+export interface EnvironmentFilterProperties {
+  environmentNames?: string[];
+  environmentIdentifiers?: string[];
+  description?: string;
+  environmentTypes?: ("PreProduction" | "Production")[];
+  tags?: {
+    [key: string]: string;
+  };
+  filterType?:
+    | "Connector"
+    | "DelegateProfile"
+    | "Delegate"
+    | "PipelineSetup"
+    | "PipelineExecution"
+    | "Deployment"
+    | "Audit"
+    | "Template"
+    | "EnvironmentGroup"
+    | "FileStore"
+    | "CCMRecommendation"
+    | "Anomaly"
+    | "Environment";
+}
+
+export type EnvironmentGroupFilterProperties = FilterProperties & {
+  description?: string;
+  envGroupName?: string;
+  envIdentifiers?: string[];
+  envGroupTags?: NGTag[];
+};
+
+export type FilesFilterProperties = FilterProperties & {
+  fileUsage?: "MANIFEST_FILE" | "CONFIG" | "SCRIPT";
+  createdBy?: EmbeddedUserDetailsDTO;
+  referencedBy?: ReferencedByDTO;
+};
+
+export interface FilterProperties {
+  tags?: {
+    [key: string]: string;
+  };
+  filterType?:
+    | "Connector"
+    | "DelegateProfile"
+    | "Delegate"
+    | "PipelineSetup"
+    | "PipelineExecution"
+    | "Deployment"
+    | "Audit"
+    | "Template"
+    | "EnvironmentGroup"
+    | "FileStore"
+    | "CCMRecommendation"
+    | "Anomaly"
+    | "Environment";
+}
+
+export interface NGTag {
+  key: string;
+  value: string;
+}
+
+export type PipelineFilterProperties = FilterProperties & {
+  pipelineTags?: NGTag[];
+  pipelineIdentifiers?: string[];
+  name?: string;
+  description?: string;
+  moduleProperties?: {
+    [key: string]: { [key: string]: any };
+  };
+};
+
+export interface Principal {
+  type: "USER" | "SERVICE" | "API_KEY" | "SERVICE_ACCOUNT";
+  name?: string;
+  jwtclaims?: {
+    [key: string]: string;
+  };
+}
+
+export interface ReferencedByDTO {
+  type?:
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
+    | "Projects"
+    | "Pipelines"
+    | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
+    | "Connectors"
+    | "Secrets"
+    | "Files"
+    | "Service"
+    | "Environment"
+    | "EnvironmentGroup"
+    | "InputSets"
+    | "CvConfig"
+    | "Verify"
+    | "Delegates"
+    | "DelegateConfigurations"
+    | "CvVerificationJob"
+    | "IntegrationStage"
+    | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
+    | "CvKubernetesActivitySource"
+    | "DeploymentSteps"
+    | "DeploymentStage"
+    | "ApprovalStage"
+    | "FeatureFlagStage"
+    | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
+    | "Triggers"
+    | "MonitoredService"
+    | "GitRepositories"
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait";
+  name?: string;
+}
+
+export interface ResourceDTO {
+  type:
+    | "ORGANIZATION"
+    | "PROJECT"
+    | "USER_GROUP"
+    | "SECRET"
+    | "RESOURCE_GROUP"
+    | "USER"
+    | "ROLE"
+    | "ROLE_ASSIGNMENT"
+    | "PIPELINE"
+    | "TRIGGER"
+    | "TEMPLATE"
+    | "INPUT_SET"
+    | "DELEGATE_CONFIGURATION"
+    | "DELEGATE_GROUPS"
+    | "SERVICE"
+    | "ENVIRONMENT"
+    | "DELEGATE"
+    | "SERVICE_ACCOUNT"
+    | "CONNECTOR"
+    | "API_KEY"
+    | "TOKEN"
+    | "DELEGATE_TOKEN"
+    | "GOVERNANCE_POLICY"
+    | "GOVERNANCE_POLICY_SET"
+    | "VARIABLE"
+    | "CHAOS_HUB"
+    | "MONITORED_SERVICE"
+    | "CHAOS_DELEGATE"
+    | "CHAOS_SCENARIO"
+    | "STO_TARGET"
+    | "STO_EXEMPTION"
+    | "CHAOS_GITOPS"
+    | "SERVICE_LEVEL_OBJECTIVE"
+    | "PERSPECTIVE"
+    | "PERSPECTIVE_BUDGET"
+    | "PERSPECTIVE_REPORT"
+    | "COST_CATEGORY"
+    | "SMTP"
+    | "PERSPECTIVE_FOLDER"
+    | "AUTOSTOPPING_RULE"
+    | "AUTOSTOPPING_LB"
+    | "AUTOSTOPPING_STARTSTOP"
+    | "SETTING"
+    | "NG_LOGIN_SETTINGS";
+  identifier: string;
+  labels?: {
+    [key: string]: string;
+  };
+}
+
+export interface ResourceScopeDTO {
+  accountIdentifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  labels?: {
+    [key: string]: string;
+  };
+}
+
+export type TemplateFilterProperties = FilterProperties & {
+  templateNames?: string[];
+  templateIdentifiers?: string[];
+  description?: string;
+  templateEntityTypes?: (
+    | "Step"
+    | "Stage"
+    | "Pipeline"
+    | "CustomDeployment"
+    | "MonitoredService"
+    | "SecretManager"
+  )[];
+  childTypes?: string[];
+};
+
+export interface ResponseEnvironmentGroupResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EnvironmentGroupResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface EnvironmentGroupRequestDTO {
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  identifier?: string;
+  color?: string;
+  yaml: string;
+}
+
+export interface EnvironmentGroupDeleteResponse {
+  deleted?: boolean;
+  accountId?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  identifier?: string;
+}
+
+export interface ResponseEnvironmentGroupDeleteResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EnvironmentGroupDeleteResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
 export interface ResponseStepCategory {
@@ -1002,11 +2165,15 @@ export interface StepCategory {
 
 export interface StepData {
   type?:
+    | "CreatePR"
+    | "MergePR"
     | "APPLY"
     | "SCALE"
     | "STAGE_DEPLOYMENT"
     | "K8sRollingDeploy"
     | "K8sRollingRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
     | "K8sBGSwapServices"
     | "K8sDelete"
     | "K8sCanaryDelete"
@@ -1015,22 +2182,41 @@ export interface StepData {
     | "TerraformPlan"
     | "TerraformDestroy"
     | "TerraformRollback"
-    | "CREATE_STACK"
-    | "DELETE_STACK"
+    | "CreateStack"
+    | "DeleteStack"
+    | "RollbackStack"
     | "SHELL_SCRIPT_PROVISIONER"
     | "JIRA"
     | "SERVICENOW"
     | "EMAIL"
     | "BARRIERS"
     | "NEW_RELIC_DEPLOYMENT_MAKER"
-    | "TEMPLATIZED_SECRET_MANAGER";
+    | "TEMPLATIZED_SECRET_MANAGER"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "Command"
+    | "JenkinsBuild"
+    | "AzureCreateARMResource"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback";
   name?: string;
 }
 
 export interface ResponseMapServiceDefinitionTypeListExecutionStrategyType {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   data?: {
-    [key: string]: ("Basic" | "Canary" | "BlueGreen" | "Rolling" | "Default")[];
+    [key: string]: (
+      | "Basic"
+      | "Canary"
+      | "BlueGreen"
+      | "Rolling"
+      | "Default"
+      | "GitOps"
+    )[];
   };
   metaData?: { [key: string]: any };
   correlationId?: string;
@@ -1043,9 +2229,42 @@ export interface ResponseString {
   correlationId?: string;
 }
 
+export interface StrategyParameters {
+  instances?: number;
+  unitType?: "COUNT" | "PERCENTAGE";
+  phases?: number[];
+  artifactType?:
+    | "JAR"
+    | "WAR"
+    | "TAR"
+    | "ZIP"
+    | "NUGET"
+    | "DOCKER"
+    | "RPM"
+    | "AWS_LAMBDA"
+    | "AWS_CODEDEPLOY"
+    | "PCF"
+    | "AMI"
+    | "AZURE_MACHINE_IMAGE"
+    | "AZURE_WEBAPP"
+    | "IIS"
+    | "OTHER"
+    | "IIS_APP"
+    | "IIS_VirtualDirectory";
+}
+
 export interface ResponseListServiceDefinitionType {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: "Kubernetes"[];
+  data?: (
+    | "Kubernetes"
+    | "NativeHelm"
+    | "Ssh"
+    | "WinRm"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "CustomDeployment"
+    | "ECS"
+  )[];
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -1071,55 +2290,9 @@ export interface ResponseConnectorValidationResult {
   correlationId?: string;
 }
 
-export interface ConnectorStatistics {
-  typeStats?: ConnectorTypeStatistics[];
-  statusStats?: ConnectorStatusStatistics[];
-}
-
-export interface ConnectorStatusStatistics {
-  status?: "SUCCESS" | "FAILURE" | "PARTIAL" | "UNKNOWN";
-  count?: number;
-}
-
-export interface ConnectorTypeStatistics {
-  type?:
-    | "K8sCluster"
-    | "Git"
-    | "Splunk"
-    | "AppDynamics"
-    | "Prometheus"
-    | "Dynatrace"
-    | "Vault"
-    | "AzureKeyVault"
-    | "DockerRegistry"
-    | "Local"
-    | "AwsKms"
-    | "GcpKms"
-    | "AwsSecretManager"
-    | "Gcp"
-    | "Aws"
-    | "Artifactory"
-    | "Jira"
-    | "Nexus"
-    | "Github"
-    | "Gitlab"
-    | "Bitbucket"
-    | "Codecommit"
-    | "CEAws"
-    | "CEAzure"
-    | "GcpCloudCost"
-    | "CEK8sCluster"
-    | "HttpHelmRepo"
-    | "NewRelic"
-    | "Datadog"
-    | "SumoLogic"
-    | "PagerDuty";
-  count?: number;
-}
-
-export interface ResponseConnectorStatistics {
+export interface ResponseBoolean {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ConnectorStatistics;
+  data?: boolean;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -1148,6 +2321,7 @@ export type ArtifactoryConnector = ConnectorConfigDTO & {
   artifactoryServerUrl: string;
   auth?: ArtifactoryAuthentication;
   delegateSelectors?: string[];
+  executeOnDelegate?: boolean;
 };
 
 export type ArtifactoryUsernamePasswordAuth = ArtifactoryAuthCredentials & {
@@ -1190,12 +2364,14 @@ export type AwsCodeCommitSecretKeyAccessKeyDTO = AwsCodeCommitHttpsCredentialsSp
 export type AwsConnector = ConnectorConfigDTO & {
   credential: AwsCredential;
   delegateSelectors?: string[];
+  executeOnDelegate?: boolean;
 };
 
 export interface AwsCredential {
   crossAccountAccess?: CrossAccountAccess;
   type: "InheritFromDelegate" | "ManualConfig" | "Irsa";
   spec?: AwsCredentialSpec;
+  region?: string;
 }
 
 export interface AwsCredentialSpec {
@@ -1215,9 +2391,9 @@ export interface AwsKmsConnectorCredential {
 }
 
 export type AwsKmsConnectorDTO = ConnectorConfigDTO & {
-  credential?: AwsKmsConnectorCredential;
+  credential: AwsKmsConnectorCredential;
   kmsArn: string;
-  region?: string;
+  region: string;
   delegateSelectors?: string[];
   default?: boolean;
 };
@@ -1280,6 +2456,43 @@ export type AwsSecretManagerDTO = ConnectorConfigDTO & {
   default?: boolean;
 };
 
+export interface AzureAuthCredentialDTO {
+  [key: string]: any;
+}
+
+export interface AzureAuthDTO {
+  type: "Secret" | "Certificate";
+  spec: AzureAuthCredentialDTO;
+}
+
+export type AzureClientKeyCertDTO = AzureAuthCredentialDTO & {
+  certificateRef: string;
+};
+
+export type AzureClientSecretKeyDTO = AzureAuthCredentialDTO & {
+  secretRef: string;
+};
+
+export type AzureConnector = ConnectorConfigDTO & {
+  credential: AzureCredential;
+  delegateSelectors?: string[];
+  azureEnvironmentType: "AZURE" | "AZURE_US_GOVERNMENT";
+  executeOnDelegate?: boolean;
+};
+
+export interface AzureCredential {
+  type: "InheritFromDelegate" | "ManualConfig";
+  spec?: AzureCredentialSpec;
+}
+
+export interface AzureCredentialSpec {
+  [key: string]: any;
+}
+
+export type AzureInheritFromDelegateDetails = AzureCredentialSpec & {
+  auth: AzureMSIAuth;
+};
+
 export type AzureKeyVaultConnectorDTO = ConnectorConfigDTO & {
   clientId: string;
   secretKey: string;
@@ -1289,6 +2502,75 @@ export type AzureKeyVaultConnectorDTO = ConnectorConfigDTO & {
   azureEnvironmentType?: "AZURE" | "AZURE_US_GOVERNMENT";
   delegateSelectors?: string[];
   default?: boolean;
+};
+
+export interface AzureMSIAuth {
+  [key: string]: any;
+}
+
+export type AzureManualDetails = AzureCredentialSpec & {
+  applicationId: string;
+  tenantId: string;
+  auth: AzureAuthDTO;
+};
+
+export interface AzureRepoApiAccess {
+  type: "Token";
+  spec?: AzureRepoApiAccessSpecDTO;
+}
+
+export interface AzureRepoApiAccessSpecDTO {
+  [key: string]: any;
+}
+
+export interface AzureRepoAuthentication {
+  type: "Http" | "Ssh";
+  spec: AzureRepoCredentialsDTO;
+}
+
+export type AzureRepoConnector = ConnectorConfigDTO & {
+  url: string;
+  validationRepo?: string;
+  authentication: AzureRepoAuthentication;
+  apiAccess?: AzureRepoApiAccess;
+  delegateSelectors?: string[];
+  executeOnDelegate?: boolean;
+  type: "Project" | "Repo";
+};
+
+export interface AzureRepoCredentialsDTO {
+  [key: string]: any;
+}
+
+export type AzureRepoHttpCredentials = AzureRepoCredentialsDTO & {
+  type: "UsernameToken";
+  spec: AzureRepoHttpCredentialsSpecDTO;
+};
+
+export interface AzureRepoHttpCredentialsSpecDTO {
+  [key: string]: any;
+}
+
+export type AzureRepoSshCredentials = AzureRepoCredentialsDTO & {
+  sshKeyRef: string;
+};
+
+export type AzureRepoTokenSpec = AzureRepoApiAccessSpecDTO & {
+  tokenRef: string;
+};
+
+export type AzureRepoUsernameToken = AzureRepoHttpCredentialsSpecDTO & {
+  username?: string;
+  usernameRef?: string;
+  tokenRef: string;
+};
+
+export type AzureSystemAssignedMSIAuth = AzureAuthCredentialDTO & {
+  [key: string]: any;
+};
+
+export type AzureUserAssignedMSIAuth = AzureAuthCredentialDTO & {
+  clientId: string;
 };
 
 export interface BillingExportSpec {
@@ -1319,7 +2601,8 @@ export type BitbucketConnector = ConnectorConfigDTO & {
   authentication: BitbucketAuthentication;
   apiAccess?: BitbucketApiAccess;
   delegateSelectors?: string[];
-  type: "Account" | "Repo";
+  executeOnDelegate?: boolean;
+  type: "Account" | "Repo" | "Project";
 };
 
 export interface BitbucketCredentialsDTO {
@@ -1355,6 +2638,7 @@ export type CEAwsConnector = ConnectorConfigDTO & {
   crossAccountAccess: CrossAccountAccess;
   curAttributes?: AwsCurAttributes;
   awsAccountId?: string;
+  isAWSGovCloudAccount?: boolean;
   featuresEnabled?: ("BILLING" | "OPTIMIZATION" | "VISIBILITY")[];
 };
 
@@ -1369,6 +2653,11 @@ export type CEKubernetesClusterConfig = ConnectorConfigDTO & {
   connectorRef: string;
   featuresEnabled?: ("BILLING" | "OPTIMIZATION" | "VISIBILITY")[];
 };
+
+export interface CcmK8sConnectorResponse {
+  k8sConnector?: ConnectorResponse;
+  ccmk8sConnector?: ConnectorResponse[];
+}
 
 export interface ConnectorActivityDetails {
   lastActivityTime?: number;
@@ -1412,6 +2701,7 @@ export interface ConnectorInfoDTO {
     | "AwsSecretManager"
     | "Gcp"
     | "Aws"
+    | "Azure"
     | "Artifactory"
     | "Jira"
     | "Nexus"
@@ -1427,7 +2717,16 @@ export interface ConnectorInfoDTO {
     | "NewRelic"
     | "Datadog"
     | "SumoLogic"
-    | "PagerDuty";
+    | "PagerDuty"
+    | "CustomHealth"
+    | "ServiceNow"
+    | "ErrorTracking"
+    | "Pdc"
+    | "AzureRepo"
+    | "Jenkins"
+    | "OciHelmRepo"
+    | "CustomSecretManager"
+    | "ELK";
   spec: ConnectorConfigDTO;
 }
 
@@ -1440,12 +2739,40 @@ export interface ConnectorResponse {
   harnessManaged?: boolean;
   gitDetails?: EntityGitDetails;
   entityValidityDetails?: EntityValidityDetails;
+  governanceMetadata?: GovernanceMetadata;
 }
 
 export interface CrossAccountAccess {
   crossAccountRoleArn: string;
   externalId?: string;
 }
+
+export type CustomHealthConnectorDTO = ConnectorConfigDTO & {
+  baseURL: string;
+  headers?: CustomHealthKeyAndValue[];
+  params?: CustomHealthKeyAndValue[];
+  method: "GET" | "POST";
+  validationBody?: string;
+  validationPath?: string;
+  delegateSelectors?: string[];
+};
+
+export interface CustomHealthKeyAndValue {
+  key: string;
+  encryptedValueRef?: string;
+  value?: string;
+  valueEncrypted?: boolean;
+}
+
+export type CustomSecretManager = ConnectorConfigDTO & {
+  delegateSelectors?: string[];
+  onDelegate: boolean;
+  connectorRef?: string;
+  host?: string;
+  workingDirectory?: string;
+  template: TemplateLinkConfigForCustomSecretManager;
+  default?: boolean;
+};
 
 export type DatadogConnectorDTO = ConnectorConfigDTO & {
   url: string;
@@ -1468,6 +2795,7 @@ export type DockerConnectorDTO = ConnectorConfigDTO & {
   providerType: "DockerHub" | "Harbor" | "Quay" | "Other";
   auth?: DockerAuthenticationDTO;
   delegateSelectors?: string[];
+  executeOnDelegate?: boolean;
 };
 
 export type DockerUserNamePasswordDTO = DockerAuthCredentialsDTO & {
@@ -1482,21 +2810,25 @@ export type DynatraceConnectorDTO = ConnectorConfigDTO & {
   delegateSelectors?: string[];
 };
 
-export interface EntityGitDetails {
-  objectId?: string;
-  branch?: string;
-  repoIdentifier?: string;
-  rootFolder?: string;
-  filePath?: string;
-}
+export type ELKConnectorDTO = ConnectorConfigDTO & {
+  url: string;
+  delegateSelectors?: string[];
+  username?: string;
+  apiKeyId?: string;
+  passwordRef?: string;
+  apiKeyRef?: string;
+  authType?: "UsernamePassword" | "ApiClientToken" | "None";
+};
 
-export interface EntityValidityDetails {
-  valid?: boolean;
-  invalidYaml?: string;
-}
+export type ErrorTrackingConnectorDTO = ConnectorConfigDTO & {
+  url: string;
+  apiKeyRef: string;
+  delegateSelectors?: string[];
+};
 
 export interface GcpBillingExportSpec {
   datasetId: string;
+  tableId: string;
 }
 
 export type GcpCloudCostConnector = ConnectorConfigDTO & {
@@ -1507,8 +2839,9 @@ export type GcpCloudCostConnector = ConnectorConfigDTO & {
 };
 
 export type GcpConnector = ConnectorConfigDTO & {
-  credential?: GcpConnectorCredential;
+  credential: GcpConnectorCredential;
   delegateSelectors?: string[];
+  executeOnDelegate?: boolean;
 };
 
 export interface GcpConnectorCredential {
@@ -1521,10 +2854,10 @@ export interface GcpCredentialSpec {
 }
 
 export type GcpKmsConnectorDTO = ConnectorConfigDTO & {
-  projectId?: string;
-  region?: string;
-  keyRing?: string;
-  keyName?: string;
+  projectId: string;
+  region: string;
+  keyRing: string;
+  keyName: string;
   credentials: string;
   delegateSelectors?: string[];
   default?: boolean;
@@ -1543,8 +2876,9 @@ export type GitConfigDTO = ConnectorConfigDTO & {
   validationRepo?: string;
   branchName?: string;
   delegateSelectors?: string[];
+  executeOnDelegate?: boolean;
   type: "Http" | "Ssh";
-  connectionType: "Account" | "Repo";
+  connectionType: "Account" | "Repo" | "Project";
   spec: GitAuthenticationDTO;
 };
 
@@ -1559,7 +2893,7 @@ export type GitSSHAuthenticationDTO = GitAuthenticationDTO & {
 };
 
 export interface GithubApiAccess {
-  type: "GithubApp" | "Token";
+  type: "GithubApp" | "Token" | "OAuth";
   spec?: GithubApiAccessSpecDTO;
 }
 
@@ -1584,8 +2918,8 @@ export type GithubConnector = ConnectorConfigDTO & {
   authentication: GithubAuthentication;
   apiAccess?: GithubApiAccess;
   delegateSelectors?: string[];
-  executeOnManager?: boolean;
-  type: "Account" | "Repo";
+  executeOnDelegate?: boolean;
+  type: "Account" | "Repo" | "Project";
 };
 
 export interface GithubCredentialsDTO {
@@ -1593,13 +2927,17 @@ export interface GithubCredentialsDTO {
 }
 
 export type GithubHttpCredentials = GithubCredentialsDTO & {
-  type: "UsernamePassword" | "UsernameToken";
+  type: "UsernamePassword" | "UsernameToken" | "OAuth";
   spec: GithubHttpCredentialsSpecDTO;
 };
 
 export interface GithubHttpCredentialsSpecDTO {
   [key: string]: any;
 }
+
+export type GithubOauth = GithubHttpCredentialsSpecDTO & {
+  tokenRef: string;
+};
 
 export type GithubSshCredentials = GithubCredentialsDTO & {
   sshKeyRef: string;
@@ -1622,7 +2960,7 @@ export type GithubUsernameToken = GithubHttpCredentialsSpecDTO & {
 };
 
 export interface GitlabApiAccess {
-  type: "Token";
+  type: "Token" | "OAuth";
   spec?: GitlabApiAccessSpecDTO;
 }
 
@@ -1641,7 +2979,8 @@ export type GitlabConnector = ConnectorConfigDTO & {
   authentication: GitlabAuthentication;
   apiAccess?: GitlabApiAccess;
   delegateSelectors?: string[];
-  type: "Account" | "Repo";
+  executeOnDelegate?: boolean;
+  type: "Account" | "Repo" | "Project";
 };
 
 export interface GitlabCredentialsDTO {
@@ -1649,7 +2988,7 @@ export interface GitlabCredentialsDTO {
 }
 
 export type GitlabHttpCredentials = GitlabCredentialsDTO & {
-  type: "UsernamePassword" | "UsernameToken" | "Kerberos";
+  type: "UsernamePassword" | "UsernameToken" | "Kerberos" | "OAuth";
   spec: GitlabHttpCredentialsSpecDTO;
 };
 
@@ -1659,6 +2998,11 @@ export interface GitlabHttpCredentialsSpecDTO {
 
 export type GitlabKerberos = GitlabHttpCredentialsSpecDTO & {
   kerberosKeyRef: string;
+};
+
+export type GitlabOauth = GitlabHttpCredentialsSpecDTO & {
+  tokenRef: string;
+  refreshTokenRef: string;
 };
 
 export type GitlabSshCredentials = GitlabCredentialsDTO & {
@@ -1681,6 +3025,17 @@ export type GitlabUsernameToken = GitlabHttpCredentialsSpecDTO & {
   tokenRef: string;
 };
 
+export interface GovernanceMetadata {
+  [key: string]: any;
+}
+
+export interface HostDTO {
+  hostname: string;
+  hostAttributes?: {
+    [key: string]: string;
+  };
+}
+
 export interface HttpHelmAuthCredentialsDTO {
   [key: string]: any;
 }
@@ -1697,6 +3052,31 @@ export type HttpHelmConnectorDTO = ConnectorConfigDTO & {
 };
 
 export type HttpHelmUsernamePasswordDTO = HttpHelmAuthCredentialsDTO & {
+  username?: string;
+  usernameRef?: string;
+  passwordRef: string;
+};
+
+export interface JenkinsAuthCredentialsDTO {
+  [key: string]: any;
+}
+
+export interface JenkinsAuthenticationDTO {
+  type: "UsernamePassword" | "Anonymous" | "Bearer Token(HTTP Header)";
+  spec?: JenkinsAuthCredentialsDTO;
+}
+
+export type JenkinsBearerTokenDTO = JenkinsAuthCredentialsDTO & {
+  tokenRef: string;
+};
+
+export type JenkinsConnectorDTO = ConnectorConfigDTO & {
+  jenkinsUrl: string;
+  auth?: JenkinsAuthenticationDTO;
+  delegateSelectors?: string[];
+};
+
+export type JenkinsUserNamePasswordDTO = JenkinsAuthCredentialsDTO & {
   username?: string;
   usernameRef?: string;
   passwordRef: string;
@@ -1762,6 +3142,7 @@ export type KubernetesOpenIdConnectDTO = KubernetesAuthCredentialDTO & {
 
 export type KubernetesServiceAccountDTO = KubernetesAuthCredentialDTO & {
   serviceAccountTokenRef: string;
+  caCertRef?: string;
 };
 
 export type KubernetesUserNamePasswordDTO = KubernetesAuthCredentialDTO & {
@@ -1773,6 +3154,13 @@ export type KubernetesUserNamePasswordDTO = KubernetesAuthCredentialDTO & {
 export type LocalConnectorDTO = ConnectorConfigDTO & {
   default?: boolean;
 };
+
+export interface NameValuePairWithDefault {
+  name?: string;
+  value: string;
+  type: string;
+  useAsDefault?: boolean;
+}
 
 export type NewRelicConnectorDTO = ConnectorConfigDTO & {
   newRelicAccountId: string;
@@ -1803,22 +3191,69 @@ export type NexusUsernamePasswordAuth = NexusAuthCredentials & {
   passwordRef: string;
 };
 
+export interface OciHelmAuthCredentialsDTO {
+  [key: string]: any;
+}
+
+export interface OciHelmAuthenticationDTO {
+  type: "UsernamePassword" | "Anonymous";
+  spec?: OciHelmAuthCredentialsDTO;
+}
+
+export type OciHelmConnectorDTO = ConnectorConfigDTO & {
+  helmRepoUrl: string;
+  auth?: OciHelmAuthenticationDTO;
+  delegateSelectors?: string[];
+};
+
+export type OciHelmUsernamePasswordDTO = OciHelmAuthCredentialsDTO & {
+  username?: string;
+  usernameRef?: string;
+  passwordRef: string;
+};
+
+export interface PageCcmK8sConnectorResponse {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: CcmK8sConnectorResponse[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
 export type PagerDutyConnectorDTO = ConnectorConfigDTO & {
   apiTokenRef: string;
   delegateSelectors?: string[];
 };
 
-export type PrometheusConnectorDTO = ConnectorConfigDTO & {
-  url: string;
+export type PhysicalDataCenterConnectorDTO = ConnectorConfigDTO & {
+  hosts?: HostDTO[];
   delegateSelectors?: string[];
 };
 
-export interface ResponseListConnectorResponse {
+export type PrometheusConnectorDTO = ConnectorConfigDTO & {
+  url: string;
+  username?: string;
+  passwordRef?: string;
+  headers?: CustomHealthKeyAndValue[];
+  delegateSelectors?: string[];
+};
+
+export interface ResponsePageCcmK8sConnectorResponse {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ConnectorResponse[];
+  data?: PageCcmK8sConnectorResponse;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
+
+export type ServiceNowConnector = ConnectorConfigDTO & {
+  serviceNowUrl: string;
+  username?: string;
+  usernameRef?: string;
+  passwordRef: string;
+  delegateSelectors?: string[];
+};
 
 export type SplunkConnectorDTO = ConnectorConfigDTO & {
   splunkUrl: string;
@@ -1835,11 +3270,19 @@ export type SumoLogicConnectorDTO = ConnectorConfigDTO & {
   delegateSelectors?: string[];
 };
 
+export interface TemplateLinkConfigForCustomSecretManager {
+  templateRef: string;
+  versionLabel: string;
+  templateInputs?: {
+    [key: string]: NameValuePairWithDefault[];
+  };
+}
+
 export type VaultConnectorDTO = ConnectorConfigDTO & {
   authToken?: string;
   basePath?: string;
-  vaultUrl?: string;
-  renewalIntervalMinutes?: number;
+  vaultUrl: string;
+  renewalIntervalMinutes: number;
   secretEngineManuallyConfigured?: boolean;
   secretEngineName?: string;
   appRoleId?: string;
@@ -1849,23 +3292,19 @@ export type VaultConnectorDTO = ConnectorConfigDTO & {
   namespace?: string;
   sinkPath?: string;
   useVaultAgent?: boolean;
+  useAwsIam?: boolean;
+  awsRegion?: string;
+  vaultAwsIamRole?: string;
+  xvaultAwsIamServerId?: string;
+  useK8sAuth?: boolean;
+  vaultK8sAuthRole?: string;
+  serviceAccountTokenPath?: string;
+  k8sAuthEndpoint?: string;
+  renewAppRoleToken?: boolean;
+  accessType?: "APP_ROLE" | "TOKEN" | "VAULT_AGENT" | "AWS_IAM" | "K8s_AUTH";
   default?: boolean;
-  accessType?: "APP_ROLE" | "TOKEN" | "VAULT_AGENT";
   readOnly?: boolean;
 };
-
-export interface FieldValues {
-  fieldValues?: {
-    [key: string]: string[];
-  };
-}
-
-export interface ResponseFieldValues {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: FieldValues;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
 
 export interface ConnectorCatalogueItem {
   category?:
@@ -1892,6 +3331,7 @@ export interface ConnectorCatalogueItem {
     | "AwsSecretManager"
     | "Gcp"
     | "Aws"
+    | "Azure"
     | "Artifactory"
     | "Jira"
     | "Nexus"
@@ -1908,6 +3348,15 @@ export interface ConnectorCatalogueItem {
     | "Datadog"
     | "SumoLogic"
     | "PagerDuty"
+    | "CustomHealth"
+    | "ServiceNow"
+    | "ErrorTracking"
+    | "Pdc"
+    | "AzureRepo"
+    | "Jenkins"
+    | "OciHelmRepo"
+    | "CustomSecretManager"
+    | "ELK"
   )[];
 }
 
@@ -1922,9 +3371,85 @@ export interface ResponseConnectorCatalogueResponse {
   correlationId?: string;
 }
 
-export interface ResponseBoolean {
+export interface ConnectorStatistics {
+  typeStats?: ConnectorTypeStatistics[];
+  statusStats?: ConnectorStatusStatistics[];
+}
+
+export interface ConnectorStatusStatistics {
+  status?: "SUCCESS" | "FAILURE" | "PARTIAL" | "UNKNOWN";
+  count?: number;
+}
+
+export interface ConnectorTypeStatistics {
+  type?:
+    | "K8sCluster"
+    | "Git"
+    | "Splunk"
+    | "AppDynamics"
+    | "Prometheus"
+    | "Dynatrace"
+    | "Vault"
+    | "AzureKeyVault"
+    | "DockerRegistry"
+    | "Local"
+    | "AwsKms"
+    | "GcpKms"
+    | "AwsSecretManager"
+    | "Gcp"
+    | "Aws"
+    | "Azure"
+    | "Artifactory"
+    | "Jira"
+    | "Nexus"
+    | "Github"
+    | "Gitlab"
+    | "Bitbucket"
+    | "Codecommit"
+    | "CEAws"
+    | "CEAzure"
+    | "GcpCloudCost"
+    | "CEK8sCluster"
+    | "HttpHelmRepo"
+    | "NewRelic"
+    | "Datadog"
+    | "SumoLogic"
+    | "PagerDuty"
+    | "CustomHealth"
+    | "ServiceNow"
+    | "ErrorTracking"
+    | "Pdc"
+    | "AzureRepo"
+    | "Jenkins"
+    | "OciHelmRepo"
+    | "CustomSecretManager"
+    | "ELK";
+  count?: number;
+}
+
+export interface ResponseConnectorStatistics {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: boolean;
+  data?: ConnectorStatistics;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseListConnectorResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ConnectorResponse[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface FieldValues {
+  fieldValues?: {
+    [key: string]: string[];
+  };
+}
+
+export interface ResponseFieldValues {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: FieldValues;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -1938,16 +3463,6 @@ export interface ResponseConnectorResponse {
 
 export interface Connector {
   connector?: ConnectorInfoDTO;
-}
-
-export interface Page {
-  totalPages?: number;
-  totalItems?: number;
-  pageItemCount?: number;
-  pageSize?: number;
-  content?: { [key: string]: any }[];
-  pageIndex?: number;
-  empty?: boolean;
 }
 
 export interface PageConnectorResponse {
@@ -1967,66 +3482,6 @@ export interface ResponsePageConnectorResponse {
   correlationId?: string;
 }
 
-export interface CcmConnectorFilter {
-  featuresEnabled?: ("BILLING" | "OPTIMIZATION" | "VISIBILITY")[];
-  awsAccountId?: string;
-  azureSubscriptionId?: string;
-  azureTenantId?: string;
-  gcpProjectId?: string;
-  k8sConnectorRef?: string;
-}
-
-export type ConnectorFilterProperties = FilterProperties & {
-  connectorNames?: string[];
-  connectorIdentifiers?: string[];
-  description?: string;
-  types?: (
-    | "K8sCluster"
-    | "Git"
-    | "Splunk"
-    | "AppDynamics"
-    | "Prometheus"
-    | "Dynatrace"
-    | "Vault"
-    | "AzureKeyVault"
-    | "DockerRegistry"
-    | "Local"
-    | "AwsKms"
-    | "GcpKms"
-    | "AwsSecretManager"
-    | "Gcp"
-    | "Aws"
-    | "Artifactory"
-    | "Jira"
-    | "Nexus"
-    | "Github"
-    | "Gitlab"
-    | "Bitbucket"
-    | "Codecommit"
-    | "CEAws"
-    | "CEAzure"
-    | "GcpCloudCost"
-    | "CEK8sCluster"
-    | "HttpHelmRepo"
-    | "NewRelic"
-    | "Datadog"
-    | "SumoLogic"
-    | "PagerDuty"
-  )[];
-  categories?: (
-    | "CLOUD_PROVIDER"
-    | "SECRET_MANAGER"
-    | "CLOUD_COST"
-    | "ARTIFACTORY"
-    | "CODE_REPO"
-    | "MONITORING"
-    | "TICKETING"
-  )[];
-  connectivityStatuses?: ("SUCCESS" | "FAILURE" | "PARTIAL" | "UNKNOWN")[];
-  inheritingCredentialsFromDelegate?: boolean;
-  ccmConnectorFilter?: CcmConnectorFilter;
-};
-
 export type AvailabilityRestrictionDTO = RestrictionDTO & {
   enabled?: boolean;
 };
@@ -2044,14 +3499,20 @@ export interface FeatureRestrictionDetailsDTO {
     | "TEST3"
     | "TEST4"
     | "TEST5"
+    | "TEST6"
+    | "TEST7"
     | "PERSPECTIVES"
     | "CCM_K8S_CLUSTERS"
+    | "CCM_AUTOSTOPPING_RULES"
     | "MULTIPLE_ORGANIZATIONS"
     | "MULTIPLE_PROJECTS"
     | "INTEGRATED_APPROVALS_WITH_HARNESS_UI"
+    | "INTEGRATED_APPROVALS_WITH_CUSTOM_SCRIPT"
     | "INTEGRATED_APPROVALS_WITH_JIRA"
     | "SECRET_MANAGERS"
     | "DEPLOYMENTS"
+    | "INITIAL_DEPLOYMENTS"
+    | "DEPLOYMENTS_PER_MONTH"
     | "SERVICES"
     | "BUILDS"
     | "SAML_SUPPORT"
@@ -2060,6 +3521,12 @@ export interface FeatureRestrictionDetailsDTO {
     | "TWO_FACTOR_AUTH_SUPPORT"
     | "CUSTOM_ROLES"
     | "CUSTOM_RESOURCE_GROUPS"
+    | "MAX_TOTAL_BUILDS"
+    | "MAX_BUILDS_PER_MONTH"
+    | "ACTIVE_COMMITTERS"
+    | "TEST_INTELLIGENCE"
+    | "TEMPLATE_SERVICE"
+    | "SRM_SERVICES"
     | "K8S_BG_SWAP_SERVICES"
     | "K8S_BLUE_GREEN_DEPLOY"
     | "K8S_APPLY"
@@ -2072,7 +3539,27 @@ export interface FeatureRestrictionDetailsDTO {
     | "TERRAFORM_APPLY"
     | "TERRAFORM_PLAN"
     | "TERRAFORM_DESTROY"
-    | "TERRAFORM_ROLLBACK";
+    | "TERRAFORM_ROLLBACK"
+    | "INTEGRATED_APPROVALS_WITH_SERVICE_NOW"
+    | "CREATE_STACK"
+    | "DELETE_STACK"
+    | "ROLLBACK_STACK"
+    | "COMMAND"
+    | "AZURE_SLOT_DEPLOYMENT"
+    | "AZURE_TRAFFIC_SHIFT"
+    | "AZURE_SWAP_SLOT"
+    | "AZURE_WEBAPP_ROLLBACK"
+    | "JENKINS_BUILD"
+    | "AZURE_CREATE_ARM_RESOURCE"
+    | "AZURE_CREATE_BP_RESOURCE"
+    | "AZURE_ROLLBACK_ARM_RESOURCE"
+    | "SECURITY"
+    | "DEVELOPERS"
+    | "MONTHLY_ACTIVE_USERS"
+    | "JENKINS_ARTIFACT"
+    | "STRATEGY_MAX_CONCURRENT"
+    | "MAX_CHAOS_SCENARIO_RUNS_PER_MONTH"
+    | "MAX_CHAOS_DELEGATES";
   description?: string;
   moduleType?:
     | "CD"
@@ -2080,18 +3567,36 @@ export interface FeatureRestrictionDetailsDTO {
     | "CV"
     | "CF"
     | "CE"
+    | "STO"
     | "CORE"
     | "PMS"
-    | "TEMPLATESERVICE";
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
   allowed?: boolean;
   restrictionType?:
     | "AVAILABILITY"
     | "STATIC_LIMIT"
     | "RATE_LIMIT"
     | "CUSTOM"
-    | "DURATION";
+    | "DURATION"
+    | "LICENSE_RATE_LIMIT"
+    | "LICENSE_STATIC_LIMIT";
   restriction?: RestrictionDTO;
 }
+
+export type LicenseRateLimitRestrictionDTO = RestrictionDTO & {
+  limit?: number;
+  fieldName?: string;
+  count?: number;
+  timeUnit?: TimeUnit;
+};
+
+export type LicenseStaticLimitRestrictionDTO = RestrictionDTO & {
+  limit?: number;
+  fieldName?: string;
+  count?: number;
+};
 
 export type RateLimitRestrictionDTO = RestrictionDTO & {
   limit?: number;
@@ -2143,14 +3648,20 @@ export interface FeatureRestrictionDetailRequestDTO {
     | "TEST3"
     | "TEST4"
     | "TEST5"
+    | "TEST6"
+    | "TEST7"
     | "PERSPECTIVES"
     | "CCM_K8S_CLUSTERS"
+    | "CCM_AUTOSTOPPING_RULES"
     | "MULTIPLE_ORGANIZATIONS"
     | "MULTIPLE_PROJECTS"
     | "INTEGRATED_APPROVALS_WITH_HARNESS_UI"
+    | "INTEGRATED_APPROVALS_WITH_CUSTOM_SCRIPT"
     | "INTEGRATED_APPROVALS_WITH_JIRA"
     | "SECRET_MANAGERS"
     | "DEPLOYMENTS"
+    | "INITIAL_DEPLOYMENTS"
+    | "DEPLOYMENTS_PER_MONTH"
     | "SERVICES"
     | "BUILDS"
     | "SAML_SUPPORT"
@@ -2159,6 +3670,12 @@ export interface FeatureRestrictionDetailRequestDTO {
     | "TWO_FACTOR_AUTH_SUPPORT"
     | "CUSTOM_ROLES"
     | "CUSTOM_RESOURCE_GROUPS"
+    | "MAX_TOTAL_BUILDS"
+    | "MAX_BUILDS_PER_MONTH"
+    | "ACTIVE_COMMITTERS"
+    | "TEST_INTELLIGENCE"
+    | "TEMPLATE_SERVICE"
+    | "SRM_SERVICES"
     | "K8S_BG_SWAP_SERVICES"
     | "K8S_BLUE_GREEN_DEPLOY"
     | "K8S_APPLY"
@@ -2171,7 +3688,27 @@ export interface FeatureRestrictionDetailRequestDTO {
     | "TERRAFORM_APPLY"
     | "TERRAFORM_PLAN"
     | "TERRAFORM_DESTROY"
-    | "TERRAFORM_ROLLBACK";
+    | "TERRAFORM_ROLLBACK"
+    | "INTEGRATED_APPROVALS_WITH_SERVICE_NOW"
+    | "CREATE_STACK"
+    | "DELETE_STACK"
+    | "ROLLBACK_STACK"
+    | "COMMAND"
+    | "AZURE_SLOT_DEPLOYMENT"
+    | "AZURE_TRAFFIC_SHIFT"
+    | "AZURE_SWAP_SLOT"
+    | "AZURE_WEBAPP_ROLLBACK"
+    | "JENKINS_BUILD"
+    | "AZURE_CREATE_ARM_RESOURCE"
+    | "AZURE_CREATE_BP_RESOURCE"
+    | "AZURE_ROLLBACK_ARM_RESOURCE"
+    | "SECURITY"
+    | "DEVELOPERS"
+    | "MONTHLY_ACTIVE_USERS"
+    | "JENKINS_ARTIFACT"
+    | "STRATEGY_MAX_CONCURRENT"
+    | "MAX_CHAOS_SCENARIO_RUNS_PER_MONTH"
+    | "MAX_CHAOS_DELEGATES";
 }
 
 export interface ResponseListFeatureRestrictionDetailsDTO {
@@ -2179,6 +3716,77 @@ export interface ResponseListFeatureRestrictionDetailsDTO {
   data?: FeatureRestrictionDetailsDTO[];
   metaData?: { [key: string]: any };
   correlationId?: string;
+}
+
+export interface FeatureRestrictionDetailListRequestDTO {
+  names: (
+    | "TEST1"
+    | "TEST2"
+    | "TEST3"
+    | "TEST4"
+    | "TEST5"
+    | "TEST6"
+    | "TEST7"
+    | "PERSPECTIVES"
+    | "CCM_K8S_CLUSTERS"
+    | "CCM_AUTOSTOPPING_RULES"
+    | "MULTIPLE_ORGANIZATIONS"
+    | "MULTIPLE_PROJECTS"
+    | "INTEGRATED_APPROVALS_WITH_HARNESS_UI"
+    | "INTEGRATED_APPROVALS_WITH_CUSTOM_SCRIPT"
+    | "INTEGRATED_APPROVALS_WITH_JIRA"
+    | "SECRET_MANAGERS"
+    | "DEPLOYMENTS"
+    | "INITIAL_DEPLOYMENTS"
+    | "DEPLOYMENTS_PER_MONTH"
+    | "SERVICES"
+    | "BUILDS"
+    | "SAML_SUPPORT"
+    | "OAUTH_SUPPORT"
+    | "LDAP_SUPPORT"
+    | "TWO_FACTOR_AUTH_SUPPORT"
+    | "CUSTOM_ROLES"
+    | "CUSTOM_RESOURCE_GROUPS"
+    | "MAX_TOTAL_BUILDS"
+    | "MAX_BUILDS_PER_MONTH"
+    | "ACTIVE_COMMITTERS"
+    | "TEST_INTELLIGENCE"
+    | "TEMPLATE_SERVICE"
+    | "SRM_SERVICES"
+    | "K8S_BG_SWAP_SERVICES"
+    | "K8S_BLUE_GREEN_DEPLOY"
+    | "K8S_APPLY"
+    | "K8S_DELETE"
+    | "K8S_CANARY_DELETE"
+    | "K8S_ROLLING_DEPLOY"
+    | "K8S_CANARY_DEPLOY"
+    | "K8S_SCALE"
+    | "K8S_ROLLING_ROLLBACK"
+    | "TERRAFORM_APPLY"
+    | "TERRAFORM_PLAN"
+    | "TERRAFORM_DESTROY"
+    | "TERRAFORM_ROLLBACK"
+    | "INTEGRATED_APPROVALS_WITH_SERVICE_NOW"
+    | "CREATE_STACK"
+    | "DELETE_STACK"
+    | "ROLLBACK_STACK"
+    | "COMMAND"
+    | "AZURE_SLOT_DEPLOYMENT"
+    | "AZURE_TRAFFIC_SHIFT"
+    | "AZURE_SWAP_SLOT"
+    | "AZURE_WEBAPP_ROLLBACK"
+    | "JENKINS_BUILD"
+    | "AZURE_CREATE_ARM_RESOURCE"
+    | "AZURE_CREATE_BP_RESOURCE"
+    | "AZURE_ROLLBACK_ARM_RESOURCE"
+    | "SECURITY"
+    | "DEVELOPERS"
+    | "MONTHLY_ACTIVE_USERS"
+    | "JENKINS_ARTIFACT"
+    | "STRATEGY_MAX_CONCURRENT"
+    | "MAX_CHAOS_SCENARIO_RUNS_PER_MONTH"
+    | "MAX_CHAOS_DELEGATES"
+  )[];
 }
 
 export type AvailabilityRestrictionMetadataDTO = RestrictionMetadataDTO & {
@@ -2198,14 +3806,20 @@ export interface FeatureRestrictionMetadataDTO {
     | "TEST3"
     | "TEST4"
     | "TEST5"
+    | "TEST6"
+    | "TEST7"
     | "PERSPECTIVES"
     | "CCM_K8S_CLUSTERS"
+    | "CCM_AUTOSTOPPING_RULES"
     | "MULTIPLE_ORGANIZATIONS"
     | "MULTIPLE_PROJECTS"
     | "INTEGRATED_APPROVALS_WITH_HARNESS_UI"
+    | "INTEGRATED_APPROVALS_WITH_CUSTOM_SCRIPT"
     | "INTEGRATED_APPROVALS_WITH_JIRA"
     | "SECRET_MANAGERS"
     | "DEPLOYMENTS"
+    | "INITIAL_DEPLOYMENTS"
+    | "DEPLOYMENTS_PER_MONTH"
     | "SERVICES"
     | "BUILDS"
     | "SAML_SUPPORT"
@@ -2214,6 +3828,12 @@ export interface FeatureRestrictionMetadataDTO {
     | "TWO_FACTOR_AUTH_SUPPORT"
     | "CUSTOM_ROLES"
     | "CUSTOM_RESOURCE_GROUPS"
+    | "MAX_TOTAL_BUILDS"
+    | "MAX_BUILDS_PER_MONTH"
+    | "ACTIVE_COMMITTERS"
+    | "TEST_INTELLIGENCE"
+    | "TEMPLATE_SERVICE"
+    | "SRM_SERVICES"
     | "K8S_BG_SWAP_SERVICES"
     | "K8S_BLUE_GREEN_DEPLOY"
     | "K8S_APPLY"
@@ -2226,21 +3846,55 @@ export interface FeatureRestrictionMetadataDTO {
     | "TERRAFORM_APPLY"
     | "TERRAFORM_PLAN"
     | "TERRAFORM_DESTROY"
-    | "TERRAFORM_ROLLBACK";
+    | "TERRAFORM_ROLLBACK"
+    | "INTEGRATED_APPROVALS_WITH_SERVICE_NOW"
+    | "CREATE_STACK"
+    | "DELETE_STACK"
+    | "ROLLBACK_STACK"
+    | "COMMAND"
+    | "AZURE_SLOT_DEPLOYMENT"
+    | "AZURE_TRAFFIC_SHIFT"
+    | "AZURE_SWAP_SLOT"
+    | "AZURE_WEBAPP_ROLLBACK"
+    | "JENKINS_BUILD"
+    | "AZURE_CREATE_ARM_RESOURCE"
+    | "AZURE_CREATE_BP_RESOURCE"
+    | "AZURE_ROLLBACK_ARM_RESOURCE"
+    | "SECURITY"
+    | "DEVELOPERS"
+    | "MONTHLY_ACTIVE_USERS"
+    | "JENKINS_ARTIFACT"
+    | "STRATEGY_MAX_CONCURRENT"
+    | "MAX_CHAOS_SCENARIO_RUNS_PER_MONTH"
+    | "MAX_CHAOS_DELEGATES";
   moduleType?:
     | "CD"
     | "CI"
     | "CV"
     | "CF"
     | "CE"
+    | "STO"
     | "CORE"
     | "PMS"
-    | "TEMPLATESERVICE";
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
   edition?: "COMMUNITY" | "FREE" | "TEAM" | "ENTERPRISE";
   restrictionMetadata?: {
     [key: string]: RestrictionMetadataDTO;
   };
 }
+
+export type LicenseRateLimitRestrictionMetadataDTO = RestrictionMetadataDTO & {
+  limit?: number;
+  fieldName?: string;
+  timeUnit?: TimeUnit;
+};
+
+export type LicenseStaticLimitRestrictionMetadataDTO = RestrictionMetadataDTO & {
+  limit?: number;
+  fieldName?: string;
+};
 
 export type RateLimitRestrictionMetadataDTO = RestrictionMetadataDTO & {
   limit?: number;
@@ -2261,7 +3915,9 @@ export interface RestrictionMetadataDTO {
     | "STATIC_LIMIT"
     | "RATE_LIMIT"
     | "CUSTOM"
-    | "DURATION";
+    | "DURATION"
+    | "LICENSE_RATE_LIMIT"
+    | "LICENSE_STATIC_LIMIT";
 }
 
 export type StaticLimitRestrictionMetadataDTO = RestrictionMetadataDTO & {
@@ -2269,71 +3925,407 @@ export type StaticLimitRestrictionMetadataDTO = RestrictionMetadataDTO & {
   allowedIfEqual?: boolean;
 };
 
-export type AuditFilterProperties = FilterProperties & {
-  scopes?: ResourceScopeDTO[];
-  resources?: ResourceDTO[];
-  modules?: (
-    | "CD"
-    | "CI"
-    | "CV"
-    | "CF"
-    | "CE"
-    | "CORE"
-    | "PMS"
-    | "TEMPLATESERVICE"
-  )[];
-  actions?: (
-    | "CREATE"
-    | "UPDATE"
-    | "RESTORE"
-    | "DELETE"
-    | "UPSERT"
-    | "INVITE"
-    | "RESEND_INVITE"
-    | "REVOKE_INVITE"
-    | "ADD_COLLABORATOR"
-    | "REMOVE_COLLABORATOR"
-    | "ADD_MEMBERSHIP"
-    | "REMOVE_MEMBERSHIP"
-  )[];
-  environments?: Environment[];
-  principals?: Principal[];
-  startTime?: number;
-  endTime?: number;
-};
-
-export type DelegateFilterProperties = FilterProperties & {
-  status?: "ENABLED" | "WAITING_FOR_APPROVAL" | "DISABLED" | "DELETED";
-  description?: string;
-  hostName?: string;
-  delegateName?: string;
-  delegateType?: string;
-  delegateGroupIdentifier?: string;
-};
-
-export interface DelegateProfileFilterProperties {
-  name?: string;
-  identifier?: string;
-  description?: string;
-  approvalRequired?: boolean;
-  selectors?: string[];
-  tags?: {
-    [key: string]: string;
-  };
-  filterType?:
-    | "Connector"
-    | "DelegateProfile"
-    | "Delegate"
-    | "PipelineSetup"
-    | "PipelineExecution"
-    | "Deployment"
-    | "Audit"
-    | "Template";
+export interface ResponseFeatureRestrictionMetadataDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: FeatureRestrictionMetadataDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
-export interface Environment {
-  type: "PreProduction" | "Production";
+export interface FileDTO {
+  accountIdentifier: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
   identifier: string;
+  name: string;
+  fileUsage?: "MANIFEST_FILE" | "CONFIG" | "SCRIPT";
+  type: "FILE" | "FOLDER";
+  parentIdentifier: string;
+  description?: string;
+  tags?: NGTag[];
+  mimeType?: string;
+  path?: string;
+  draft?: boolean;
+  createdBy?: EmbeddedUserDetailsDTO;
+  lastModifiedBy?: EmbeddedUserDetailsDTO;
+  lastModifiedAt?: number;
+}
+
+export interface ResponseFileDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: FileDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface FileStoreRequest {
+  file: FileDTO;
+}
+
+export interface EntityDetail {
+  type?:
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
+    | "Projects"
+    | "Pipelines"
+    | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
+    | "Connectors"
+    | "Secrets"
+    | "Files"
+    | "Service"
+    | "Environment"
+    | "EnvironmentGroup"
+    | "InputSets"
+    | "CvConfig"
+    | "Verify"
+    | "Delegates"
+    | "DelegateConfigurations"
+    | "CvVerificationJob"
+    | "IntegrationStage"
+    | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
+    | "CvKubernetesActivitySource"
+    | "DeploymentSteps"
+    | "DeploymentStage"
+    | "ApprovalStage"
+    | "FeatureFlagStage"
+    | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
+    | "Triggers"
+    | "MonitoredService"
+    | "GitRepositories"
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait";
+  entityRef?: EntityReference;
+  name?: string;
+}
+
+export interface EntityReference {
+  branch?: string;
+  repoIdentifier?: string;
+  default?: boolean;
+  identifier?: string;
+  accountIdentifier?: string;
+  projectIdentifier?: string;
+  orgIdentifier?: string;
+}
+
+export type EntityReferredByPipelineSetupUsageDetail = SetupUsageDetail & {
+  identifier?: string;
+  referenceType?: string;
+};
+
+export interface EntitySetupUsageDTO {
+  accountIdentifier?: string;
+  referredEntity?: EntityDetail;
+  referredByEntity: EntityDetail;
+  detail?: SetupUsageDetail;
+  createdAt?: number;
+}
+
+export type IdentifierRef = EntityReference & {
+  scope?: "account" | "org" | "project" | "unknown";
+  metadata?: {
+    [key: string]: string;
+  };
+  isDefault?: boolean;
+  fullyQualifiedScopeIdentifier?: string;
+};
+
+export type InputSetReference = EntityReference & {
+  pipelineIdentifier?: string;
+  isDefault?: boolean;
+};
+
+export interface PageEntitySetupUsageDTO {
+  totalPages?: number;
+  totalElements?: number;
+  first?: boolean;
+  last?: boolean;
+  sort?: Sort;
+  number?: number;
+  numberOfElements?: number;
+  pageable?: Pageable;
+  size?: number;
+  content?: EntitySetupUsageDTO[];
+  empty?: boolean;
+}
+
+export interface Pageable {
+  sort?: Sort;
+  pageSize?: number;
+  paged?: boolean;
+  unpaged?: boolean;
+  pageNumber?: number;
+  offset?: number;
+}
+
+export interface ResponsePageEntitySetupUsageDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageEntitySetupUsageDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export type SecretReferredByConnectorSetupUsageDetail = SetupUsageDetail & {
+  fieldName?: string;
+};
+
+export interface SetupUsageDetail {
+  [key: string]: any;
+}
+
+export interface Sort {
+  sorted?: boolean;
+  unsorted?: boolean;
+  empty?: boolean;
+}
+
+export interface ResponseListEntityType {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: (
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
+    | "Projects"
+    | "Pipelines"
+    | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
+    | "Connectors"
+    | "Secrets"
+    | "Files"
+    | "Service"
+    | "Environment"
+    | "EnvironmentGroup"
+    | "InputSets"
+    | "CvConfig"
+    | "Verify"
+    | "Delegates"
+    | "DelegateConfigurations"
+    | "CvVerificationJob"
+    | "IntegrationStage"
+    | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
+    | "CvKubernetesActivitySource"
+    | "DeploymentSteps"
+    | "DeploymentStage"
+    | "ApprovalStage"
+    | "FeatureFlagStage"
+    | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
+    | "Triggers"
+    | "MonitoredService"
+    | "GitRepositories"
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait"
+  )[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface PageFileDTO {
+  totalPages?: number;
+  totalElements?: number;
+  first?: boolean;
+  last?: boolean;
+  sort?: Sort;
+  number?: number;
+  numberOfElements?: number;
+  pageable?: Pageable;
+  size?: number;
+  content?: FileDTO[];
+  empty?: boolean;
+}
+
+export interface ResponsePageFileDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageFileDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseSetEmbeddedUserDetailsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EmbeddedUserDetailsDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export type FileNodeDTO = FileStoreNodeDTO & {
+  fileUsage: "MANIFEST_FILE" | "CONFIG" | "SCRIPT";
+  description?: string;
+  tags?: NGTag[];
+  mimeType?: string;
+  content?: string;
+  size?: number;
+};
+
+export interface FileStoreNodeDTO {
+  identifier: string;
+  parentIdentifier?: string;
+  name: string;
+  type: "FILE" | "FOLDER";
+  path?: string;
+  lastModifiedAt?: number;
+  lastModifiedBy?: EmbeddedUserDetailsDTO;
+}
+
+export interface FolderNodeDTO {
+  identifier: string;
+  parentIdentifier?: string;
+  name: string;
+  type: "FILE" | "FOLDER";
+  path?: string;
+  lastModifiedAt?: number;
+  lastModifiedBy?: EmbeddedUserDetailsDTO;
+  children?: FileStoreNodeDTO[];
+}
+
+export interface ResponseFolderNodeDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: FolderNodeDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
 export interface FilterDTO {
@@ -2343,58 +4335,6 @@ export interface FilterDTO {
   projectIdentifier?: string;
   filterProperties: FilterProperties;
   filterVisibility?: "EveryOne" | "OnlyCreator";
-}
-
-export interface FilterProperties {
-  tags?: {
-    [key: string]: string;
-  };
-  filterType?:
-    | "Connector"
-    | "DelegateProfile"
-    | "Delegate"
-    | "PipelineSetup"
-    | "PipelineExecution"
-    | "Deployment"
-    | "Audit"
-    | "Template";
-}
-
-export interface NGTag {
-  key: string;
-  value: string;
-}
-
-export type PipelineFilterProperties = FilterProperties & {
-  pipelineTags?: NGTag[];
-  pipelineIdentifiers?: string[];
-  name?: string;
-  description?: string;
-  moduleProperties?: {
-    [key: string]: { [key: string]: any };
-  };
-};
-
-export interface Principal {
-  identifier: string;
-  type: "USER" | "USER_GROUP" | "SERVICE" | "API_KEY" | "SERVICE_ACCOUNT";
-}
-
-export interface ResourceDTO {
-  type: string;
-  identifier: string;
-  labels?: {
-    [key: string]: string;
-  };
-}
-
-export interface ResourceScopeDTO {
-  accountIdentifier?: string;
-  orgIdentifier?: string;
-  projectIdentifier?: string;
-  labels?: {
-    [key: string]: string;
-  };
 }
 
 export interface ResponseFilterDTO {
@@ -2508,206 +4448,229 @@ export interface ResponseGitBranchListDTO {
   correlationId?: string;
 }
 
-export interface EntityReference {
-  branch?: string;
-  repoIdentifier?: string;
-  default?: boolean;
-  identifier?: string;
-  accountIdentifier?: string;
-  projectIdentifier?: string;
-  orgIdentifier?: string;
-}
-
 export interface GitSyncEntityDTO {
   entityName?: string;
   entityType?:
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
     | "Projects"
     | "Pipelines"
     | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
     | "Connectors"
     | "Secrets"
+    | "Files"
     | "Service"
     | "Environment"
+    | "EnvironmentGroup"
     | "InputSets"
     | "CvConfig"
+    | "Verify"
     | "Delegates"
     | "DelegateConfigurations"
     | "CvVerificationJob"
     | "IntegrationStage"
     | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
     | "CvKubernetesActivitySource"
     | "DeploymentSteps"
     | "DeploymentStage"
     | "ApprovalStage"
     | "FeatureFlagStage"
     | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
     | "Triggers"
     | "MonitoredService"
     | "GitRepositories"
-    | "FeatureFlags";
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait";
   entityIdentifier?: string;
   gitConnectorId?: string;
   repoUrl?: string;
   branch?: string;
   folderPath?: string;
   entityGitPath?: string;
-  repoProviderType?: "github" | "gitlab" | "bitbucket" | "unknown";
   entityReference?: EntityReference;
-  accountId?: string;
+  entityUrl?: string;
 }
 
 export interface GitSyncEntityListDTO {
   entityType?:
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
     | "Projects"
     | "Pipelines"
     | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
     | "Connectors"
     | "Secrets"
+    | "Files"
     | "Service"
     | "Environment"
+    | "EnvironmentGroup"
     | "InputSets"
     | "CvConfig"
+    | "Verify"
     | "Delegates"
     | "DelegateConfigurations"
     | "CvVerificationJob"
     | "IntegrationStage"
     | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
     | "CvKubernetesActivitySource"
     | "DeploymentSteps"
     | "DeploymentStage"
     | "ApprovalStage"
     | "FeatureFlagStage"
     | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
     | "Triggers"
     | "MonitoredService"
     | "GitRepositories"
-    | "FeatureFlags";
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait";
   count?: number;
   gitSyncEntities?: GitSyncEntityDTO[];
-}
-
-export interface GitSyncRepoFiles {
-  gitSyncConfigIdentifier?: string;
-  gitSyncEntityLists?: GitSyncEntityListDTO[];
-}
-
-export interface GitSyncRepoFilesList {
-  moduleType?:
-    | "CD"
-    | "CI"
-    | "CV"
-    | "CF"
-    | "CE"
-    | "CORE"
-    | "PMS"
-    | "TEMPLATESERVICE";
-  gitSyncRepoFilesList?: GitSyncRepoFiles[];
-}
-
-export type IdentifierRef = EntityReference & {
-  scope?: "account" | "org" | "project" | "unknown";
-  metadata?: {
-    [key: string]: string;
-  };
-  isDefault?: boolean;
-};
-
-export type InputSetReference = EntityReference & {
-  pipelineIdentifier?: string;
-  isDefault?: boolean;
-};
-
-export interface ResponseGitSyncRepoFilesList {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: GitSyncRepoFilesList;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface GitEntityFilterProperties {
-  moduleType?:
-    | "CD"
-    | "CI"
-    | "CV"
-    | "CF"
-    | "CE"
-    | "CORE"
-    | "PMS"
-    | "TEMPLATESERVICE";
-  gitSyncConfigIdentifiers?: string[];
-  entityTypes?: (
-    | "Projects"
-    | "Pipelines"
-    | "PipelineSteps"
-    | "Connectors"
-    | "Secrets"
-    | "Service"
-    | "Environment"
-    | "InputSets"
-    | "CvConfig"
-    | "Delegates"
-    | "DelegateConfigurations"
-    | "CvVerificationJob"
-    | "IntegrationStage"
-    | "IntegrationSteps"
-    | "CvKubernetesActivitySource"
-    | "DeploymentSteps"
-    | "DeploymentStage"
-    | "ApprovalStage"
-    | "FeatureFlagStage"
-    | "Template"
-    | "Triggers"
-    | "MonitoredService"
-    | "GitRepositories"
-    | "FeatureFlags"
-  )[];
-  searchTerm?: string;
-}
-
-export interface ResponseListGitSyncEntityListDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: GitSyncEntityListDTO[];
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface GitEntityBranchFilterSummaryProperties {
-  moduleType?:
-    | "CD"
-    | "CI"
-    | "CV"
-    | "CF"
-    | "CE"
-    | "CORE"
-    | "PMS"
-    | "TEMPLATESERVICE";
-  entityTypes?: (
-    | "Projects"
-    | "Pipelines"
-    | "PipelineSteps"
-    | "Connectors"
-    | "Secrets"
-    | "Service"
-    | "Environment"
-    | "InputSets"
-    | "CvConfig"
-    | "Delegates"
-    | "DelegateConfigurations"
-    | "CvVerificationJob"
-    | "IntegrationStage"
-    | "IntegrationSteps"
-    | "CvKubernetesActivitySource"
-    | "DeploymentSteps"
-    | "DeploymentStage"
-    | "ApprovalStage"
-    | "FeatureFlagStage"
-    | "Template"
-    | "Triggers"
-    | "MonitoredService"
-    | "GitRepositories"
-    | "FeatureFlags"
-  )[];
-  searchTerm?: string;
 }
 
 export interface PageGitSyncEntityListDTO {
@@ -2727,11 +4690,580 @@ export interface ResponsePageGitSyncEntityListDTO {
   correlationId?: string;
 }
 
+export interface GitSyncRepoFiles {
+  gitSyncConfigIdentifier?: string;
+  gitSyncEntityLists?: GitSyncEntityListDTO[];
+}
+
+export interface GitSyncRepoFilesList {
+  moduleType?:
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
+  gitSyncRepoFilesList?: GitSyncRepoFiles[];
+}
+
+export interface ResponseGitSyncRepoFilesList {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GitSyncRepoFilesList;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GitEntityFilterProperties {
+  moduleType?:
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
+  gitSyncConfigIdentifiers?: string[];
+  entityTypes?: (
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
+    | "Projects"
+    | "Pipelines"
+    | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
+    | "Connectors"
+    | "Secrets"
+    | "Files"
+    | "Service"
+    | "Environment"
+    | "EnvironmentGroup"
+    | "InputSets"
+    | "CvConfig"
+    | "Verify"
+    | "Delegates"
+    | "DelegateConfigurations"
+    | "CvVerificationJob"
+    | "IntegrationStage"
+    | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
+    | "CvKubernetesActivitySource"
+    | "DeploymentSteps"
+    | "DeploymentStage"
+    | "ApprovalStage"
+    | "FeatureFlagStage"
+    | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
+    | "Triggers"
+    | "MonitoredService"
+    | "GitRepositories"
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait"
+  )[];
+  searchTerm?: string;
+}
+
+export interface ResponseListGitSyncEntityListDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GitSyncEntityListDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GitEntityBranchFilterSummaryProperties {
+  moduleType?:
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
+  entityTypes?: (
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
+    | "Projects"
+    | "Pipelines"
+    | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
+    | "Connectors"
+    | "Secrets"
+    | "Files"
+    | "Service"
+    | "Environment"
+    | "EnvironmentGroup"
+    | "InputSets"
+    | "CvConfig"
+    | "Verify"
+    | "Delegates"
+    | "DelegateConfigurations"
+    | "CvVerificationJob"
+    | "IntegrationStage"
+    | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
+    | "CvKubernetesActivitySource"
+    | "DeploymentSteps"
+    | "DeploymentStage"
+    | "ApprovalStage"
+    | "FeatureFlagStage"
+    | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
+    | "Triggers"
+    | "MonitoredService"
+    | "GitRepositories"
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait"
+  )[];
+  searchTerm?: string;
+}
+
+export interface GitFullSyncEntityInfoDTO {
+  accountIdentifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  filePath?: string;
+  entityType?:
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
+    | "Projects"
+    | "Pipelines"
+    | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
+    | "Connectors"
+    | "Secrets"
+    | "Files"
+    | "Service"
+    | "Environment"
+    | "EnvironmentGroup"
+    | "InputSets"
+    | "CvConfig"
+    | "Verify"
+    | "Delegates"
+    | "DelegateConfigurations"
+    | "CvVerificationJob"
+    | "IntegrationStage"
+    | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
+    | "CvKubernetesActivitySource"
+    | "DeploymentSteps"
+    | "DeploymentStage"
+    | "ApprovalStage"
+    | "FeatureFlagStage"
+    | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
+    | "Triggers"
+    | "MonitoredService"
+    | "GitRepositories"
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait";
+  syncStatus?: "QUEUED" | "SUCCESS" | "FAILED" | "OVERRIDDEN";
+  name?: string;
+  identifier?: string;
+  branch?: string;
+  repoName?: string;
+  repoUrl?: string;
+  rootFolder?: string;
+  retryCount?: number;
+  errorMessage?: string;
+}
+
+export interface PageGitFullSyncEntityInfoDTO {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: GitFullSyncEntityInfoDTO[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageGitFullSyncEntityInfoDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageGitFullSyncEntityInfoDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GitFullSyncEntityInfoFilterKeys {
+  entityTypes?: (
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
+    | "Projects"
+    | "Pipelines"
+    | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
+    | "Connectors"
+    | "Secrets"
+    | "Files"
+    | "Service"
+    | "Environment"
+    | "EnvironmentGroup"
+    | "InputSets"
+    | "CvConfig"
+    | "Verify"
+    | "Delegates"
+    | "DelegateConfigurations"
+    | "CvVerificationJob"
+    | "IntegrationStage"
+    | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
+    | "CvKubernetesActivitySource"
+    | "DeploymentSteps"
+    | "DeploymentStage"
+    | "ApprovalStage"
+    | "FeatureFlagStage"
+    | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
+    | "Triggers"
+    | "MonitoredService"
+    | "GitRepositories"
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait"
+  )[];
+  syncStatus?: "QUEUED" | "SUCCESS" | "FAILED" | "OVERRIDDEN";
+}
+
+export interface ResponseTriggerFullSyncResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: TriggerFullSyncResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface TriggerFullSyncResponseDTO {
+  isFullSyncTriggered?: boolean;
+}
+
+export interface GitFullSyncConfigDTO {
+  accountIdentifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  baseBranch?: string;
+  branch?: string;
+  prTitle?: string;
+  createPullRequest?: boolean;
+  repoIdentifier?: string;
+  targetBranch?: string;
+  rootFolder?: string;
+  newBranch?: boolean;
+}
+
+export interface ResponseGitFullSyncConfigDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GitFullSyncConfigDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GitFullSyncConfigRequestDTO {
+  branch: string;
+  repoIdentifier: string;
+  rootFolder: string;
+  baseBranch?: string;
+  createPullRequest?: boolean;
+  targetBranch?: string;
+  prTitle?: string;
+  newBranch?: boolean;
+}
+
 export interface GitSyncSettingsDTO {
-  accountIdentifier: string;
+  accountIdentifier?: string;
   projectIdentifier: string;
-  organizationIdentifier: string;
+  orgIdentifier: string;
   executeOnDelegate: boolean;
+  gitSimplificationEnabled?: boolean;
+  enabledOnlyForFF?: boolean;
 }
 
 export interface ResponseGitSyncSettingsDTO {
@@ -2741,9 +5273,14 @@ export interface ResponseGitSyncSettingsDTO {
   correlationId?: string;
 }
 
-export interface ResponseListString {
+export interface GitFileContent {
+  content?: string;
+  objectId?: string;
+}
+
+export interface ResponseGitFileContent {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: string[];
+  data?: GitFileContent;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -2757,18 +5294,6 @@ export interface ResponseSaasGitDTO {
 
 export interface SaasGitDTO {
   saasGit?: boolean;
-}
-
-export interface GitFileContent {
-  content?: string;
-  objectId?: string;
-}
-
-export interface ResponseGitFileContent {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: GitFileContent;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
 }
 
 export interface CreatePRDTO {
@@ -2786,11 +5311,91 @@ export interface GitPRCreateRequest {
   sourceBranch: string;
   targetBranch: string;
   title: string;
-  yamlGitConfigRef: string;
+  yamlGitConfigRef?: string;
   accountIdentifier?: string;
   orgIdentifier?: string;
   projectIdentifier?: string;
   useUserFromToken?: boolean;
+}
+
+export interface CreatePRResponse {
+  prNumber?: number;
+}
+
+export interface ResponseCreatePRResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: CreatePRResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface CreatePRRequest {
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  repoName?: string;
+  sourceBranchName?: string;
+  targetBranchName?: string;
+  connectorRef?: string;
+  title?: string;
+}
+
+export interface GetFileResponseDTO {
+  fileContent?: string;
+  commitId?: string;
+  blobId?: string;
+}
+
+export interface ResponseGetFileResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GetFileResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GitRepositoryResponseDTO {
+  name?: string;
+}
+
+export interface ResponseListGitRepositoryResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GitRepositoryResponseDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseListUserRepoResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: UserRepoResponse[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface UserRepoResponse {
+  namespace?: string;
+  name?: string;
+}
+
+export interface GitBranchDetailsDTO {
+  name?: string;
+}
+
+export interface GitBranchesResponseDTO {
+  branches?: GitBranchDetailsDTO[];
+  defaultBranch?: GitBranchDetailsDTO;
+}
+
+export interface ResponseGitBranchesResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GitBranchesResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseListString {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: string[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
 export interface GitSyncConfig {
@@ -2808,21 +5413,13 @@ export interface GitSyncConfig {
 export interface GitSyncFolderConfigDTO {
   rootFolder?: string;
   isDefault?: boolean;
-  identifier?: string;
-  enabled?: boolean;
 }
 
 export interface GitEnabledDTO {
   connectivityMode?: "MANAGER" | "DELEGATE";
+  gitSyncEnabledOnlyForFF?: boolean;
   gitSyncEnabled?: boolean;
-}
-
-export interface RestResponse {
-  metaData?: {
-    [key: string]: { [key: string]: any };
-  };
-  resource?: { [key: string]: any };
-  responseMessages?: ResponseMessage[];
+  gitSimplificationEnabled?: boolean;
 }
 
 export interface GitSyncErrorCountDTO {
@@ -2842,33 +5439,120 @@ export interface GitSyncErrorDTO {
   repoUrl?: string;
   repoId?: string;
   branchName?: string;
-  changeType?: "ADD" | "RENAME" | "MODIFY" | "DELETE" | "NONE";
+  scopes?: Scope[];
+  changeType?:
+    | "ADD"
+    | "RENAME"
+    | "MODIFY"
+    | "DELETE"
+    | "NONE"
+    | "ADD_V2"
+    | "UPDATE_V2";
   completeFilePath?: string;
   entityType?:
+    | "CreatePR"
+    | "GITOPS_MERGE_PR"
     | "Projects"
     | "Pipelines"
     | "PipelineSteps"
+    | "Http"
+    | "Email"
+    | "JiraCreate"
+    | "JiraUpdate"
+    | "JiraApproval"
+    | "HarnessApproval"
+    | "CustomApproval"
+    | "Barrier"
+    | "Queue"
+    | "FlagConfiguration"
+    | "ShellScript"
+    | "K8sCanaryDeploy"
+    | "K8sApply"
+    | "K8sBlueGreenDeploy"
+    | "K8sRollingDeploy"
+    | "K8sRollingRollback"
+    | "K8sScale"
+    | "K8sDelete"
+    | "K8sBGSwapServices"
+    | "K8sCanaryDelete"
+    | "TerraformApply"
+    | "TerraformPlan"
+    | "TerraformDestroy"
+    | "TerraformRollback"
+    | "HelmDeploy"
+    | "HelmRollback"
     | "Connectors"
     | "Secrets"
+    | "Files"
     | "Service"
     | "Environment"
+    | "EnvironmentGroup"
     | "InputSets"
     | "CvConfig"
+    | "Verify"
     | "Delegates"
     | "DelegateConfigurations"
     | "CvVerificationJob"
     | "IntegrationStage"
     | "IntegrationSteps"
+    | "SecurityStage"
+    | "SecuritySteps"
     | "CvKubernetesActivitySource"
     | "DeploymentSteps"
     | "DeploymentStage"
     | "ApprovalStage"
     | "FeatureFlagStage"
     | "Template"
+    | "TemplateStage"
+    | "CustomDeployment"
     | "Triggers"
     | "MonitoredService"
     | "GitRepositories"
-    | "FeatureFlags";
+    | "FeatureFlags"
+    | "ServiceNowApproval"
+    | "ServiceNowCreate"
+    | "ServiceNowUpdate"
+    | "GovernancePolicies"
+    | "POLICY_STEP"
+    | "Run"
+    | "RunTests"
+    | "Plugin"
+    | "RestoreCacheGCS"
+    | "RestoreCacheS3"
+    | "SaveCacheGCS"
+    | "SaveCacheS3"
+    | "Security"
+    | "GitClone"
+    | "ArtifactoryUpload"
+    | "GCSUpload"
+    | "S3Upload"
+    | "BuildAndPushGCR"
+    | "BuildAndPushECR"
+    | "BuildAndPushDockerRegistry"
+    | "CreateStack"
+    | "DeleteStack"
+    | "ServerlessAwsLambdaDeploy"
+    | "ServerlessAwsLambdaRollback"
+    | "CustomStage"
+    | "RollbackStack"
+    | "Infrastructure"
+    | "Command"
+    | "StrategyNode"
+    | "AZURE_SLOT_DEPLOYMENT_STEP"
+    | "AzureTrafficShift"
+    | "AzureSwapSlot"
+    | "AzureWebAppRollback"
+    | "JenkinsBuild"
+    | "EcsRollingDeploy"
+    | "EcsRollingRollback"
+    | "EcsCanaryDeploy"
+    | "EcsCanaryDelete"
+    | "AzureCreateARMResource"
+    | "BuildAndPushACR"
+    | "AzureCreateBPResource"
+    | "AzureARMRollback"
+    | "Background"
+    | "Wait";
   failureReason?: string;
   status?: "ACTIVE" | "DISCARDED" | "EXPIRED" | "RESOLVED" | "OVERRIDDEN";
   errorType?: "GIT_TO_HARNESS" | "CONNECTIVITY_ISSUE" | "FULL_SYNC";
@@ -2895,6 +5579,12 @@ export interface ResponsePageGitSyncErrorDTO {
   data?: PageGitSyncErrorDTO;
   metaData?: { [key: string]: any };
   correlationId?: string;
+}
+
+export interface Scope {
+  accountIdentifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
 }
 
 export interface GitSyncErrorAggregateByCommitDTO {
@@ -2924,6 +5614,201 @@ export interface ResponsePageGitSyncErrorAggregateByCommitDTO {
   correlationId?: string;
 }
 
+export interface LdapTestResponse {
+  status?: "SUCCESS" | "FAILURE";
+  message?: string;
+}
+
+export interface RestResponse {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: { [key: string]: any };
+  responseMessages?: ResponseMessage[];
+}
+
+export interface RestResponseLdapTestResponse {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: LdapTestResponse;
+  responseMessages?: ResponseMessage[];
+}
+
+export interface EmbeddedUser {
+  uuid?: string;
+  name?: string;
+  email?: string;
+  externalUserId?: string;
+}
+
+export interface LdapConnectionSettings {
+  host: string;
+  port?: number;
+  sslEnabled?: boolean;
+  referralsEnabled?: boolean;
+  maxReferralHops?: number;
+  bindDN?: string;
+  bindPassword?: string;
+  passwordType?: string;
+  bindSecret?: string[];
+  connectTimeout?: number;
+  responseTimeout?: number;
+  useRecursiveGroupMembershipSearch?: boolean;
+  accountId?: string;
+  settingType?:
+    | "HOST_CONNECTION_ATTRIBUTES"
+    | "BASTION_HOST_CONNECTION_ATTRIBUTES"
+    | "SMTP"
+    | "SFTP"
+    | "JENKINS"
+    | "BAMBOO"
+    | "STRING"
+    | "SPLUNK"
+    | "ELK"
+    | "LOGZ"
+    | "SUMO"
+    | "DATA_DOG"
+    | "APM_VERIFICATION"
+    | "BUG_SNAG"
+    | "LOG_VERIFICATION"
+    | "APP_DYNAMICS"
+    | "NEW_RELIC"
+    | "DYNA_TRACE"
+    | "INSTANA"
+    | "DATA_DOG_LOG"
+    | "CLOUD_WATCH"
+    | "SCALYR"
+    | "ELB"
+    | "SLACK"
+    | "AWS"
+    | "GCS"
+    | "GCP"
+    | "AZURE"
+    | "PCF"
+    | "RANCHER"
+    | "DIRECT"
+    | "KUBERNETES_CLUSTER"
+    | "DOCKER"
+    | "ECR"
+    | "GCR"
+    | "ACR"
+    | "PHYSICAL_DATA_CENTER"
+    | "KUBERNETES"
+    | "NEXUS"
+    | "ARTIFACTORY"
+    | "SMB"
+    | "AMAZON_S3"
+    | "GIT"
+    | "SSH_SESSION_CONFIG"
+    | "SERVICE_VARIABLE"
+    | "CONFIG_FILE"
+    | "KMS"
+    | "GCP_KMS"
+    | "JIRA"
+    | "SERVICENOW"
+    | "SECRET_TEXT"
+    | "YAML_GIT_SYNC"
+    | "VAULT"
+    | "VAULT_SSH"
+    | "AWS_SECRETS_MANAGER"
+    | "WINRM_CONNECTION_ATTRIBUTES"
+    | "WINRM_SESSION_CONFIG"
+    | "PROMETHEUS"
+    | "INFRASTRUCTURE_MAPPING"
+    | "HTTP_HELM_REPO"
+    | "AMAZON_S3_HELM_REPO"
+    | "GCS_HELM_REPO"
+    | "SPOT_INST"
+    | "AZURE_ARTIFACTS_PAT"
+    | "CUSTOM"
+    | "CE_AWS"
+    | "CE_GCP"
+    | "CE_AZURE"
+    | "AZURE_VAULT"
+    | "KUBERNETES_CLUSTER_NG"
+    | "GIT_NG"
+    | "SSO_SAML"
+    | "LDAP"
+    | "GCP_SECRETS_MANAGER"
+    | "TRIGGER"
+    | "OCI_HELM_REPO";
+}
+
+export interface LdapGroupSettings {
+  baseDN?: string;
+  searchFilter?: string;
+  nameAttr?: string;
+  descriptionAttr?: string;
+  userMembershipAttr?: string;
+  referencedUserAttr?: string;
+}
+
+export type LdapSettings = SSOSettings & {
+  connectionSettings: LdapConnectionSettings;
+  userSettingsList?: LdapUserSettings[];
+  groupSettingsList?: LdapGroupSettings[];
+  userSettings?: LdapUserSettings;
+  groupSettings?: LdapGroupSettings;
+  cronExpression?: string;
+};
+
+export interface LdapUserSettings {
+  baseDN?: string;
+  searchFilter?: string;
+  uidAttr?: string;
+  samAccountNameAttr?: string;
+  emailAttr?: string;
+  displayNameAttr?: string;
+  groupMembershipAttr?: string;
+}
+
+export interface LdapGroupResponse {
+  dn?: string;
+  name?: string;
+  description?: string;
+  totalMembers?: number;
+  selectable?: boolean;
+  message?: string;
+  users?: LdapUserResponse[];
+}
+
+export interface LdapUserResponse {
+  dn?: string;
+  email?: string;
+  name?: string;
+  userId?: string;
+}
+
+export interface RestResponseCollectionLdapGroupResponse {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: LdapGroupResponse[];
+  responseMessages?: ResponseMessage[];
+}
+
+export interface RestResponseBoolean {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: boolean;
+  responseMessages?: ResponseMessage[];
+}
+
+export interface LdapResponse {
+  status?: "SUCCESS" | "FAILURE";
+  message?: string;
+}
+
+export interface RestResponseLdapResponse {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: LdapResponse;
+  responseMessages?: ResponseMessage[];
+}
+
 export type CDModuleLicenseDTO = ModuleLicenseDTO & {
   cdLicenseType?: "SERVICES" | "SERVICE_INSTANCES";
   workloads?: number;
@@ -2945,6 +5830,11 @@ export type CIModuleLicenseDTO = ModuleLicenseDTO & {
 
 export type CVModuleLicenseDTO = ModuleLicenseDTO & {};
 
+export type ChaosModuleLicenseDTO = ModuleLicenseDTO & {
+  totalChaosScenarioRun?: number;
+  totalChaosDelegates?: number;
+};
+
 export interface ModuleLicenseDTO {
   id?: string;
   accountIdentifier?: string;
@@ -2954,23 +5844,22 @@ export interface ModuleLicenseDTO {
     | "CV"
     | "CF"
     | "CE"
+    | "STO"
     | "CORE"
     | "PMS"
-    | "TEMPLATESERVICE";
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
   edition?: "COMMUNITY" | "FREE" | "TEAM" | "ENTERPRISE";
   licenseType?: "TRIAL" | "PAID";
   status?: "ACTIVE" | "DELETED" | "EXPIRED";
   startTime?: number;
   expiryTime?: number;
+  premiumSupport?: boolean;
+  selfService?: boolean;
   createdAt?: number;
   lastModifiedAt?: number;
-}
-
-export interface ResponseModuleLicenseDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ModuleLicenseDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
+  trialExtended?: boolean;
 }
 
 export interface ResponseListModuleLicenseDTO {
@@ -2980,29 +5869,9 @@ export interface ResponseListModuleLicenseDTO {
   correlationId?: string;
 }
 
-export interface EditionActionDTO {
-  action?:
-    | "START_FREE"
-    | "START_TRIAL"
-    | "EXTEND_TRIAL"
-    | "SUBSCRIBE"
-    | "UPGRADE"
-    | "CONTACT_SALES"
-    | "CONTACT_SUPPORT"
-    | "MANAGE"
-    | "DISABLED_BY_TEAM"
-    | "DISABLED_BY_ENTERPRISE";
-  reason?: string;
-}
-
-export interface ResponseMapEditionSetEditionActionDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: {
-    [key: string]: EditionActionDTO[];
-  };
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
+export type STOModuleLicenseDTO = ModuleLicenseDTO & {
+  numberOfDevelopers?: number;
+};
 
 export type CDLicenseSummaryDTO = LicensesWithSummaryDTO & {
   totalWorkload?: number;
@@ -3033,9 +5902,12 @@ export interface LicensesWithSummaryDTO {
     | "CV"
     | "CF"
     | "CE"
+    | "STO"
     | "CORE"
     | "PMS"
-    | "TEMPLATESERVICE";
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
   maxExpiryTime?: number;
 }
 
@@ -3045,6 +5917,10 @@ export interface ResponseLicensesWithSummaryDTO {
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
+
+export type STOLicenseSummaryDTO = LicensesWithSummaryDTO & {
+  totalDevelopers?: number;
+};
 
 export interface AccountLicenseDTO {
   accountId?: string;
@@ -3065,6 +5941,13 @@ export interface ResponseAccountLicenseDTO {
   correlationId?: string;
 }
 
+export interface ResponseModuleLicenseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ModuleLicenseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
 export interface StartTrialDTO {
   moduleType:
     | "CD"
@@ -3072,10 +5955,107 @@ export interface StartTrialDTO {
     | "CV"
     | "CF"
     | "CE"
+    | "STO"
     | "CORE"
     | "PMS"
-    | "TEMPLATESERVICE";
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
   edition: "COMMUNITY" | "FREE" | "TEAM" | "ENTERPRISE";
+}
+
+export interface EditionActionDTO {
+  action?:
+    | "START_FREE"
+    | "START_TRIAL"
+    | "EXTEND_TRIAL"
+    | "SUBSCRIBE"
+    | "UPGRADE"
+    | "CONTACT_SALES"
+    | "CONTACT_SUPPORT"
+    | "MANAGE"
+    | "DISABLED_BY_TEAM"
+    | "DISABLED_BY_ENTERPRISE";
+  reason?: string;
+}
+
+export interface ResponseMapEditionSetEditionActionDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: {
+    [key: string]: EditionActionDTO[];
+  };
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseMapModuleTypeLong {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: {
+    [key: string]: number;
+  };
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ReferenceDTO {
+  name?: string;
+  identifier?: string;
+  projectIdentifier?: string;
+  orgIdentifier?: string;
+  accountIdentifier?: string;
+  count?: number;
+}
+
+export interface ResponseServiceUsageDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceUsageDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceUsageDTO {
+  accountIdentifier?: string;
+  module?: string;
+  timestamp?: number;
+  activeServices?: UsageDataDTO;
+  activeServiceInstances?: UsageDataDTO;
+  cdLicenseType?: "SERVICES" | "SERVICE_INSTANCES";
+  serviceLicenses?: UsageDataDTO;
+}
+
+export interface UsageDataDTO {
+  count?: number;
+  displayName?: string;
+  references?: ReferenceDTO[];
+}
+
+export interface ResponseServiceInstanceUsageDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceInstanceUsageDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceInstanceUsageDTO {
+  accountIdentifier?: string;
+  module?: string;
+  timestamp?: number;
+  activeServices?: UsageDataDTO;
+  activeServiceInstances?: UsageDataDTO;
+  cdLicenseType?: "SERVICES" | "SERVICE_INSTANCES";
+}
+
+export interface LicenseUsageDTO {
+  accountIdentifier?: string;
+  module?: string;
+  timestamp?: number;
+}
+
+export interface ResponseLicenseUsageDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: LicenseUsageDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
 export interface ResourceGroup {
@@ -3125,12 +6105,6 @@ export interface RoleResponse {
   lastModifiedAt?: number;
 }
 
-export interface Scope {
-  accountIdentifier?: string;
-  orgIdentifier?: string;
-  projectIdentifier?: string;
-}
-
 export interface RoleAssignmentFilter {
   resourceGroupFilter?: string[];
   roleFilter?: string[];
@@ -3141,6 +6115,7 @@ export interface RoleAssignmentFilter {
     | "API_KEY"
     | "SERVICE_ACCOUNT"
   )[];
+  principalScopeLevelFilter?: string[];
   principalFilter?: Principal[];
   harnessManagedFilter?: boolean[];
   disabledFilter?: boolean[];
@@ -3189,50 +6164,61 @@ export interface ResponseRoleAssignmentResponse {
   correlationId?: string;
 }
 
-export interface EmbeddedUser {
-  uuid?: string;
-  name?: string;
-  email?: string;
+export interface LoginTypeResponse {
+  authenticationMechanism?: "USER_PASSWORD" | "SAML" | "LDAP" | "OAUTH";
+  showCaptcha?: boolean;
+  defaultExperience?: "NG" | "CG";
+  oauthEnabled?: boolean;
+  ssorequest?: SSORequest;
 }
 
-export interface LdapConnectionSettings {
-  host: string;
-  port?: number;
-  sslEnabled?: boolean;
-  referralsEnabled?: boolean;
-  maxReferralHops?: number;
-  bindDN?: string;
-  bindPassword?: string;
-  connectTimeout?: number;
-  responseTimeout?: number;
-  useRecursiveGroupMembershipSearch?: boolean;
+export interface RestResponseLoginTypeResponse {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: LoginTypeResponse;
+  responseMessages?: ResponseMessage[];
 }
 
-export interface LdapGroupSettings {
-  baseDN?: string;
-  searchFilter?: string;
-  nameAttr?: string;
-  descriptionAttr?: string;
-  userMembershipAttr?: string;
-  referencedUserAttr?: string;
+export interface SSORequest {
+  oauthProviderType?:
+    | "AZURE"
+    | "BITBUCKET"
+    | "GITHUB"
+    | "GITLAB"
+    | "GOOGLE"
+    | "LINKEDIN";
+  idpRedirectUrl?: string;
+  oauthProviderTypes?: (
+    | "AZURE"
+    | "BITBUCKET"
+    | "GITHUB"
+    | "GITLAB"
+    | "GOOGLE"
+    | "LINKEDIN"
+  )[];
 }
 
-export type LdapSettings = SSOSettings & {
+export type LDAPSettings = NGAuthSettings & {
   connectionSettings: LdapConnectionSettings;
-  userSettings?: LdapUserSettings;
-  groupSettings?: LdapGroupSettings;
+  identifier: string;
   userSettingsList?: LdapUserSettings[];
   groupSettingsList?: LdapGroupSettings[];
+  displayName: string;
   cronExpression?: string;
+  nextIterations?: number[];
 };
 
-export interface LdapUserSettings {
-  baseDN?: string;
-  searchFilter?: string;
-  uidAttr?: string;
-  emailAttr?: string;
-  displayNameAttr?: string;
-  groupMembershipAttr?: string;
+export interface RestResponseLDAPSettings {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: LDAPSettings;
+  responseMessages?: ResponseMessage[];
+}
+
+export interface TwoFactorAdminOverrideSettings {
+  adminOverrideTwoFactorEnabled?: boolean;
 }
 
 export type OauthSettings = SSOSettings & {
@@ -3277,55 +6263,96 @@ export interface SSOSettings {
 }
 
 export type SamlSettings = SSOSettings & {
+  metaDataFile?: string;
   accountId: string;
   origin: string;
-  logoutUrl?: string;
   groupMembershipAttr?: string;
+  logoutUrl?: string;
+  entityIdentifier?: string;
+  clientId?: string;
+  clientSecret?: string[];
+  userIdAttr?: string;
+  samlProviderType?: "AZURE" | "OKTA" | "ONELOGIN" | "OTHER";
+  encryptedClientSecret?: string;
   authorizationEnabled?: boolean;
+  settingType?:
+    | "HOST_CONNECTION_ATTRIBUTES"
+    | "BASTION_HOST_CONNECTION_ATTRIBUTES"
+    | "SMTP"
+    | "SFTP"
+    | "JENKINS"
+    | "BAMBOO"
+    | "STRING"
+    | "SPLUNK"
+    | "ELK"
+    | "LOGZ"
+    | "SUMO"
+    | "DATA_DOG"
+    | "APM_VERIFICATION"
+    | "BUG_SNAG"
+    | "LOG_VERIFICATION"
+    | "APP_DYNAMICS"
+    | "NEW_RELIC"
+    | "DYNA_TRACE"
+    | "INSTANA"
+    | "DATA_DOG_LOG"
+    | "CLOUD_WATCH"
+    | "SCALYR"
+    | "ELB"
+    | "SLACK"
+    | "AWS"
+    | "GCS"
+    | "GCP"
+    | "AZURE"
+    | "PCF"
+    | "RANCHER"
+    | "DIRECT"
+    | "KUBERNETES_CLUSTER"
+    | "DOCKER"
+    | "ECR"
+    | "GCR"
+    | "ACR"
+    | "PHYSICAL_DATA_CENTER"
+    | "KUBERNETES"
+    | "NEXUS"
+    | "ARTIFACTORY"
+    | "SMB"
+    | "AMAZON_S3"
+    | "GIT"
+    | "SSH_SESSION_CONFIG"
+    | "SERVICE_VARIABLE"
+    | "CONFIG_FILE"
+    | "KMS"
+    | "GCP_KMS"
+    | "JIRA"
+    | "SERVICENOW"
+    | "SECRET_TEXT"
+    | "YAML_GIT_SYNC"
+    | "VAULT"
+    | "VAULT_SSH"
+    | "AWS_SECRETS_MANAGER"
+    | "WINRM_CONNECTION_ATTRIBUTES"
+    | "WINRM_SESSION_CONFIG"
+    | "PROMETHEUS"
+    | "INFRASTRUCTURE_MAPPING"
+    | "HTTP_HELM_REPO"
+    | "AMAZON_S3_HELM_REPO"
+    | "GCS_HELM_REPO"
+    | "SPOT_INST"
+    | "AZURE_ARTIFACTS_PAT"
+    | "CUSTOM"
+    | "CE_AWS"
+    | "CE_GCP"
+    | "CE_AZURE"
+    | "AZURE_VAULT"
+    | "KUBERNETES_CLUSTER_NG"
+    | "GIT_NG"
+    | "SSO_SAML"
+    | "LDAP"
+    | "GCP_SECRETS_MANAGER"
+    | "TRIGGER"
+    | "OCI_HELM_REPO";
 };
-
-export interface LoginTypeResponse {
-  authenticationMechanism?: "USER_PASSWORD" | "SAML" | "LDAP" | "OAUTH";
-  showCaptcha?: boolean;
-  defaultExperience?: "NG" | "CG";
-  oauthEnabled?: boolean;
-  ssorequest?: SSORequest;
-}
-
-export interface RestResponseLoginTypeResponse {
-  metaData?: {
-    [key: string]: { [key: string]: any };
-  };
-  resource?: LoginTypeResponse;
-  responseMessages?: ResponseMessage[];
-}
-
-export interface SSORequest {
-  oauthProviderType?:
-    | "AZURE"
-    | "BITBUCKET"
-    | "GITHUB"
-    | "GITLAB"
-    | "GOOGLE"
-    | "LINKEDIN";
-  idpRedirectUrl?: string;
-  oauthProviderTypes?: (
-    | "AZURE"
-    | "BITBUCKET"
-    | "GITHUB"
-    | "GITLAB"
-    | "GOOGLE"
-    | "LINKEDIN"
-  )[];
-}
-
-export interface RestResponseBoolean {
-  metaData?: {
-    [key: string]: { [key: string]: any };
-  };
-  resource?: boolean;
-  responseMessages?: ResponseMessage[];
-}
 
 export interface Account {
   uuid: string;
@@ -3349,20 +6376,24 @@ export interface Account {
   migratedToClusterUrl?: string;
   defaultExperience?: "NG" | "CG";
   createdFromNG?: boolean;
+  accountActivelyUsed?: boolean;
   localEncryptionEnabled?: boolean;
   delegateConfiguration?: DelegateConfiguration;
   techStacks?: TechStack[];
   oauthEnabled?: boolean;
+  ringName?: string;
   accountPreferences?: AccountPreferences;
   cloudCostEnabled?: boolean;
   ceAutoCollectK8sEvents?: boolean;
   trialSignupOptions?: TrialSignupOptions;
   serviceGuardLimit?: number;
   serviceAccountConfig?: ServiceAccountConfig;
+  globalDelegateAccount?: boolean;
   defaults?: {
     [key: string]: string;
   };
   authenticationMechanism?: "USER_PASSWORD" | "SAML" | "LDAP" | "OAUTH";
+  productLed?: boolean;
   harnessSupportAccessAllowed?: boolean;
   povAccount?: boolean;
 }
@@ -3446,6 +6477,10 @@ export interface AccountPreferences {
   delegateSecretsCacheTTLInHours?: number;
 }
 
+export type AppFilter = Filter & {
+  filterType?: string;
+};
+
 export interface AppPermission {
   permissionType?:
     | "ACCOUNT"
@@ -3495,7 +6530,7 @@ export interface AppPermission {
     | "MANAGE_CUSTOM_DASHBOARDS"
     | "CREATE_CUSTOM_DASHBOARDS"
     | "MANAGE_RESTRICTED_ACCESS";
-  appFilter?: GenericEntityFilter;
+  appFilter?: AppFilter;
   entityFilter?: Filter;
   actions?: (
     | "ALL"
@@ -3508,6 +6543,7 @@ export interface AppPermission {
     | "EXECUTE_PIPELINE"
     | "EXECUTE_WORKFLOW_ROLLBACK"
     | "DEFAULT"
+    | "ABORT_WORKFLOW"
   )[];
 }
 
@@ -3526,10 +6562,18 @@ export interface CeLicenseInfo {
 export interface DelegateConfiguration {
   delegateVersions?: string[];
   action?: "SELF_DESTRUCT";
+  validUntil?: number;
+  validTillNextRelease?: boolean;
 }
 
 export type EnvFilter = Filter & {
   filterTypes?: string[];
+};
+
+export type ExecutableElementsFilter = Filter & {
+  filterTypes?: string[];
+  executableElementFilterType?: string;
+  filter?: GenericEntityFilter;
 };
 
 export interface Filter {
@@ -3538,13 +6582,6 @@ export interface Filter {
 
 export type GenericEntityFilter = Filter & {
   filterType?: string;
-};
-
-export type LDAPSettings = NGAuthSettings & {
-  connectionSettings: LdapConnectionSettings;
-  identifier: string;
-  userSettingsList?: LdapUserSettings[];
-  groupSettingsList?: LdapGroupSettings[];
 };
 
 export interface LicenseInfo {
@@ -3605,6 +6642,13 @@ export interface PasswordStrengthPolicy {
   minNumberOfDigits?: number;
 }
 
+export interface RateLimitProtection {
+  incorrectAttemptTimestamps?: number[];
+  lastNotificationSentToUserAt?: number;
+  lastNotificationSentToSecOpsAt?: number;
+  totalIncorrectAttempts?: number;
+}
+
 export interface RestResponseAuthenticationSettingsResponse {
   metaData?: {
     [key: string]: { [key: string]: any };
@@ -3620,6 +6664,10 @@ export type SAMLSettings = NGAuthSettings & {
   groupMembershipAttr?: string;
   displayName?: string;
   authorizationEnabled?: boolean;
+  entityIdentifier?: string;
+  samlProviderType?: string;
+  clientId?: string;
+  clientSecret?: string;
 };
 
 export interface SlackNotificationSetting {
@@ -3670,6 +6718,7 @@ export interface User {
   disabled?: boolean;
   imported?: boolean;
   userLockoutInfo?: UserLockoutInfo;
+  rateLimitProtection?: RateLimitProtection;
   twoFactorAuthenticationEnabled?: boolean;
   twoFactorAuthenticationMechanism?: "TOTP";
   oauthProvider?: string;
@@ -3685,6 +6734,7 @@ export interface UserGroup {
   projectIdentifier?: string;
   identifier?: string;
   isSsoLinked?: boolean;
+  externallyManaged?: boolean;
   linkedSsoType?: "SAML" | "LDAP" | "OAUTH";
   linkedSsoId?: string;
   linkedSsoDisplayName?: string;
@@ -3700,6 +6750,13 @@ export interface UserGroup {
   lastModifiedAt?: number;
   version?: number;
   deleted?: boolean;
+}
+
+export interface UserGroupEntityReference {
+  id?: string;
+  appId?: string;
+  accountId?: string;
+  entityType?: string;
 }
 
 export interface UserLockoutInfo {
@@ -3731,18 +6788,6 @@ export type WorkflowFilter = Filter & {
   filterTypes?: string[];
 };
 
-export interface RestResponseLoginSettings {
-  metaData?: {
-    [key: string]: { [key: string]: any };
-  };
-  resource?: LoginSettings;
-  responseMessages?: ResponseMessage[];
-}
-
-export interface TwoFactorAdminOverrideSettings {
-  adminOverrideTwoFactorEnabled?: boolean;
-}
-
 export interface RestResponsePasswordStrengthPolicy {
   metaData?: {
     [key: string]: { [key: string]: any };
@@ -3751,519 +6796,48 @@ export interface RestResponsePasswordStrengthPolicy {
   responseMessages?: ResponseMessage[];
 }
 
-export interface EnvIdCountPair {
-  envId?: string;
-  count?: number;
+export interface RestResponseLoginSettings {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: LoginSettings;
+  responseMessages?: ResponseMessage[];
 }
 
-export interface ResponseTimeValuePairListDTOEnvIdCountPair {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: TimeValuePairListDTOEnvIdCountPair;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
+export interface AccountSettingConfig {
+  [key: string]: any;
 }
 
-export interface TimeValuePair {
-  timestamp?: number;
-  value?: { [key: string]: any };
-}
-
-export interface TimeValuePairEnvIdCountPair {
-  timestamp?: number;
-  value?: EnvIdCountPair;
-}
-
-export interface TimeValuePairListDTO {
-  timeValuePairList?: TimeValuePairObject[];
-}
-
-export interface TimeValuePairListDTOEnvIdCountPair {
-  timeValuePairList?: TimeValuePairEnvIdCountPair[];
-}
-
-export interface TimeValuePairObject {
-  timestamp?: number;
-  value?: { [key: string]: any };
-}
-
-export interface AuthorInfo {
-  name?: string;
-  url?: string;
-}
-
-export interface DeploymentsInfo {
-  deployments?: ExecutionStatusInfo[];
-}
-
-export interface ExecutionStatusInfo {
-  pipelineName?: string;
-  pipelineIdentifier?: string;
-  startTs?: number;
-  endTs?: number;
-  status?: string;
-  planExecutionId?: string;
-  gitInfo?: GitInfo;
-  triggerType?: string;
-  author?: AuthorInfo;
-  serviceInfoList?: ServiceDeploymentInfo[];
-}
-
-export interface GitInfo {
-  sourceBranch?: string;
-  targetBranch?: string;
-  commit?: string;
-  commitID?: string;
-  eventType?: string;
-  repoName?: string;
-}
-
-export interface ResponseDeploymentsInfo {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: DeploymentsInfo;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ServiceDeploymentInfo {
-  serviceName?: string;
-  serviceTag?: string;
-}
-
-export interface ResponseServiceHeaderInfo {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServiceHeaderInfo;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ServiceHeaderInfo {
-  name?: string;
-  identifier?: string;
-  description?: string;
-  deploymentTypes?: string[];
+export interface AccountSettingResponse {
+  accountSettings?: AccountSettings;
   createdAt?: number;
   lastModifiedAt?: number;
 }
 
-export interface InstanceCountDetailsByEnvTypeBase {
-  nonProdInstances?: number;
-  prodInstances?: number;
-  totalInstances?: number;
+export interface AccountSettings {
+  accountIdentifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  config: AccountSettingConfig;
+  type: "Connector";
 }
 
-export interface ResponseServiceDetailsInfoDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServiceDetailsInfoDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ServiceDetailsDTO {
-  serviceName?: string;
-  serviceIdentifier?: string;
-  deploymentTypeList?: string[];
-  totalDeployments?: number;
-  totalDeploymentChangeRate?: number;
-  successRate?: number;
-  successRateChangeRate?: number;
-  failureRate?: number;
-  failureRateChangeRate?: number;
-  frequency?: number;
-  frequencyChangeRate?: number;
-  instanceCountDetails?: InstanceCountDetailsByEnvTypeBase;
-  lastPipelineExecuted?: ServicePipelineInfo;
-}
-
-export interface ServiceDetailsInfoDTO {
-  serviceDeploymentDetailsList?: ServiceDetailsDTO[];
-}
-
-export interface ServicePipelineInfo {
-  pipelineExecutionId?: string;
-  identifier?: string;
-  name?: string;
-  status?: string;
-  lastExecutedAt?: number;
-}
-
-export interface ResponseTimeValuePairListDTOInteger {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: TimeValuePairListDTOInteger;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface TimeValuePairInteger {
-  timestamp?: number;
-  value?: number;
-}
-
-export interface TimeValuePairListDTOInteger {
-  timeValuePairList?: TimeValuePairInteger[];
-}
-
-export interface ActiveServiceInstanceSummary {
-  changeRate?: number;
-  countDetails?: InstanceCountDetailsByEnvTypeBase;
-}
-
-export interface ResponseActiveServiceInstanceSummary {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ActiveServiceInstanceSummary;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface DashboardWorkloadDeployment {
-  workloadDeploymentInfoList?: WorkloadDeploymentInfo[];
-}
-
-export interface LastWorkloadInfo {
-  startTime?: number;
-  endTime?: number;
-  deploymentType?: string;
-  status?: string;
-}
-
-export interface ResponseDashboardWorkloadDeployment {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: DashboardWorkloadDeployment;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface WorkloadCountInfo {
-  count?: number;
-}
-
-export interface WorkloadDateCountInfo {
-  date?: number;
-  execution?: WorkloadCountInfo;
-}
-
-export interface WorkloadDeploymentInfo {
-  serviceName?: string;
-  serviceId?: string;
-  lastExecuted?: LastWorkloadInfo;
-  deploymentTypeList?: string[];
-  totalDeployments?: number;
-  totalDeploymentChangeRate?: number;
-  percentSuccess?: number;
-  rateSuccess?: number;
-  failureRate?: number;
-  failureRateChangeRate?: number;
-  frequency?: number;
-  frequencyChangeRate?: number;
-  lastPipelineExecutionId?: string;
-  workload?: WorkloadDateCountInfo[];
-}
-
-export interface InfrastructureDetails {
-  [key: string]: any;
-}
-
-export interface InstanceDetailsByBuildId {
-  buildId?: string;
-  instances?: InstanceDetailsDTO[];
-}
-
-export interface InstanceDetailsDTO {
-  podName?: string;
-  artifactName?: string;
-  connectorRef?: string;
-  infrastructureDetails?: InfrastructureDetails;
-  terraformInstance?: string;
-  deployedAt?: number;
-  deployedById?: string;
-  deployedByName?: string;
-  pipelineExecutionName?: string;
-}
-
-export interface InstancesByBuildIdList {
-  instancesByBuildIdList?: InstanceDetailsByBuildId[];
-}
-
-export type K8sInfrastructureDetails = InfrastructureDetails & {
-  namespace?: string;
-  releaseName?: string;
+export type ConnectorSettings = AccountSettingConfig & {
+  builtInSMDisabled?: boolean;
 };
 
-export interface ResponseInstancesByBuildIdList {
+export interface ResponseAccountSettingResponse {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: InstancesByBuildIdList;
+  data?: AccountSettingResponse;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
 
-export interface InstanceCountDetailsByEnvTypeAndServiceId {
-  instanceCountDetailsByEnvTypeBaseMap?: {
-    [key: string]: InstanceCountDetailsByEnvTypeBase;
-  };
-}
-
-export interface ResponseInstanceCountDetailsByEnvTypeAndServiceId {
+export interface ResponseListAccountSettings {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: InstanceCountDetailsByEnvTypeAndServiceId;
+  data?: AccountSettings[];
   metaData?: { [key: string]: any };
   correlationId?: string;
-}
-
-export interface BuildIdAndInstanceCount {
-  buildId?: string;
-  count?: number;
-}
-
-export interface EnvBuildIdAndInstanceCountInfo {
-  envId?: string;
-  envName?: string;
-  buildIdAndInstanceCountList?: BuildIdAndInstanceCount[];
-}
-
-export interface EnvBuildIdAndInstanceCountInfoList {
-  envBuildIdAndInstanceCountInfoList?: EnvBuildIdAndInstanceCountInfo[];
-}
-
-export interface ResponseEnvBuildIdAndInstanceCountInfoList {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: EnvBuildIdAndInstanceCountInfoList;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface Deployment {
-  count?: number;
-}
-
-export interface DeploymentDateAndCount {
-  time?: number;
-  deployments?: Deployment;
-}
-
-export interface DeploymentInfo {
-  count?: number;
-  rate?: number;
-  countList?: DeploymentDateAndCount[];
-}
-
-export interface HealthDeploymentDashboard {
-  healthDeploymentInfo?: HealthDeploymentInfo;
-}
-
-export interface HealthDeploymentInfo {
-  total?: TotalDeploymentInfo;
-  success?: DeploymentInfo;
-  failure?: DeploymentInfo;
-}
-
-export interface ResponseHealthDeploymentDashboard {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: HealthDeploymentDashboard;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface TotalDeploymentInfo {
-  count?: number;
-  production?: number;
-  nonProduction?: number;
-  countList?: DeploymentDateAndCount[];
-}
-
-export interface DeploymentChangeRates {
-  failureRate?: number;
-  failureRateChangeRate?: number;
-  frequency?: number;
-  frequencyChangeRate?: number;
-}
-
-export interface DeploymentCount {
-  total?: number;
-  success?: number;
-  failure?: number;
-}
-
-export interface ResponseServiceDeploymentInfoDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServiceDeploymentInfoDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ServiceDeployment {
-  time?: number;
-  deployments?: DeploymentCount;
-  rate?: DeploymentChangeRates;
-}
-
-export interface ServiceDeploymentInfoDTO {
-  serviceDeploymentList?: ServiceDeployment[];
-}
-
-export interface ResponseServiceDeploymentListInfo {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServiceDeploymentListInfo;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ServiceDeploymentListInfo {
-  startTime?: number;
-  endTime?: number;
-  totalDeployments?: number;
-  failureRate?: number;
-  frequency?: number;
-  failureRateChangeRate?: number;
-  totalDeploymentsChangeRate?: number;
-  frequencyChangeRate?: number;
-  serviceDeploymentList?: ServiceDeployment[];
-}
-
-export interface ExecutionDeployment {
-  time?: number;
-  deployments?: DeploymentCount;
-}
-
-export interface ExecutionDeploymentInfo {
-  executionDeploymentList?: ExecutionDeployment[];
-}
-
-export interface ResponseExecutionDeploymentInfo {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ExecutionDeploymentInfo;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface DashboardExecutionStatusInfo {
-  failure?: ExecutionStatusInfo[];
-  pending?: ExecutionStatusInfo[];
-  active?: ExecutionStatusInfo[];
-}
-
-export interface ResponseDashboardExecutionStatusInfo {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: DashboardExecutionStatusInfo;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ResponseServicesDashboardInfo {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServicesDashboardInfo;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ServiceDashboardInfo {
-  name?: string;
-  identifier?: string;
-  orgIdentifier?: string;
-  projectIdentifier?: string;
-  accountIdentifier?: string;
-  totalDeploymentsCount?: number;
-  successDeploymentsCount?: number;
-  failureDeploymentsCount?: number;
-  totalDeploymentsChangeRate?: number;
-  instancesCount?: number;
-  instancesCountChangeRate?: number;
-}
-
-export interface ServicesDashboardInfo {
-  serviceDashboardInfoList?: ServiceDashboardInfo[];
-}
-
-export interface ProjectDashBoardInfo {
-  projectIdentifier?: string;
-  orgIdentifier?: string;
-  accountId?: string;
-  deploymentsCount?: number;
-  deploymentsCountChangeRate?: number;
-  successDeploymentsCount?: number;
-  failedDeploymentsCount?: number;
-}
-
-export interface ProjectsDashboardInfo {
-  projectDashBoardInfoList?: ProjectDashBoardInfo[];
-}
-
-export interface ResponseProjectsDashboardInfo {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ProjectsDashboardInfo;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ResponseServicesCount {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServicesCount;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ServicesCount {
-  totalCount?: number;
-  newCount?: number;
-}
-
-export interface EnvCount {
-  totalCount?: number;
-  newCount?: number;
-}
-
-export interface ResponseEnvCount {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: EnvCount;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface PipelineExecutionDashboardInfo {
-  name?: string;
-  identifier?: string;
-  orgIdentifier?: string;
-  projectIdentifier?: string;
-  accountIdentifier?: string;
-  planExecutionId?: string;
-  startTs?: number;
-}
-
-export interface PipelinesExecutionDashboardInfo {
-  runningExecutions?: PipelineExecutionDashboardInfo[];
-  pendingApprovalExecutions?: PipelineExecutionDashboardInfo[];
-  pendingManualInterventionExecutions?: PipelineExecutionDashboardInfo[];
-  failed24HrsExecutions?: PipelineExecutionDashboardInfo[];
-}
-
-export interface ResponsePipelinesExecutionDashboardInfo {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PipelinesExecutionDashboardInfo;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface DeploymentStatsSummary {
-  totalCount?: number;
-  totalCountChangeRate?: number;
-  failureRate?: number;
-  failureRateChangeRate?: number;
-  deploymentRate?: number;
-  deploymentRateChangeRate?: number;
-  timeBasedDeploymentInfoList?: TimeBasedDeploymentInfo[];
-}
-
-export interface ResponseDeploymentStatsSummary {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: DeploymentStatsSummary;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface TimeBasedDeploymentInfo {
-  epochTime?: number;
-  totalCount?: number;
-  successCount?: number;
-  failedCount?: number;
-  failureRate?: number;
 }
 
 export interface ConnectivityCheckSummary {
@@ -4281,7 +6855,6 @@ export interface ResponseConnectivityCheckSummary {
 }
 
 export interface ActivitySummary {
-  get_id?: number;
   startTime?: number;
   endTime?: number;
   heartBeatFailuresCount?: number;
@@ -4290,26 +6863,17 @@ export interface ActivitySummary {
 }
 
 export interface PageActivitySummary {
-  totalElements?: number;
   totalPages?: number;
-  sort?: Sort;
+  totalElements?: number;
   first?: boolean;
   last?: boolean;
+  sort?: Sort;
+  number?: number;
   numberOfElements?: number;
   pageable?: Pageable;
   size?: number;
   content?: ActivitySummary[];
-  number?: number;
   empty?: boolean;
-}
-
-export interface Pageable {
-  sort?: Sort;
-  pageSize?: number;
-  unpaged?: boolean;
-  pageNumber?: number;
-  paged?: boolean;
-  offset?: number;
 }
 
 export interface ResponsePageActivitySummary {
@@ -4317,12 +6881,6 @@ export interface ResponsePageActivitySummary {
   data?: PageActivitySummary;
   metaData?: { [key: string]: any };
   correlationId?: string;
-}
-
-export interface Sort {
-  sorted?: boolean;
-  unsorted?: boolean;
-  empty?: boolean;
 }
 
 export interface Activity {
@@ -4343,53 +6901,166 @@ export interface ActivityDetail {
   [key: string]: any;
 }
 
-export interface EntityDetail {
-  type?:
-    | "Projects"
-    | "Pipelines"
-    | "PipelineSteps"
-    | "Connectors"
-    | "Secrets"
-    | "Service"
-    | "Environment"
-    | "InputSets"
-    | "CvConfig"
-    | "Delegates"
-    | "DelegateConfigurations"
-    | "CvVerificationJob"
-    | "IntegrationStage"
-    | "IntegrationSteps"
-    | "CvKubernetesActivitySource"
-    | "DeploymentSteps"
-    | "DeploymentStage"
-    | "ApprovalStage"
-    | "FeatureFlagStage"
-    | "Template"
-    | "Triggers"
-    | "MonitoredService"
-    | "GitRepositories"
-    | "FeatureFlags";
-  entityRef?: EntityReference;
-  name?: string;
-}
-
 export interface PageActivity {
-  totalElements?: number;
   totalPages?: number;
-  sort?: Sort;
+  totalElements?: number;
   first?: boolean;
   last?: boolean;
+  sort?: Sort;
+  number?: number;
   numberOfElements?: number;
   pageable?: Pageable;
   size?: number;
   content?: Activity[];
-  number?: number;
   empty?: boolean;
 }
 
 export interface ResponsePageActivity {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   data?: PageActivity;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AgentMtlsEndpointDetails {
+  uuid?: string;
+  accountId?: string;
+  fqdn?: string;
+  caCertificates?: string;
+  mode?: "LOOSE" | "STRICT";
+}
+
+export interface RestResponseAgentMtlsEndpointDetails {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: AgentMtlsEndpointDetails;
+  responseMessages?: ResponseMessage[];
+}
+
+export interface AgentMtlsEndpointRequest {
+  domainPrefix?: string;
+  caCertificates?: string;
+  mode?: "LOOSE" | "STRICT";
+}
+
+export interface AcrBuildDetailsDTO {
+  tag?: string;
+  buildUrl?: string;
+  metadata?: {
+    [key: string]: string;
+  };
+  labels?: {
+    [key: string]: string;
+  };
+  repository?: string;
+}
+
+export interface AcrResponseDTO {
+  buildDetailsList?: AcrBuildDetailsDTO[];
+}
+
+export interface ResponseAcrResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AcrResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AzureSubscriptionDTO {
+  subscriptionName: string;
+  subscriptionId: string;
+}
+
+export interface AzureSubscriptionsDTO {
+  subscriptions?: AzureSubscriptionDTO[];
+}
+
+export interface ResponseAzureSubscriptionsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AzureSubscriptionsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AcrRegistriesDTO {
+  registries?: AcrRegistryDTO[];
+}
+
+export interface AcrRegistryDTO {
+  registry: string;
+}
+
+export interface ResponseAcrRegistriesDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AcrRegistriesDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AcrRepositoriesDTO {
+  repositories?: AcrRepositoryDTO[];
+}
+
+export interface AcrRepositoryDTO {
+  repository: string;
+}
+
+export interface ResponseAcrRepositoriesDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AcrRepositoriesDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ArtifactoryBuildDetailsDTO {
+  [key: string]: any;
+}
+
+export interface ArtifactoryResponseDTO {
+  buildDetailsList?: ArtifactoryBuildDetailsDTO[];
+}
+
+export interface ResponseArtifactoryResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ArtifactoryResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseArtifactoryBuildDetailsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ArtifactoryBuildDetailsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ArtifactoryRequestDTO {
+  tag?: string;
+  tagRegex?: string;
+}
+
+export interface ArtifactoryRepoDetailsDTO {
+  repositories?: {
+    [key: string]: string;
+  };
+}
+
+export interface ResponseArtifactoryRepoDetailsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ArtifactoryRepoDetailsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ArtifactoryArtifactBuildDetailsDTO {
+  artifactName?: string;
+  artifactPath?: string;
+}
+
+export interface ResponseListArtifactoryArtifactBuildDetailsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ArtifactoryArtifactBuildDetailsDTO[];
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -4430,24 +7101,6 @@ export interface ResponseDockerBuildDetailsDTO {
   correlationId?: string;
 }
 
-export interface EcrListImagesDTO {
-  images?: string[];
-}
-
-export interface ResponseEcrListImagesDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: EcrListImagesDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface EcrRequestDTO {
-  tag?: string;
-  tagRegex?: string;
-  tagsList?: string[];
-  region?: string;
-}
-
 export interface EcrBuildDetailsDTO {
   tag?: string;
   buildUrl?: string;
@@ -4458,13 +7111,6 @@ export interface EcrBuildDetailsDTO {
     [key: string]: string;
   };
   imagePath?: string;
-}
-
-export interface ResponseEcrBuildDetailsDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: EcrBuildDetailsDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
 }
 
 export interface EcrResponseDTO {
@@ -4478,11 +7124,56 @@ export interface ResponseEcrResponseDTO {
   correlationId?: string;
 }
 
-export interface GcrRequestDTO {
+export interface ResponseEcrBuildDetailsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EcrBuildDetailsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface EcrRequestDTO {
   tag?: string;
   tagRegex?: string;
   tagsList?: string[];
-  registryHostname?: string;
+  region?: string;
+}
+
+export interface EcrListImagesDTO {
+  images?: string[];
+}
+
+export interface ResponseEcrListImagesDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EcrListImagesDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GARBuildDetailsDTO {
+  version?: string;
+}
+
+export interface GARResponseDTO {
+  buildDetailsList?: GARBuildDetailsDTO[];
+}
+
+export interface ResponseGARResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GARResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface RegionGar {
+  name?: string;
+  value?: string;
+}
+
+export interface ResponseListRegionGar {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: RegionGar[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
 export interface GcrBuildDetailsDTO {
@@ -4497,13 +7188,6 @@ export interface GcrBuildDetailsDTO {
   imagePath?: string;
 }
 
-export interface ResponseGcrBuildDetailsDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: GcrBuildDetailsDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
 export interface GcrResponseDTO {
   buildDetailsList?: GcrBuildDetailsDTO[];
 }
@@ -4515,11 +7199,254 @@ export interface ResponseGcrResponseDTO {
   correlationId?: string;
 }
 
+export interface ResponseGcrBuildDetailsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GcrBuildDetailsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GcrRequestDTO {
+  tag?: string;
+  tagRegex?: string;
+  tagsList?: string[];
+  registryHostname?: string;
+}
+
+export interface ArtifactFileMetadata {
+  fileName?: string;
+  url?: string;
+}
+
+export interface BuildDetails {
+  number?: string;
+  revision?: string;
+  description?: string;
+  artifactPath?: string;
+  buildUrl?: string;
+  buildDisplayName?: string;
+  buildFullDisplayName?: string;
+  artifactFileSize?: string;
+  uiDisplayName?: string;
+  status?: "FAILURE" | "UNSTABLE" | "SUCCESS";
+  buildParameters?: {
+    [key: string]: string;
+  };
+  metadata?: {
+    [key: string]: string;
+  };
+  labels?: {
+    [key: string]: string;
+  };
+  artifactFileMetadataList?: ArtifactFileMetadata[];
+}
+
+export interface ResponseListBuildDetails {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: BuildDetails[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseBuildDetails {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: BuildDetails;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GithubPackageDTO {
+  packageId?: string;
+  packageName?: string;
+  packageType?: string;
+  visibility?: string;
+  packageUrl?: string;
+}
+
+export interface GithubPackagesResponseDTO {
+  githubPackageResponse?: GithubPackageDTO[];
+}
+
+export interface ResponseGithubPackagesResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: GithubPackagesResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface JenkinsJobDetailsDTO {
+  jobDetails?: JobDetails[];
+}
+
+export interface JobDetails {
+  jobName?: string;
+  url?: string;
+  parameters?: JobParameter[];
+  folder?: boolean;
+}
+
+export interface JobParameter {
+  name?: string;
+  options?: string[];
+  defaultValue?: string;
+  description?: string;
+}
+
+export interface ResponseJenkinsJobDetailsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: JenkinsJobDetailsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseListJobParameter {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: JobParameter[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface NexusBuildDetailsDTO {
+  tag?: string;
+  buildUrl?: string;
+  metadata?: {
+    [key: string]: string;
+  };
+  labels?: {
+    [key: string]: string;
+  };
+  imagePath?: string;
+}
+
+export interface NexusResponseDTO {
+  buildDetailsList?: NexusBuildDetailsDTO[];
+}
+
+export interface ResponseNexusResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: NexusResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseNexusBuildDetailsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: NexusBuildDetailsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface NexusRequestDTO {
+  tag?: string;
+  tagRegex?: string;
+}
+
+export interface ResponseSetString {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: string[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
 export interface ResponseMapStringString {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   data?: {
     [key: string]: string;
   };
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AwsListInstancesFilter {
+  region: string;
+  autoScalingGroupName?: string;
+  vpcIds?: string[];
+  tags?: {
+    [key: string]: string;
+  };
+  winRm?: boolean;
+}
+
+export interface AwsVPC {
+  id?: string;
+  name?: string;
+}
+
+export interface ResponseListAwsVPC {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AwsVPC[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AwsCFTemplateParamsData {
+  paramKey?: string;
+  paramType?: string;
+  defaultValue?: string;
+}
+
+export interface ResponseListAwsCFTemplateParamsData {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AwsCFTemplateParamsData[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface BucketResponse {
+  bucketName?: string;
+}
+
+export interface ResponseListBucketResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: BucketResponse[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface FilePaths {
+  buildDetails?: BuildDetails;
+}
+
+export interface ResponseListFilePaths {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: FilePaths[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface CustomDeploymentVariableProperties {
+  fqn: string;
+  variableName: string;
+  localName?: string;
+  aliasFqn?: string;
+  visible?: boolean;
+}
+
+export interface CustomDeploymentVariableResponse {
+  yaml: string;
+  metadataMap: {
+    [key: string]: CustomDeploymentVariableProperties;
+  };
+}
+
+export interface ResponseCustomDeploymentVariableResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: CustomDeploymentVariableResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface CustomDeploymentYamlRequest {
+  entityYaml: string;
+}
+
+export interface EntityDetailProtoDTO {
+  [key: string]: any;
+}
+
+export interface ResponseListEntityDetailProtoDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EntityDetailProtoDTO[];
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -4572,6 +7499,91 @@ export interface RestResponsePageResponseDelegateProfileDetailsNg {
   responseMessages?: ResponseMessage[];
 }
 
+export interface DelegateEntityOwner {
+  identifier?: string;
+}
+
+export interface DelegateGroup {
+  uuid: string;
+  name?: string;
+  delegateType?: string;
+  description?: string;
+  accountId?: string;
+  owner?: DelegateEntityOwner;
+  ng?: boolean;
+  delegateConfigurationId?: string;
+  sizeDetails?: DelegateSizeDetails;
+  k8sConfigDetails?: K8sConfigDetails;
+  tags?: string[];
+  status?: "ENABLED" | "DELETED";
+  validUntil?: string;
+  identifier?: string;
+  upgraderLastUpdated?: number;
+}
+
+export interface DelegateSizeDetails {
+  size?: "LAPTOP" | "SMALL" | "MEDIUM" | "LARGE";
+  label?: string;
+  replicas?: number;
+  ram?: number;
+  cpu?: number;
+}
+
+export interface K8sConfigDetails {
+  k8sPermissionType?: "CLUSTER_ADMIN" | "CLUSTER_VIEWER" | "NAMESPACE_ADMIN";
+  namespace?: string;
+}
+
+export interface RestResponseDelegateGroup {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: DelegateGroup;
+  responseMessages?: ResponseMessage[];
+}
+
+export interface DelegateGroupTags {
+  tags?: string[];
+}
+
+export interface DelegateDownloadRequest {
+  name: string;
+  description?: string;
+  size?: "LAPTOP" | "SMALL" | "MEDIUM" | "LARGE";
+  tags?: string[];
+  tokenName?: string;
+  clusterPermissionType?:
+    | "CLUSTER_ADMIN"
+    | "CLUSTER_VIEWER"
+    | "NAMESPACE_ADMIN";
+  customClusterNamespace?: string;
+}
+
+export interface DelegateGroupDTO {
+  accountIdentifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  name?: string;
+  identifier?: string;
+  tags?: string[];
+}
+
+export interface RestResponseDelegateGroupDTO {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: DelegateGroupDTO;
+  responseMessages?: ResponseMessage[];
+}
+
+export interface RestResponseListDelegateGroupDTO {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: DelegateGroupDTO[];
+  responseMessages?: ResponseMessage[];
+}
+
 export interface RestResponseVoid {
   metaData?: {
     [key: string]: { [key: string]: any };
@@ -4584,79 +7596,123 @@ export interface Void {
   [key: string]: any;
 }
 
-export type EntityReferredByPipelineSetupUsageDetail = SetupUsageDetail & {
-  identifier?: string;
-  referenceType?: string;
-};
-
-export interface EntitySetupUsageDTO {
-  accountIdentifier?: string;
-  referredEntity?: EntityDetail;
-  referredByEntity: EntityDetail;
-  detail?: SetupUsageDetail;
-  createdAt?: number;
-}
-
-export interface PageEntitySetupUsageDTO {
-  totalElements?: number;
-  totalPages?: number;
-  sort?: Sort;
-  first?: boolean;
-  last?: boolean;
-  numberOfElements?: number;
-  pageable?: Pageable;
-  size?: number;
-  content?: EntitySetupUsageDTO[];
-  number?: number;
-  empty?: boolean;
-}
-
-export interface ResponsePageEntitySetupUsageDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PageEntitySetupUsageDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export type SecretReferredByConnectorSetupUsageDetail = SetupUsageDetail & {
-  fieldName?: string;
-};
-
-export interface SetupUsageDetail {
-  [key: string]: any;
-}
-
-export interface EnvironmentResponseDTO {
-  accountId?: string;
+export interface DelegateSetupDetails {
   orgIdentifier?: string;
   projectIdentifier?: string;
-  identifier?: string;
-  name?: string;
+  name: string;
   description?: string;
-  color?: string;
-  type?: "PreProduction" | "Production";
-  deleted?: boolean;
-  tags?: {
-    [key: string]: string;
+  size?: "LAPTOP" | "SMALL" | "MEDIUM" | "LARGE";
+  hostName?: string;
+  delegateConfigurationId?: string;
+  identifier?: string;
+  k8sConfigDetails?: K8sConfigDetails;
+  tags?: string[];
+  delegateType: string;
+  tokenName?: string;
+}
+
+export type ApiKeyPrincipal = Principal & {};
+
+export interface DelegateTokenDetails {
+  uuid?: string;
+  accountId?: string;
+  name?: string;
+  createdBy?: EmbeddedUser;
+  createdByNgUser?: Principal;
+  createdAt?: number;
+  status?: "ACTIVE" | "REVOKED";
+  value?: string;
+  ownerIdentifier?: string;
+}
+
+export interface RestResponseListDelegateTokenDetails {
+  metaData?: {
+    [key: string]: { [key: string]: any };
   };
-  version?: number;
+  resource?: DelegateTokenDetails[];
+  responseMessages?: ResponseMessage[];
 }
 
-export interface PageEnvironmentResponseDTO {
-  totalPages?: number;
-  totalItems?: number;
-  pageItemCount?: number;
-  pageSize?: number;
-  content?: EnvironmentResponseDTO[];
-  pageIndex?: number;
-  empty?: boolean;
+export type ServiceAccountPrincipal = Principal & {
+  email?: string;
+  username?: string;
+};
+
+export type ServicePrincipal = Principal & {};
+
+export type UserPrincipal = Principal & {
+  email?: string;
+  username?: string;
+  accountId?: string;
+};
+
+export interface RestResponseDelegateTokenDetails {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: DelegateTokenDetails;
+  responseMessages?: ResponseMessage[];
 }
 
-export interface ResponsePageEnvironmentResponseDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PageEnvironmentResponseDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
+export interface DelegateConnectionDetails {
+  uuid?: string;
+  version?: string;
+  lastHeartbeat?: number;
+  lastGrpcHeartbeat?: number;
+}
+
+export interface DelegateGroupDetails {
+  groupId?: string;
+  delegateGroupIdentifier?: string;
+  delegateType?: string;
+  groupName?: string;
+  delegateDescription?: string;
+  delegateConfigurationId?: string;
+  groupImplicitSelectors?: {
+    [key: string]:
+      | "PROFILE_NAME"
+      | "DELEGATE_NAME"
+      | "HOST_NAME"
+      | "GROUP_NAME"
+      | "GROUP_SELECTORS"
+      | "PROFILE_SELECTORS";
+  };
+  groupCustomSelectors?: string[];
+  lastHeartBeat?: number;
+  connectivityStatus?: string;
+  activelyConnected?: boolean;
+  grpcActive?: boolean;
+  delegateInstanceDetails?: DelegateInner[];
+  tokenActive?: boolean;
+  autoUpgrade?: boolean;
+  delegateGroupExpirationTime?: number;
+  delegateVersion?: string;
+  upgraderLastUpdated?: number;
+  immutable?: boolean;
+  versions?: string[];
+}
+
+export interface DelegateGroupListing {
+  delegateGroupDetails?: DelegateGroupDetails[];
+}
+
+export interface DelegateInner {
+  uuid?: string;
+  lastHeartbeat?: number;
+  activelyConnected?: boolean;
+  hostName?: string;
+  tokenActive?: boolean;
+  version?: string;
+  delegateExpirationTime?: number;
+  connections?: DelegateConnectionDetails[];
+}
+
+export interface RestResponseDelegateGroupListing {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: DelegateGroupListing;
+  responseMessages?: ResponseMessage[];
 }
 
 export interface ResponseEnvironmentResponseDTO {
@@ -4677,13 +7733,31 @@ export interface EnvironmentRequestDTO {
   description?: string;
   color?: string;
   type: "PreProduction" | "Production";
-  version?: number;
+  yaml?: string;
 }
 
-export interface EnvironmentResponse {
-  environment?: EnvironmentResponseDTO;
-  createdAt?: number;
-  lastModifiedAt?: number;
+export interface PageEnvironmentResponseDTO {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: EnvironmentResponseDTO[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageEnvironmentResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageEnvironmentResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseEnvironmentResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EnvironmentResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
 export interface PageEnvironmentResponse {
@@ -4710,12 +7784,729 @@ export interface ResponseListEnvironmentResponse {
   correlationId?: string;
 }
 
-export interface ResponseEnvironmentResponse {
+export interface ApplicationSettingsConfiguration {
+  store: StoreConfigWrapper;
+  metadata?: string;
+}
+
+export type ArtifactoryStoreConfig = StoreConfig & {
+  connectorRef: string;
+  repositoryName: string;
+  artifactPaths?: string[];
+  metadata?: string;
+};
+
+export type AzureRepoStore = StoreConfig & {
+  connectorRef: string;
+  gitFetchType: "Branch" | "Commit";
+  branch?: string;
+  commitId?: string;
+  paths?: string[];
+  folderPath?: string;
+  repoName?: string;
+};
+
+export type BitbucketStore = StoreConfig & {
+  connectorRef: string;
+  gitFetchType: "Branch" | "Commit";
+  branch?: string;
+  commitId?: string;
+  paths?: string[];
+  folderPath?: string;
+  repoName?: string;
+};
+
+export interface ConfigFile {
+  identifier: string;
+  spec: ConfigFileAttributes;
+}
+
+export interface ConfigFileAttributeStepParameters {
+  store?: StoreConfigWrapperParameters;
+}
+
+export interface ConfigFileAttributes {
+  store: StoreConfigWrapper;
+  configFileAttributeStepParameters?: ConfigFileAttributeStepParameters;
+}
+
+export interface ConfigFileWrapper {
+  configFile?: ConfigFile;
+}
+
+export interface ConnectionStringsConfiguration {
+  store: StoreConfigWrapper;
+  metadata?: string;
+}
+
+export type CustomRemoteStoreConfig = StoreConfig & {
+  extractionScript: string;
+  filePath: string;
+  delegateSelectors?: string[];
+};
+
+export type EcsScalableTargetDefinitionManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  metadata?: string;
+};
+
+export type EcsScalingPolicyDefinitionManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  metadata?: string;
+};
+
+export type EcsServiceDefinitionManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  metadata?: string;
+};
+
+export type EcsTaskDefinitionManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  metadata?: string;
+};
+
+export type GcsStoreConfig = StoreConfig & {
+  connectorRef?: string;
+  bucketName?: string;
+  folderPath?: string;
+  metadata?: string;
+};
+
+export type GitLabStore = StoreConfig & {
+  connectorRef: string;
+  gitFetchType: "Branch" | "Commit";
+  branch?: string;
+  commitId?: string;
+  paths?: string[];
+  folderPath?: string;
+  repoName?: string;
+};
+
+export type GitStore = StoreConfig & {
+  connectorRef: string;
+  gitFetchType: "Branch" | "Commit";
+  branch?: string;
+  commitId?: string;
+  paths?: string[];
+  folderPath?: string;
+  repoName?: string;
+};
+
+export type GithubStore = StoreConfig & {
+  connectorRef: string;
+  gitFetchType: "Branch" | "Commit";
+  branch?: string;
+  commitId?: string;
+  paths?: string[];
+  folderPath?: string;
+  repoName?: string;
+};
+
+export type HarnessStore = StoreConfig & {
+  files?: string[];
+  secretFiles?: string[];
+};
+
+export type HelmChartManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  chartName?: string;
+  chartVersion?: string;
+  helmVersion?: "V2" | "V3" | "V380";
+  valuesPaths?: string[];
+  skipResourceVersioning?: boolean;
+  commandFlags?: HelmManifestCommandFlag[];
+  metadata?: string;
+};
+
+export interface HelmManifestCommandFlag {
+  commandType:
+    | "Fetch"
+    | "Template"
+    | "Pull"
+    | "Install"
+    | "Upgrade"
+    | "Rollback"
+    | "History"
+    | "Delete"
+    | "Uninstall"
+    | "List";
+  flag?: string;
+}
+
+export type HttpStoreConfig = StoreConfig & {
+  connectorRef?: string;
+  metadata?: string;
+};
+
+export type InheritFromManifestStoreConfig = StoreConfig & {
+  paths?: string[];
+};
+
+export type InlineStoreConfig = StoreConfig & {
+  content: string;
+};
+
+export interface InputSetValidator {
+  validatorType?: "ALLOWED_VALUES" | "REGEX";
+  parameters?: string;
+}
+
+export type K8sManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  valuesPaths?: string[];
+  skipResourceVersioning?: ParameterFieldBoolean;
+  metadata?: string;
+};
+
+export type KustomizeManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  overlayConfiguration?: OverlayConfiguration;
+  patchesPaths?: string[];
+  skipResourceVersioning?: ParameterFieldBoolean;
+  pluginPath?: string;
+  metadata?: string;
+};
+
+export type KustomizePatchesManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  metadata?: string;
+};
+
+export interface ManifestAttributes {
+  [key: string]: any;
+}
+
+export interface ManifestConfig {
+  identifier: string;
+  type:
+    | "HelmChart"
+    | "K8sManifest"
+    | "Kustomize"
+    | "KustomizePatches"
+    | "OpenshiftParam"
+    | "OpenshiftTemplate"
+    | "Values"
+    | "ServerlessAwsLambda"
+    | "ReleaseRepo"
+    | "EcsTaskDefinition"
+    | "EcsServiceDefinition"
+    | "EcsScalableTargetDefinition"
+    | "EcsScalingPolicyDefinition";
+  spec: ManifestAttributes;
+}
+
+export interface ManifestConfigWrapper {
+  manifest?: ManifestConfig;
+}
+
+export interface NGEnvironmentConfig {
+  environment?: NGEnvironmentInfoConfig;
+}
+
+export interface NGEnvironmentGlobalOverride {
+  manifests?: ManifestConfigWrapper[];
+  configFiles?: ConfigFileWrapper[];
+  applicationSettings?: ApplicationSettingsConfiguration;
+  connectionStrings?: ConnectionStringsConfiguration;
+  metadata?: string;
+}
+
+export interface NGEnvironmentInfoConfig {
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  identifier: string;
+  tags?: {
+    [key: string]: string;
+  };
+  name: string;
+  description?: string;
+  type: "PreProduction" | "Production";
+  variables?: NGVariable[];
+  overrides?: NGEnvironmentGlobalOverride;
+}
+
+export interface NGVariable {
+  description?: string;
+  required?: boolean;
+  name?: string;
+  type?: "String" | "Number" | "Secret";
+  metadata?: string;
+}
+
+export type NumberNGVariable = NGVariable & {
+  name?: string;
+  type?: "Number";
+  value: number;
+  default?: number;
+};
+
+export type OciHelmChartConfig = StoreConfig & {
+  config?: OciHelmChartStoreConfigWrapper;
+  basePath?: string;
+  metadata?: string;
+};
+
+export interface OciHelmChartStoreConfig {
+  [key: string]: any;
+}
+
+export interface OciHelmChartStoreConfigWrapper {
+  type: "Generic";
+  spec: OciHelmChartStoreConfig;
+  metadata?: string;
+}
+
+export type OciHelmChartStoreGenericConfig = OciHelmChartStoreConfig & {
+  connectorRef?: ParameterFieldString;
+  metadata?: string;
+};
+
+export type OpenshiftManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  paramsPaths?: string[];
+  skipResourceVersioning?: ParameterFieldBoolean;
+  metadata?: string;
+};
+
+export type OpenshiftParamManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  metadata?: string;
+};
+
+export interface OverlayConfiguration {
+  kustomizeYamlFolderPath: string;
+}
+
+export interface ParameterField {
+  expressionValue?: string;
+  expression?: boolean;
+  value?: { [key: string]: any };
+  defaultValue?: { [key: string]: any };
+  typeString?: boolean;
+  inputSetValidator?: InputSetValidator;
+  jsonResponseField?: boolean;
+  responseField?: string;
+  executionInput?: boolean;
+}
+
+export interface ParameterFieldBoolean {
+  expressionValue?: string;
+  expression?: boolean;
+  value?: boolean;
+  defaultValue?: boolean;
+  typeString?: boolean;
+  inputSetValidator?: InputSetValidator;
+  jsonResponseField?: boolean;
+  responseField?: string;
+  executionInput?: boolean;
+}
+
+export interface ParameterFieldString {
+  expressionValue?: string;
+  expression?: boolean;
+  value?: string;
+  defaultValue?: string;
+  typeString?: boolean;
+  inputSetValidator?: InputSetValidator;
+  jsonResponseField?: boolean;
+  responseField?: string;
+  executionInput?: boolean;
+}
+
+export type ReleaseRepoManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  metadata?: string;
+};
+
+export interface ResponseNGEnvironmentConfig {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: EnvironmentResponse;
+  data?: NGEnvironmentConfig;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
+
+export type S3StoreConfig = StoreConfig & {
+  connectorRef?: string;
+  bucketName?: string;
+  region?: string;
+  folderPath?: string;
+  metadata?: string;
+};
+
+export type S3UrlStoreConfig = StoreConfig & {
+  connectorRef: string;
+  region: string;
+  urls: string[];
+  metadata?: string;
+};
+
+export type SecretNGVariable = NGVariable & {
+  name?: string;
+  type?: "Secret";
+  value: string;
+  default?: string;
+};
+
+export type ServerlessAwsLambdaManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  configOverridePath?: string;
+  metadata?: string;
+};
+
+export interface StoreConfig {
+  [key: string]: any;
+}
+
+export interface StoreConfigWrapper {
+  spec: StoreConfig;
+  metadata?: string;
+  type:
+    | "CustomRemote"
+    | "Git"
+    | "Github"
+    | "Bitbucket"
+    | "GitLab"
+    | "Http"
+    | "S3"
+    | "Gcs"
+    | "Inline"
+    | "Artifactory"
+    | "S3Url"
+    | "InheritFromManifest"
+    | "Harness"
+    | "OciHelmChart"
+    | "AzureRepo";
+}
+
+export interface StoreConfigWrapperParameters {
+  type?: string;
+  spec?: StoreConfig;
+}
+
+export type StringNGVariable = NGVariable & {
+  name?: string;
+  type?: "String";
+  value: string;
+  default?: string;
+};
+
+export type ValuesManifest = ManifestAttributes & {
+  store?: StoreConfigWrapper;
+  metadata?: string;
+};
+
+export interface ResponseServiceOverrideResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceOverrideResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceOverrideResponseDTO {
+  accountId?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  environmentRef?: string;
+  serviceRef?: string;
+  yaml?: string;
+}
+
+export interface ServiceOverrideRequestDTO {
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  environmentIdentifier?: string;
+  serviceIdentifier?: string;
+  yaml?: string;
+}
+
+export interface NGServiceOverrideConfig {
+  serviceOverrides?: NGServiceOverrideInfoConfig;
+}
+
+export interface NGServiceOverrideInfoConfig {
+  environmentRef: string;
+  serviceRef: string;
+  variables?: NGVariable[];
+  manifests?: ManifestConfigWrapper[];
+  configFiles?: ConfigFileWrapper[];
+  applicationSettings?: ApplicationSettingsConfiguration;
+  connectionStrings?: ConnectionStringsConfiguration;
+}
+
+export interface ResponseNGServiceOverrideConfig {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: NGServiceOverrideConfig;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface PageServiceOverrideResponseDTO {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: ServiceOverrideResponseDTO[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageServiceOverrideResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageServiceOverrideResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface NGEntityTemplateResponseDTO {
+  inputSetTemplateYaml?: string;
+}
+
+export interface ResponseNGEntityTemplateResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: NGEntityTemplateResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface InfrastructureResponse {
+  infrastructure?: InfrastructureResponseDTO;
+  createdAt?: number;
+  lastModifiedAt?: number;
+}
+
+export interface InfrastructureResponseDTO {
+  accountId?: string;
+  identifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  environmentRef?: string;
+  name?: string;
+  description?: string;
+  tags?: {
+    [key: string]: string;
+  };
+  type?:
+    | "KubernetesDirect"
+    | "KubernetesGcp"
+    | "KubernetesAzure"
+    | "Pdc"
+    | "SshWinRmAzure"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "SshWinRmAws"
+    | "CustomDeployment"
+    | "ECS";
+  deploymentType?:
+    | "Kubernetes"
+    | "NativeHelm"
+    | "Ssh"
+    | "WinRm"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "CustomDeployment"
+    | "ECS";
+  yaml?: string;
+}
+
+export interface ResponseInfrastructureResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: InfrastructureResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface InfrastructureRequestDTO {
+  identifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  environmentRef?: string;
+  name?: string;
+  description?: string;
+  tags?: {
+    [key: string]: string;
+  };
+  type?:
+    | "KubernetesDirect"
+    | "KubernetesGcp"
+    | "KubernetesAzure"
+    | "Pdc"
+    | "SshWinRmAzure"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "SshWinRmAws"
+    | "CustomDeployment"
+    | "ECS";
+  yaml?: string;
+}
+
+export interface PageInfrastructureResponse {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: InfrastructureResponse[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageInfrastructureResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageInfrastructureResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export type AllHostsFilter = HostFilterSpec & { [key: string]: any };
+
+export interface AwsInstanceFilter {
+  vpcs?: string[];
+  tags?: {
+    [key: string]: string;
+  };
+}
+
+export type AzureWebAppInfrastructure = Infrastructure & {
+  connectorRef: string;
+  subscriptionId: string;
+  resourceGroup: string;
+};
+
+export type CustomDeploymentInfrastructure = Infrastructure & {
+  variables: NGVariable[];
+  metadata?: string;
+};
+
+export type EcsInfrastructure = Infrastructure & {
+  connectorRef: string;
+  cluster: string;
+  region: string;
+  metadata?: string;
+};
+
+export type HostAttributesFilter = HostFilterSpec & {
+  value?: {
+    [key: string]: string;
+  };
+};
+
+export interface HostFilter {
+  type: "All" | "HostNames" | "HostAttributes";
+  spec?: HostFilterSpec;
+}
+
+export interface HostFilterSpec {
+  type?: "All" | "HostNames" | "HostAttributes";
+}
+
+export type HostNamesFilter = HostFilterSpec & {
+  value?: string[];
+};
+
+export interface Infrastructure {
+  [key: string]: any;
+}
+
+export interface InfrastructureConfig {
+  infrastructureDefinition?: InfrastructureDefinitionConfig;
+}
+
+export interface InfrastructureDefinitionConfig {
+  name: string;
+  identifier: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  environmentRef?: string;
+  deploymentType?:
+    | "Kubernetes"
+    | "NativeHelm"
+    | "Ssh"
+    | "WinRm"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "CustomDeployment"
+    | "ECS";
+  description?: string;
+  tags?: {
+    [key: string]: string;
+  };
+  allowSimultaneousDeployments?: boolean;
+  type:
+    | "KubernetesDirect"
+    | "KubernetesGcp"
+    | "KubernetesAzure"
+    | "Pdc"
+    | "SshWinRmAzure"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "SshWinRmAws"
+    | "CustomDeployment"
+    | "ECS";
+  spec: Infrastructure;
+}
+
+export type K8SDirectInfrastructure = Infrastructure & {
+  connectorRef: string;
+  namespace: string;
+  releaseName: string;
+};
+
+export type K8sAzureInfrastructure = Infrastructure & {
+  connectorRef: string;
+  namespace: string;
+  releaseName: string;
+  cluster: string;
+  subscriptionId: string;
+  resourceGroup: string;
+  useClusterAdminCredentials?: boolean;
+};
+
+export type K8sGcpInfrastructure = Infrastructure & {
+  connectorRef: string;
+  namespace: string;
+  releaseName: string;
+  cluster: string;
+  metadata?: string;
+};
+
+export type PdcInfrastructure = Infrastructure & {
+  credentialsRef: string;
+  hosts?: string[];
+  connectorRef?: string;
+  hostFilter: HostFilter;
+  delegateSelectors?: string[];
+};
+
+export interface ResponseInfrastructureConfig {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: InfrastructureConfig;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export type ServerlessAwsLambdaInfrastructure = Infrastructure & {
+  connectorRef: string;
+  region: string;
+  stage: string;
+  metadata?: string;
+};
+
+export type SshWinRmAwsInfrastructure = Infrastructure & {
+  connectorRef: string;
+  credentialsRef: string;
+  region: string;
+  awsInstanceFilter: AwsInstanceFilter;
+};
+
+export type SshWinRmAzureInfrastructure = Infrastructure & {
+  connectorRef: string;
+  subscriptionId: string;
+  resourceGroup: string;
+  credentialsRef: string;
+  tags?: {
+    [key: string]: string;
+  };
+  usePublicDns?: boolean;
+};
 
 export interface Invite {
   id: string;
@@ -4724,9 +8515,12 @@ export interface Invite {
   accountIdentifier: string;
   orgIdentifier?: string;
   projectIdentifier?: string;
-  roleBindings: RoleBinding[];
+  roleBindings?: RoleBinding[];
   userGroups?: string[];
-  inviteType: "USER_INITIATED_INVITE" | "ADMIN_INITIATED_INVITE";
+  inviteType:
+    | "USER_INITIATED_INVITE"
+    | "ADMIN_INITIATED_INVITE"
+    | "SCIM_INITIATED_INVITE";
   approved?: boolean;
 }
 
@@ -4743,29 +8537,6 @@ export interface RoleBinding {
   resourceGroupIdentifier?: string;
   resourceGroupName?: string;
   managedRole: boolean;
-}
-
-export interface ResponseListInviteOperationResponse {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: (
-    | "ACCOUNT_INVITE_ACCEPTED_NEED_PASSWORD"
-    | "ACCOUNT_INVITE_ACCEPTED"
-    | "USER_INVITED_SUCCESSFULLY"
-    | "USER_ALREADY_ADDED"
-    | "USER_ALREADY_INVITED"
-    | "FAIL"
-    | "INVITE_EXPIRED"
-    | "INVITE_INVALID"
-  )[];
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface CreateInvite {
-  users: string[];
-  roleBindings: RoleBinding[];
-  inviteType: "USER_INITIATED_INVITE" | "ADMIN_INITIATED_INVITE";
-  userGroups?: string[];
 }
 
 export interface PageInvite {
@@ -4808,13 +8579,6 @@ export interface ResponseGcpResponseDTO {
   correlationId?: string;
 }
 
-export interface ApiKeyAggregateDTO {
-  apiKey: ApiKeyDTO;
-  createdAt: number;
-  lastModifiedAt: number;
-  tokensCount?: number;
-}
-
 export interface ApiKeyDTO {
   identifier: string;
   name: string;
@@ -4828,6 +8592,27 @@ export interface ApiKeyDTO {
   accountIdentifier: string;
   projectIdentifier?: string;
   orgIdentifier?: string;
+}
+
+export interface ResponseApiKeyDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ApiKeyDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseListApiKeyDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ApiKeyDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ApiKeyAggregateDTO {
+  apiKey: ApiKeyDTO;
+  createdAt: number;
+  lastModifiedAt: number;
+  tokensCount?: number;
 }
 
 export interface PageApiKeyAggregateDTO {
@@ -4854,18 +8639,30 @@ export interface ResponseApiKeyAggregateDTO {
   correlationId?: string;
 }
 
-export interface ResponseApiKeyDTO {
+export interface RestResponseString {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: string;
+  responseMessages?: ResponseMessage[];
+}
+
+export interface HostValidationDTO {
+  host?: string;
+  status?: "SUCCESS" | "FAILED";
+  error?: ErrorDetail;
+}
+
+export interface ResponseListHostValidationDTO {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ApiKeyDTO;
+  data?: HostValidationDTO[];
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
 
-export interface ResponseListApiKeyDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ApiKeyDTO[];
-  metaData?: { [key: string]: any };
-  correlationId?: string;
+export interface HostValidationParams {
+  hosts: string[];
+  tags?: string[];
 }
 
 export interface AccountResourcesDTO {
@@ -4902,9 +8699,12 @@ export interface Project {
     | "CV"
     | "CF"
     | "CE"
+    | "STO"
     | "CORE"
     | "PMS"
     | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS"
   )[];
   description?: string;
   tags?: {
@@ -4938,6 +8738,8 @@ export interface UserMetadataDTO {
   email: string;
   uuid: string;
   locked?: boolean;
+  disabled?: boolean;
+  externallyManaged?: boolean;
 }
 
 export interface OrganizationAggregateDTO {
@@ -5031,10 +8833,13 @@ export interface UserGroupDTO {
   linkedSsoDisplayName?: string;
   ssoGroupId?: string;
   ssoGroupName?: string;
+  linkedSsoType?: string;
+  externallyManaged?: boolean;
   description?: string;
   tags?: {
     [key: string]: string;
   };
+  harnessManaged?: boolean;
   ssoLinked?: boolean;
 }
 
@@ -5055,17 +8860,15 @@ export interface ResponsePageProjectAggregateDTO {
   correlationId?: string;
 }
 
-export interface ResponseListUserGroupAggregateDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: UserGroupAggregateDTO[];
-  metaData?: { [key: string]: any };
-  correlationId?: string;
+export interface ScopeSelector {
+  filter: "EXCLUDING_CHILD_SCOPES" | "INCLUDING_CHILD_SCOPES";
+  accountIdentifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
 }
 
-export interface AggregateACLRequest {
-  searchTerm?: string;
-  resourceGroupFilter?: string[];
-  roleFilter?: string[];
+export interface UserGroupAggregateFilter {
+  scopeFilter?: ScopeSelector[];
 }
 
 export interface PageOrganizationAggregateDTO {
@@ -5092,6 +8895,28 @@ export interface ResponseUserGroupAggregateDTO {
   correlationId?: string;
 }
 
+export interface PageHostDTO {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: HostDTO[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageHostDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageHostDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface HostFilterDTO {
+  type?: "All" | "HostNames" | "HostAttributes";
+  filter?: string;
+}
+
 export type AzureKeyVaultMetadataSpecDTO = SecretManagerMetadataSpecDTO & {
   vaultNames?: string[];
 };
@@ -5110,11 +8935,11 @@ export interface SecretManagerMetadataDTO {
     | "GCP_KMS"
     | "AWS_SECRETS_MANAGER"
     | "AZURE_VAULT"
-    | "CYBERARK"
     | "VAULT"
     | "GCP_SECRETS_MANAGER"
     | "CUSTOM"
-    | "VAULT_SSH";
+    | "VAULT_SSH"
+    | "CUSTOM_NG";
   spec?: SecretManagerMetadataSpecDTO;
 }
 
@@ -5149,11 +8974,11 @@ export interface SecretManagerMetadataRequestDTO {
     | "GCP_KMS"
     | "AWS_SECRETS_MANAGER"
     | "AZURE_VAULT"
-    | "CYBERARK"
     | "VAULT"
     | "GCP_SECRETS_MANAGER"
     | "CUSTOM"
-    | "VAULT_SSH";
+    | "VAULT_SSH"
+    | "CUSTOM_NG";
   orgIdentifier?: string;
   projectIdentifier?: string;
   identifier: string;
@@ -5162,6 +8987,13 @@ export interface SecretManagerMetadataRequestDTO {
 
 export interface SecretManagerMetadataRequestSpecDTO {
   [key: string]: any;
+}
+
+export interface SecretRefData {
+  identifier?: string;
+  scope?: "account" | "org" | "project" | "unknown";
+  decryptedValue?: string[];
+  null?: boolean;
 }
 
 export type VaultAgentCredentialDTO = VaultCredentialDTO & {
@@ -5177,19 +9009,35 @@ export type VaultAuthTokenCredentialDTO = VaultCredentialDTO & {
   authToken?: string;
 };
 
+export type VaultAwsIamRoleCredentialDTO = VaultCredentialDTO & {
+  awsRegion?: string;
+  vaultAwsIamRole?: string;
+  xvaultAwsIamServerId?: SecretRefData;
+};
+
 export interface VaultCredentialDTO {
   [key: string]: any;
 }
 
+export type VaultK8sCredentialDTO = VaultCredentialDTO & {
+  vaultK8sAuthRole?: string;
+  serviceAccountTokenPath?: string;
+  k8sAuthEndpoint?: string;
+};
+
 export type VaultMetadataRequestSpecDTO = SecretManagerMetadataRequestSpecDTO & {
   url: string;
-  accessType: "APP_ROLE" | "TOKEN" | "VAULT_AGENT";
+  accessType: "APP_ROLE" | "TOKEN" | "VAULT_AGENT" | "AWS_IAM" | "K8s_AUTH";
   spec?: VaultCredentialDTO;
   delegateSelectors?: string[];
   namespace?: string;
 };
 
 export interface BaseSSHSpecDTO {
+  [key: string]: any;
+}
+
+export interface BaseWinRmSpecDTO {
   [key: string]: any;
 }
 
@@ -5200,9 +9048,38 @@ export type KerberosConfigDTO = BaseSSHSpecDTO & {
   spec?: TGTGenerationSpecDTO;
 };
 
-export interface ResponseSecretResponseWrapper {
+export type KerberosWinRmConfigDTO = BaseWinRmSpecDTO & {
+  principal: string;
+  realm: string;
+  tgtGenerationMethod?: "KeyTabFilePath" | "Password";
+  spec?: TGTGenerationSpecDTO;
+  useSSL?: boolean;
+  skipCertChecks?: boolean;
+  useNoProfile?: boolean;
+};
+
+export type NTLMConfigDTO = BaseWinRmSpecDTO & {
+  domain: string;
+  username: string;
+  useSSL?: boolean;
+  skipCertChecks?: boolean;
+  useNoProfile?: boolean;
+  password: string;
+};
+
+export interface PageSecretResponseWrapper {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: SecretResponseWrapper[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageSecretResponseWrapper {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: SecretResponseWrapper;
+  data?: PageSecretResponseWrapper;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -5244,7 +9121,7 @@ export type SSHPasswordCredentialDTO = SSHCredentialSpecDTO & {
 };
 
 export interface SecretDTOV2 {
-  type: "SecretFile" | "SecretText" | "SSHKey";
+  type: "SecretFile" | "SecretText" | "SSHKey" | "WinRmCredentials";
   name: string;
   identifier: string;
   orgIdentifier?: string;
@@ -5265,6 +9142,7 @@ export interface SecretResponseWrapper {
   createdAt?: number;
   updatedAt?: number;
   draft?: boolean;
+  governanceMetadata?: GovernanceMetadata;
 }
 
 export interface SecretSpecDTO {
@@ -5273,7 +9151,7 @@ export interface SecretSpecDTO {
 
 export type SecretTextSpecDTO = SecretSpecDTO & {
   secretManagerIdentifier: string;
-  valueType: "Inline" | "Reference";
+  valueType: "Inline" | "Reference" | "CustomSecretManagerValues";
   value?: string;
 };
 
@@ -5288,6 +9166,38 @@ export type TGTKeyTabFilePathSpecDTO = TGTGenerationSpecDTO & {
 export type TGTPasswordSpecDTO = TGTGenerationSpecDTO & {
   password?: string;
 };
+
+export interface WinRmAuthDTO {
+  spec: BaseWinRmSpecDTO;
+  type: "NTLM" | "Kerberos";
+}
+
+export type WinRmCredentialsSpecDTO = SecretSpecDTO & {
+  port?: number;
+  auth: WinRmAuthDTO;
+};
+
+export interface SecretResourceFilterDTO {
+  identifiers?: string[];
+  searchTerm?: string;
+  secretTypes?: ("SecretFile" | "SecretText" | "SSHKey" | "WinRmCredentials")[];
+  sourceCategory?:
+    | "CLOUD_PROVIDER"
+    | "SECRET_MANAGER"
+    | "CLOUD_COST"
+    | "ARTIFACTORY"
+    | "CODE_REPO"
+    | "MONITORING"
+    | "TICKETING";
+  includeSecretsFromEverySubScope?: boolean;
+}
+
+export interface ResponseSecretResponseWrapper {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: SecretResponseWrapper;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
 
 export interface SecretRequestWrapper {
   secret: SecretDTOV2;
@@ -5310,40 +9220,12 @@ export type SSHKeyValidationMetadata = SecretValidationMetaData & {
 };
 
 export interface SecretValidationMetaData {
-  type: "SecretFile" | "SecretText" | "SSHKey";
+  type: "SecretFile" | "SecretText" | "SSHKey" | "WinRmCredentials";
 }
 
-export interface PageSecretResponseWrapper {
-  totalPages?: number;
-  totalItems?: number;
-  pageItemCount?: number;
-  pageSize?: number;
-  content?: SecretResponseWrapper[];
-  pageIndex?: number;
-  empty?: boolean;
-}
-
-export interface ResponsePageSecretResponseWrapper {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PageSecretResponseWrapper;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface SecretResourceFilterDTO {
-  identifiers?: string[];
-  searchTerm?: string;
-  secretTypes?: ("SecretFile" | "SecretText" | "SSHKey")[];
-  sourceCategory?:
-    | "CLOUD_PROVIDER"
-    | "SECRET_MANAGER"
-    | "CLOUD_COST"
-    | "ARTIFACTORY"
-    | "CODE_REPO"
-    | "MONITORING"
-    | "TICKETING";
-  includeSecretsFromEverySubScope?: boolean;
-}
+export type WinRmCredentialsValidationMetadata = SecretValidationMetaData & {
+  host: string;
+};
 
 export interface ResponseOrganizationResponse {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
@@ -5373,17 +9255,6 @@ export interface ResponsePageOrganizationResponse {
   correlationId?: string;
 }
 
-export interface ResponseProjectResponse {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ProjectResponse;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface ProjectRequest {
-  project: Project;
-}
-
 export interface PageProjectResponse {
   totalPages?: number;
   totalItems?: number;
@@ -5399,6 +9270,17 @@ export interface ResponsePageProjectResponse {
   data?: PageProjectResponse;
   metaData?: { [key: string]: any };
   correlationId?: string;
+}
+
+export interface ResponseProjectResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ProjectResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ProjectRequest {
+  project: Project;
 }
 
 export interface TokenDTO {
@@ -5454,6 +9336,21 @@ export interface TokenAggregateDTO {
   lastModifiedAt: number;
 }
 
+export interface ResponseListScopeName {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ScopeName[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ScopeName {
+  accountIdentifier?: string;
+  orgName?: string;
+  orgIdentifier?: string;
+  projectName?: string;
+  projectIdentifier?: string;
+}
+
 export interface AccessControlCheckError {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   code?:
@@ -5474,6 +9371,7 @@ export interface AccessControlCheckError {
     | "USER_DOMAIN_NOT_ALLOWED"
     | "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED"
     | "RESOURCE_NOT_FOUND"
+    | "INVALID_FORMAT"
     | "ROLE_DOES_NOT_EXIST"
     | "EMAIL_NOT_VERIFIED"
     | "EMAIL_VERIFICATION_TOKEN_NOT_FOUND"
@@ -5482,6 +9380,7 @@ export interface AccessControlCheckError {
     | "INVALID_CAPTCHA_TOKEN"
     | "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS"
     | "EXPIRED_TOKEN"
+    | "INVALID_AGENT_MTLS_AUTHORITY"
     | "TOKEN_ALREADY_REFRESHED_ONCE"
     | "ACCESS_DENIED"
     | "NG_ACCESS_DENIED"
@@ -5498,6 +9397,7 @@ export interface AccessControlCheckError {
     | "SOCKET_CONNECTION_ERROR"
     | "CONNECTION_ERROR"
     | "SOCKET_CONNECTION_TIMEOUT"
+    | "WINRM_COMMAND_EXECUTION_TIMEOUT"
     | "CONNECTION_TIMEOUT"
     | "SSH_CONNECTION_ERROR"
     | "USER_GROUP_ERROR"
@@ -5608,7 +9508,6 @@ export interface AccessControlCheckError {
     | "VAULT_OPERATION_ERROR"
     | "AWS_SECRETS_MANAGER_OPERATION_ERROR"
     | "AZURE_KEY_VAULT_OPERATION_ERROR"
-    | "CYBERARK_OPERATION_ERROR"
     | "UNSUPPORTED_OPERATION_EXCEPTION"
     | "FEATURE_UNAVAILABLE"
     | "GENERAL_ERROR"
@@ -5633,6 +9532,7 @@ export interface AccessControlCheckError {
     | "USER_HAS_NO_PERMISSIONS"
     | "USER_NOT_AUTHORIZED"
     | "USER_ALREADY_PRESENT"
+    | "EMAIL_ERROR"
     | "INVALID_USAGE_RESTRICTION"
     | "USAGE_RESTRICTION_ERROR"
     | "STATE_EXECUTION_INSTANCE_NOT_FOUND"
@@ -5645,6 +9545,7 @@ export interface AccessControlCheckError {
     | "FILE_NOT_FOUND_ERROR"
     | "USAGE_LIMITS_EXCEEDED"
     | "EVENT_PUBLISH_FAILED"
+    | "CUSTOM_APPROVAL_ERROR"
     | "JIRA_ERROR"
     | "EXPRESSION_EVALUATION_FAILED"
     | "KUBERNETES_VALUES_ERROR"
@@ -5700,6 +9601,7 @@ export interface AccessControlCheckError {
     | "GIT_UNSEEN_REMOTE_HEAD_COMMIT"
     | "TIMEOUT_ENGINE_EXCEPTION"
     | "NO_AVAILABLE_DELEGATES"
+    | "NO_GLOBAL_DELEGATE_ACCOUNT"
     | "NO_INSTALLED_DELEGATES"
     | "DUPLICATE_DELEGATE_EXCEPTION"
     | "GCP_MARKETPLACE_EXCEPTION"
@@ -5716,6 +9618,7 @@ export interface AccessControlCheckError {
     | "TIMESCALE_NOT_AVAILABLE"
     | "MIGRATION_EXCEPTION"
     | "REQUEST_PROCESSING_INTERRUPTED"
+    | "SECRET_MANAGER_ID_NOT_FOUND"
     | "GCP_SECRET_MANAGER_OPERATION_ERROR"
     | "GCP_SECRET_OPERATION_ERROR"
     | "GIT_OPERATION_ERROR"
@@ -5723,6 +9626,7 @@ export interface AccessControlCheckError {
     | "INSTANCE_STATS_PROCESS_ERROR"
     | "INSTANCE_STATS_MIGRATION_ERROR"
     | "DEPLOYMENT_MIGRATION_ERROR"
+    | "CG_LICENSE_USAGE_ERROR"
     | "INSTANCE_STATS_AGGREGATION_ERROR"
     | "UNRESOLVED_EXPRESSIONS_ERROR"
     | "KRYO_HANDLER_NOT_FOUND_ERROR"
@@ -5734,9 +9638,12 @@ export interface AccessControlCheckError {
     | "HTTP_RESPONSE_EXCEPTION"
     | "SCM_NOT_FOUND_ERROR"
     | "SCM_CONFLICT_ERROR"
+    | "SCM_CONFLICT_ERROR_V2"
     | "SCM_UNPROCESSABLE_ENTITY"
     | "PROCESS_EXECUTION_EXCEPTION"
     | "SCM_UNAUTHORIZED"
+    | "SCM_BAD_REQUEST"
+    | "SCM_INTERNAL_SERVER_ERROR"
     | "DATA"
     | "CONTEXT"
     | "PR_CREATION_ERROR"
@@ -5746,10 +9653,46 @@ export interface AccessControlCheckError {
     | "ENGINE_FUNCTOR_ERROR"
     | "JIRA_CLIENT_ERROR"
     | "SCM_NOT_MODIFIED"
-    | "JIRA_STEP_ERROR"
+    | "APPROVAL_STEP_NG_ERROR"
     | "BUCKET_SERVER_ERROR"
     | "GIT_SYNC_ERROR"
-    | "TEMPLATE_EXCEPTION";
+    | "TEMPLATE_EXCEPTION"
+    | "ENTITY_REFERENCE_EXCEPTION"
+    | "INVALID_INPUT_SET"
+    | "INVALID_OVERLAY_INPUT_SET"
+    | "RESOURCE_ALREADY_EXISTS"
+    | "INVALID_JSON_PAYLOAD"
+    | "POLICY_EVALUATION_FAILURE"
+    | "POLICY_SET_ERROR"
+    | "INVALID_ARTIFACTORY_REGISTRY_REQUEST"
+    | "INVALID_NEXUS_REGISTRY_REQUEST"
+    | "ENTITY_NOT_FOUND"
+    | "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST"
+    | "AZURE_AUTHENTICATION_ERROR"
+    | "AZURE_CONFIG_ERROR"
+    | "DATA_PROCESSING_ERROR"
+    | "INVALID_AZURE_AKS_REQUEST"
+    | "AWS_IAM_ERROR"
+    | "AWS_CF_ERROR"
+    | "AWS_INSTANCE_ERROR"
+    | "AWS_VPC_ERROR"
+    | "AWS_TAG_ERROR"
+    | "AWS_ASG_ERROR"
+    | "AWS_LOAD_BALANCER_ERROR"
+    | "SCM_INTERNAL_SERVER_ERROR_V2"
+    | "SCM_UNAUTHORIZED_ERROR_V2"
+    | "TOO_MANY_REQUESTS"
+    | "INVALID_IDENTIFIER_REF"
+    | "SPOTINST_NULL_ERROR"
+    | "SCM_UNEXPECTED_ERROR"
+    | "DUPLICATE_FILE_IMPORT"
+    | "AZURE_APP_SERVICES_TASK_EXCEPTION"
+    | "MEDIA_NOT_SUPPORTED"
+    | "AWS_ECS_ERROR"
+    | "AWS_APPLICATION_AUTO_SCALING"
+    | "AWS_ECS_SERVICE_NOT_ACTIVE"
+    | "AWS_ECS_CLIENT_ERROR"
+    | "AWS_STS_ERROR";
   message?: string;
   correlationId?: string;
   detailedMessage?: string;
@@ -5761,6 +9704,9 @@ export interface AccessControlCheckError {
 export interface PermissionCheck {
   resourceScope?: ResourceScope;
   resourceType?: string;
+  resourceAttributes?: {
+    [key: string]: string;
+  };
   resourceIdentifier?: string;
   permission?: string;
 }
@@ -5769,6 +9715,32 @@ export interface ResourceScope {
   accountIdentifier?: string;
   orgIdentifier?: string;
   projectIdentifier?: string;
+}
+
+export interface PageUserMetadataDTO {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: UserMetadataDTO[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageUserMetadataDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageUserMetadataDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface UserFilter {
+  searchTerm?: string;
+  identifiers?: string[];
+  parentFilter?:
+    | "NO_PARENT_SCOPES"
+    | "INCLUDE_PARENT_SCOPES"
+    | "STRICTLY_PARENT_SCOPES";
 }
 
 export interface ResponseUserGroupDTO {
@@ -5806,34 +9778,13 @@ export type SlackConfig = NotificationSettingConfig & {
   slackWebhookUrl?: string;
 };
 
-export interface PageUserMetadataDTO {
-  totalPages?: number;
-  totalItems?: number;
-  pageItemCount?: number;
-  pageSize?: number;
-  content?: UserMetadataDTO[];
-  pageIndex?: number;
-  empty?: boolean;
-}
-
-export interface ResponsePageUserMetadataDTO {
-  status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PageUserMetadataDTO;
-  metaData?: { [key: string]: any };
-  correlationId?: string;
-}
-
-export interface UserFilter {
-  searchTerm?: string;
-  identifiers?: string[];
-  parentFilter?:
-    | "NO_PARENT_SCOPES"
-    | "INCLUDE_PARENT_SCOPES"
-    | "STRICTLY_PARENT_SCOPES";
-}
-
 export interface SamlLinkGroupRequest {
   samlGroupName?: string;
+}
+
+export interface LdapLinkGroupRequest {
+  ldapGroupDN?: string;
+  ldapGroupName?: string;
 }
 
 export interface ResponseListUserGroupDTO {
@@ -5851,6 +9802,7 @@ export interface UserGroupFilterDTO {
   orgIdentifier?: string;
   projectIdentifier?: string;
   searchTerm?: string;
+  filterType?: "INCLUDE_INHERITED_GROUPS" | "EXCLUDE_INHERITED_GROUPS";
 }
 
 export interface PageUserGroupDTO {
@@ -5866,6 +9818,157 @@ export interface PageUserGroupDTO {
 export interface ResponsePageUserGroupDTO {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   data?: PageUserGroupDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AzureWebAppNamesDTO {
+  webAppNames?: string[];
+}
+
+export interface ResponseAzureWebAppNamesDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AzureWebAppNamesDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AzureDeploymentSlotDTO {
+  type: string;
+  name: string;
+}
+
+export interface AzureDeploymentSlotsDTO {
+  deploymentSlots?: AzureDeploymentSlotDTO[];
+}
+
+export interface ResponseAzureDeploymentSlotsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AzureDeploymentSlotsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AzureResourceGroupDTO {
+  resourceGroup: string;
+}
+
+export interface AzureResourceGroupsDTO {
+  resourceGroups?: AzureResourceGroupDTO[];
+}
+
+export interface ResponseAzureResourceGroupsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AzureResourceGroupsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AzureClusterDTO {
+  cluster: string;
+}
+
+export interface AzureClustersDTO {
+  clusters?: AzureClusterDTO[];
+}
+
+export interface ResponseAzureClustersDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AzureClustersDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AzureTagDTO {
+  tag: string;
+}
+
+export interface AzureTagsDTO {
+  tags?: AzureTagDTO[];
+}
+
+export interface ResponseAzureTagsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AzureTagsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AzureManagementGroupsDTO {
+  managementGroups?: ManagementGroupData[];
+}
+
+export interface ManagementGroupData {
+  id?: string;
+  name?: string;
+  displayName?: string;
+}
+
+export interface ResponseAzureManagementGroupsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AzureManagementGroupsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AzureLocationsDTO {
+  locations?: string[];
+}
+
+export interface ResponseAzureLocationsDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: AzureLocationsDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseServiceResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceResponseDTO {
+  accountId?: string;
+  identifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  name?: string;
+  description?: string;
+  deleted?: boolean;
+  tags?: {
+    [key: string]: string;
+  };
+  yaml?: string;
+}
+
+export interface ServiceRequestDTO {
+  identifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  name?: string;
+  description?: string;
+  tags?: {
+    [key: string]: string;
+  };
+  yaml?: string;
+}
+
+export interface ResponseSetHelmCommandFlagType {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: (
+    | "Fetch"
+    | "Template"
+    | "Pull"
+    | "Install"
+    | "Upgrade"
+    | "Rollback"
+    | "History"
+    | "Delete"
+    | "Uninstall"
+    | "List"
+  )[];
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -5887,37 +9990,17 @@ export interface ResponsePageServiceResponseDTO {
   correlationId?: string;
 }
 
-export interface ServiceResponseDTO {
-  accountId?: string;
-  identifier?: string;
-  orgIdentifier?: string;
-  projectIdentifier?: string;
-  name?: string;
-  description?: string;
-  deleted?: boolean;
-  tags?: {
-    [key: string]: string;
-  };
-  version?: number;
-}
-
-export interface ServiceRequestDTO {
-  identifier?: string;
-  orgIdentifier?: string;
-  projectIdentifier?: string;
-  name?: string;
-  description?: string;
-  tags?: {
-    [key: string]: string;
-  };
-  version?: number;
-}
-
-export interface ResponseServiceResponseDTO {
+export interface ResponseServiceResponse {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServiceResponseDTO;
+  data?: ServiceResponse;
   metaData?: { [key: string]: any };
   correlationId?: string;
+}
+
+export interface ServiceResponse {
+  service?: ServiceResponseDTO;
+  createdAt?: number;
+  lastModifiedAt?: number;
 }
 
 export interface PageServiceResponse {
@@ -5937,12 +10020,6 @@ export interface ResponsePageServiceResponse {
   correlationId?: string;
 }
 
-export interface ServiceResponse {
-  service?: ServiceResponseDTO;
-  createdAt?: number;
-  lastModifiedAt?: number;
-}
-
 export interface ResponseListServiceResponse {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   data?: ServiceResponse[];
@@ -5950,49 +10027,484 @@ export interface ResponseListServiceResponse {
   correlationId?: string;
 }
 
-export interface ResponseServiceResponse {
+export type AcrArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  subscriptionId: string;
+  registry: string;
+  repository: string;
+  tag?: string;
+  tagRegex?: string;
+};
+
+export type AmazonS3ArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  region?: string;
+  bucketName: string;
+  filePathRegex?: string;
+  filePath?: string;
+};
+
+export interface ArtifactConfig {
+  [key: string]: any;
+}
+
+export interface ArtifactListConfig {
+  primary?: PrimaryArtifact;
+  sidecars?: SidecarArtifactWrapper[];
+}
+
+export interface ArtifactOverrideSetWrapper {
+  overrideSet?: ArtifactOverrideSets;
+}
+
+export interface ArtifactOverrideSets {
+  identifier?: string;
+  artifacts?: ArtifactListConfig;
+}
+
+export interface ArtifactSource {
+  identifier: string;
+  type:
+    | "DockerRegistry"
+    | "Gcr"
+    | "Ecr"
+    | "Nexus3Registry"
+    | "ArtifactoryRegistry"
+    | "CustomArtifact"
+    | "Acr"
+    | "Jenkins"
+    | "AmazonS3"
+    | "GoogleArtifactRegistry"
+    | "GithubPackageRegistry"
+    | "AzureArtifactsRegistry";
+  spec: ArtifactConfig;
+  metadata?: string;
+}
+
+export type ArtifactoryRegistryArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  repository: string;
+  artifactPath?: string;
+  artifactPathFilter?: string;
+  artifactDirectory?: string;
+  repositoryFormat: "docker" | "generic";
+  repositoryUrl?: string;
+  tag?: string;
+  tagRegex?: string;
+};
+
+export type AzureArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  packageType: "maven" | "nuget";
+  scope: "project" | "org";
+  project: string;
+  feed: string;
+  packageName: string;
+  version?: string;
+  versionRegex?: string;
+};
+
+export type AzureWebAppServiceSpec = ServiceSpec & {
+  startupCommand?: StartupCommandConfiguration;
+  applicationSettings?: ApplicationSettingsConfiguration;
+  connectionStrings?: ConnectionStringsConfiguration;
+};
+
+export interface ConfigFileOverrideSetWrapper {
+  overrideSet?: ConfigFileOverrideSets;
+}
+
+export interface ConfigFileOverrideSets {
+  identifier?: string;
+  configFiles?: ConfigFileWrapper[];
+}
+
+export type CustomArtifactConfig = ArtifactConfig & {
+  version: string;
+  versionRegex?: string;
+  timeout?: string;
+  scripts?: CustomArtifactScripts;
+  inputs?: NGVariable[];
+  delegateSelectors?: string[];
+  metadata?: string;
+};
+
+export interface CustomArtifactScriptInfo {
+  shell: "Bash" | "PowerShell";
+  source: CustomArtifactScriptSourceWrapper;
+}
+
+export interface CustomArtifactScriptSourceWrapper {
+  type: string;
+  spec: CustomScriptBaseSource;
+}
+
+export interface CustomArtifactScripts {
+  fetchAllArtifacts: FetchAllArtifacts;
+}
+
+export type CustomDeploymentServiceSpec = ServiceSpec & {};
+
+export interface CustomScriptBaseSource {
+  type?: string;
+}
+
+export type CustomScriptInlineSource = CustomScriptBaseSource & {
+  script?: string;
+};
+
+export type DockerHubArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  imagePath: string;
+  tag?: string;
+  tagRegex?: string;
+};
+
+export type EcrArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  region: string;
+  imagePath: string;
+  tag?: string;
+  tagRegex?: string;
+  metadata?: string;
+};
+
+export type EcsServiceSpec = ServiceSpec & {};
+
+export interface FetchAllArtifacts {
+  artifactsArrayPath?: ParameterFieldString;
+  attributes?: NGVariable[];
+  versionPath?: ParameterFieldString;
+  spec: CustomArtifactScriptInfo;
+}
+
+export type GcrArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  registryHostname: string;
+  imagePath: string;
+  tag?: string;
+  tagRegex?: string;
+};
+
+export type GithubPackagesArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  packageType: "npm" | "maven" | "rubygems" | "nuget" | "container";
+  packageName: string;
+  org?: string;
+  version?: string;
+  versionRegex?: string;
+};
+
+export type GoogleArtifactRegistryConfig = ArtifactConfig & {
+  connectorRef: string;
+  project: string;
+  region: string;
+  repositoryName: string;
+  package: string;
+  version?: string;
+  versionRegex?: string;
+  repositoryType: "docker";
+  metadata?: string;
+};
+
+export type JenkinsArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  jobName: string;
+  build?: string;
+  artifactPath?: string;
+};
+
+export type KubernetesServiceSpec = ServiceSpec & {};
+
+export interface ManifestOverrideSetWrapper {
+  overrideSet?: ManifestOverrideSets;
+}
+
+export interface ManifestOverrideSets {
+  identifier?: string;
+  manifests?: ManifestConfigWrapper[];
+}
+
+export interface NGServiceConfig {
+  service?: NGServiceV2InfoConfig;
+  metadata?: string;
+}
+
+export interface NGServiceV2InfoConfig {
+  name: string;
+  identifier: string;
+  description?: string;
+  tags?: {
+    [key: string]: string;
+  };
+  gitOpsEnabled?: boolean;
+  useFromStage?: ServiceUseFromStageV2;
+  serviceDefinition?: ServiceDefinition;
+  metadata?: string;
+}
+
+export interface NGVariableOverrideSetWrapper {
+  overrideSet?: NGVariableOverrideSets;
+}
+
+export interface NGVariableOverrideSets {
+  identifier?: string;
+  variables?: NGVariable[];
+}
+
+export type NativeHelmServiceSpec = ServiceSpec & {};
+
+export type NexusRegistryArtifactConfig = ArtifactConfig & {
+  connectorRef: string;
+  repository: string;
+  artifactPath: string;
+  repositoryFormat: "docker";
+  repositoryPort?: string;
+  repositoryUrl?: string;
+  tag?: string;
+  tagRegex?: string;
+  metadata?: string;
+};
+
+export interface PrimaryArtifact {
+  type?:
+    | "DockerRegistry"
+    | "Gcr"
+    | "Ecr"
+    | "Nexus3Registry"
+    | "ArtifactoryRegistry"
+    | "CustomArtifact"
+    | "Acr"
+    | "Jenkins"
+    | "AmazonS3"
+    | "GoogleArtifactRegistry"
+    | "GithubPackageRegistry"
+    | "AzureArtifactsRegistry";
+  spec?: ArtifactConfig;
+  primaryArtifactRef?: string;
+  sources?: ArtifactSource[];
+}
+
+export interface ResponseNGServiceConfig {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServiceResponse;
+  data?: NGServiceConfig;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
 
-export interface PageUserAggregate {
-  totalPages?: number;
-  totalItems?: number;
-  pageItemCount?: number;
-  pageSize?: number;
-  content?: UserAggregate[];
-  pageIndex?: number;
-  empty?: boolean;
+export type ServerlessAwsLambdaServiceSpec = ServiceSpec & {};
+
+export interface ServiceDefinition {
+  type:
+    | "Kubernetes"
+    | "NativeHelm"
+    | "Ssh"
+    | "WinRm"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "CustomDeployment"
+    | "ECS";
+  spec: ServiceSpec;
 }
 
-export interface ResponsePageUserAggregate {
+export interface ServiceSpec {
+  variables?: NGVariable[];
+  manifests?: ManifestConfigWrapper[];
+  configFiles?: ConfigFileWrapper[];
+  artifacts?: ArtifactListConfig;
+}
+
+export interface ServiceUseFromStageV2 {
+  stage: string;
+  metadata?: string;
+}
+
+export interface SidecarArtifact {
+  identifier: string;
+  type:
+    | "DockerRegistry"
+    | "Gcr"
+    | "Ecr"
+    | "Nexus3Registry"
+    | "ArtifactoryRegistry"
+    | "CustomArtifact"
+    | "Acr"
+    | "Jenkins"
+    | "AmazonS3"
+    | "GoogleArtifactRegistry"
+    | "GithubPackageRegistry"
+    | "AzureArtifactsRegistry";
+  spec: ArtifactConfig;
+}
+
+export interface SidecarArtifactWrapper {
+  sidecar?: SidecarArtifact;
+}
+
+export type SshServiceSpec = ServiceSpec & {};
+
+export interface StartupCommandConfiguration {
+  store: StoreConfigWrapper;
+  metadata?: string;
+}
+
+export type WinRmServiceSpec = ServiceSpec & {
+  variableOverrideSets?: NGVariableOverrideSetWrapper[];
+  artifactOverrideSets?: ArtifactOverrideSetWrapper[];
+  manifestOverrideSets?: ManifestOverrideSetWrapper[];
+  configFileOverrideSets?: ConfigFileOverrideSetWrapper[];
+};
+
+export type AcrArtifactSummary = ArtifactSummary & {
+  imagePath?: string;
+  tag?: string;
+};
+
+export interface ArtifactSummary {
+  displayName?: string;
+  type?: string;
+}
+
+export type ArtifactoryArtifactSummary = ArtifactSummary & {
+  artifactPath?: string;
+  tag?: string;
+};
+
+export type ArtifactoryGenericArtifactSummary = ArtifactSummary & {
+  artifactPath?: string;
+  artifactDirectory?: string;
+};
+
+export type CustomArtifactSummary = ArtifactSummary & {
+  version?: string;
+};
+
+export type DockerArtifactSummary = ArtifactSummary & {
+  imagePath?: string;
+  tag?: string;
+};
+
+export type EcrArtifactSummary = ArtifactSummary & {
+  imagePath?: string;
+  tag?: string;
+};
+
+export type GcrArtifactSummary = ArtifactSummary & {
+  imagePath?: string;
+  tag?: string;
+};
+
+export type GithubPackagesArtifactSummary = ArtifactSummary & {
+  packageName?: string;
+  version?: string;
+};
+
+export type JenkinsArtifactSummary = ArtifactSummary & {
+  jobName?: string;
+  build?: string;
+};
+
+export type NexusArtifactSummary = ArtifactSummary & {
+  artifactPath?: string;
+  tag?: string;
+};
+
+export interface ResponseArtifactSummary {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PageUserAggregate;
+  data?: ArtifactSummary;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
 
-export interface UserAggregate {
-  user: UserMetadataDTO;
-  roleAssignmentMetadata: RoleAssignmentMetadataDTO[];
-}
+export type S3ArtifactSummary = ArtifactSummary & {
+  bucketName?: string;
+  filePath?: string;
+};
 
-export interface ResponseTwoFactorAuthSettingsInfo {
+export interface ResponseServicesV2YamlMetadataDTO {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: TwoFactorAuthSettingsInfo;
+  data?: ServicesV2YamlMetadataDTO;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
 
-export interface TwoFactorAuthSettingsInfo {
-  userId?: string;
-  email?: string;
-  twoFactorAuthenticationEnabled?: boolean;
-  mechanism?: "TOTP";
-  totpSecretKey?: string;
-  totpqrurl?: string;
+export interface ServiceV2YamlMetadata {
+  serviceIdentifier: string;
+  serviceYaml?: string;
+  inputSetTemplateYaml?: string;
+}
+
+export interface ServicesV2YamlMetadataDTO {
+  serviceV2YamlMetadataList?: ServiceV2YamlMetadata[];
+}
+
+export interface ServicesYamlMetadataApiInput {
+  serviceIdentifiers: string[];
+}
+
+export interface ArtifactSourcesResponseDTO {
+  sourceIdentifiers?: string[];
+  sourceIdentifierToSourceInputMap?: {
+    [key: string]: string;
+  };
+}
+
+export interface ResponseArtifactSourcesResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ArtifactSourcesResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseValidationResultDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ValidationResultDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ValidationResultDTO {
+  valid?: boolean;
+  errorMessage?: string;
+}
+
+export interface NgSmtpDTO {
+  uuid?: string;
+  accountId?: string;
+  name: string;
+  value: SmtpConfigDTO;
+}
+
+export interface ResponseNgSmtpDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: NgSmtpDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface SmtpConfigDTO {
+  host: string;
+  port: number;
+  fromAddress?: string;
+  useSSL?: boolean;
+  startTLS?: boolean;
+  username?: string;
+  password?: string[];
+}
+
+export interface ResponsePasswordChangeResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?:
+    | "PASSWORD_CHANGED"
+    | "INCORRECT_CURRENT_PASSWORD"
+    | "PASSWORD_STRENGTH_VIOLATED";
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface PasswordChangeDTO {
+  currentPassword?: string;
+  newPassword?: string;
 }
 
 export interface GatewayAccountRequestDTO {
@@ -6012,7 +10524,7 @@ export interface ResponseUserInfo {
 }
 
 export interface UserInfo {
-  uuid?: string;
+  uuid: string;
   name?: string;
   email?: string;
   token?: string;
@@ -6023,25 +10535,28 @@ export interface UserInfo {
   twoFactorAuthenticationEnabled?: boolean;
   emailVerified?: boolean;
   locked?: boolean;
+  disabled?: boolean;
   signupAction?: string;
   edition?: string;
   billingFrequency?: string;
   utmInfo?: UtmInfo;
+  externallyManaged?: boolean;
 }
 
-export interface ResponsePasswordChangeResponse {
+export interface ResponseTwoFactorAuthSettingsInfo {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?:
-    | "PASSWORD_CHANGED"
-    | "INCORRECT_CURRENT_PASSWORD"
-    | "PASSWORD_STRENGTH_VIOLATED";
+  data?: TwoFactorAuthSettingsInfo;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
 
-export interface PasswordChangeDTO {
-  currentPassword?: string;
-  newPassword?: string;
+export interface TwoFactorAuthSettingsInfo {
+  userId?: string;
+  email?: string;
+  twoFactorAuthenticationEnabled?: boolean;
+  mechanism?: "TOTP";
+  totpSecretKey?: string;
+  totpqrurl?: string;
 }
 
 export interface PageProject {
@@ -6079,6 +10594,35 @@ export interface ResponseActiveProjectsCountDTO {
   correlationId?: string;
 }
 
+export interface ResponseUserAggregate {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: UserAggregate;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface UserAggregate {
+  user: UserMetadataDTO;
+  roleAssignmentMetadata: RoleAssignmentMetadataDTO[];
+}
+
+export interface PageUserAggregate {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: UserAggregate[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageUserAggregate {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageUserAggregate;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
 export interface AddUsersResponse {
   addUserResponseMap?: {
     [key: string]:
@@ -6099,13 +10643,62 @@ export interface ResponseAddUsersResponse {
 
 export interface AddUsers {
   emails: string[];
-  roleBindings: RoleBinding[];
+  roleBindings?: RoleBinding[];
   userGroups?: string[];
 }
 
-export interface ResponseUserAggregate {
+export interface ResponseVariableResponseDTO {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: UserAggregate;
+  data?: VariableResponseDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export type StringVariableConfigDTO = VariableConfigDTO & {
+  fixedValue?: string;
+  defaultValue?: string;
+  allowedValues?: string[];
+  regex?: string;
+};
+
+export interface VariableConfigDTO {
+  valueType: "FIXED" | "FIXED_SET" | "REGEX";
+  value?: { [key: string]: any };
+}
+
+export interface VariableDTO {
+  identifier: string;
+  name: string;
+  description?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  type: "String";
+  spec: VariableConfigDTO;
+}
+
+export interface VariableResponseDTO {
+  variable: VariableDTO;
+  createdAt?: number;
+  lastModifiedAt?: number;
+}
+
+export interface VariableRequestDTO {
+  variable?: VariableDTO;
+}
+
+export interface PageVariableResponseDTO {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: VariableResponseDTO[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageVariableResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageVariableResponseDTO;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -6134,6 +10727,7 @@ export interface ResponseListExecutionStatus {
     | "Skipped"
     | "Pausing"
     | "ApprovalRejected"
+    | "InputWaiting"
     | "NOT_STARTED"
     | "INTERVENTION_WAITING"
     | "APPROVAL_WAITING"
@@ -6142,11 +10736,6 @@ export interface ResponseListExecutionStatus {
   )[];
   metaData?: { [key: string]: any };
   correlationId?: string;
-}
-
-export interface ArtifactSummary {
-  displayName?: string;
-  type?: string;
 }
 
 export interface ArtifactsSummary {
@@ -6164,6 +10753,8 @@ export interface InfraExecutionSummary {
   identifier?: string;
   name?: string;
   type?: string;
+  infrastructureIdentifier?: string;
+  infrastructureName?: string;
 }
 
 export interface ResponseCDStageModuleInfo {
@@ -6177,164 +10768,244 @@ export interface ServiceExecutionSummary {
   identifier?: string;
   displayName?: string;
   deploymentType?: string;
+  gitOpsEnabled?: boolean;
   artifacts?: ArtifactsSummary;
+}
+
+export interface CDPipelineModuleInfo {
+  serviceIdentifiers?: string[];
+  envIdentifiers?: string[];
+  envGroupIdentifiers?: string[];
+  serviceDefinitionTypes?: string[];
+  environmentTypes?: ("PreProduction" | "Production")[];
+  infrastructureTypes?: string[];
+  infrastructureIdentifiers?: string[];
+  infrastructureNames?: string[];
+}
+
+export interface ResponseCDPipelineModuleInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: CDPipelineModuleInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
 export type AbortFailureActionConfig = FailureStrategyActionConfig & {
   type: "Abort";
 };
 
-export type AddRuleYaml = PatchInstruction & {
-  type: "AddRule";
-  identifier: string;
-  spec: AddRuleYamlSpec;
+export type AzureARMRollbackStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  provisionerIdentifier: string;
 };
 
-export interface AddRuleYamlSpec {
-  priority?: number;
-  distribution?: DistributionYamlSpec;
-  clauses?: Clause[];
-  serve?: Serve;
+export interface AzureCreateARMResourceParameterFile {
+  store: StoreConfigWrapper;
 }
 
-export type AddSegmentToVariationTargetMapYaml = PatchInstruction & {
-  type: "AddSegmentToVariationTargetMap";
-  identifier: string;
-  spec: AddSegmentToVariationTargetMapYamlSpec;
+export interface AzureCreateARMResourceStepConfiguration {
+  connectorRef: string;
+  template: AzureTemplateFile;
+  parameters?: AzureCreateARMResourceParameterFile;
+  scope: AzureCreateARMResourceStepScope;
+}
+
+export type AzureCreateARMResourceStepInfo = StepSpecType & {
+  provisionerIdentifier: string;
+  delegateSelectors?: string[];
+  metadata?: string;
+  configuration: AzureCreateARMResourceStepConfiguration;
 };
 
-export interface AddSegmentToVariationTargetMapYamlSpec {
-  variation: string;
-  segments: string[];
+export interface AzureCreateARMResourceStepScope {
+  type: string;
+  spec: AzureScopeType;
 }
 
-export type AddTargetsToVariationTargetMapYaml = PatchInstruction & {
-  type: "AddTargetsToVariationTargetMap";
-  identifier: string;
-  spec: AddTargetsToVariationTargetMapYamlSpec;
+export interface AzureCreateBPStepConfiguration {
+  assignmentName?: string;
+  scope: "Subscription" | "ManagementGroup";
+  template: AzureTemplateFile;
+  connectorRef: string;
+}
+
+export type AzureCreateBPStepInfo = StepSpecType & {
+  provisionerIdentifier: string;
+  delegateSelectors?: string[];
+  metadata?: string;
+  configuration: AzureCreateBPStepConfiguration;
 };
 
-export interface AddTargetsToVariationTargetMapYamlSpec {
-  variation: string;
-  targets: string[];
-}
-
-export type ApprovalStageConfig = StageInfoConfig & {
-  execution: ExecutionElementConfig;
+export type AzureManagementSpec = AzureScopeType & {
+  managementGroupId: string;
+  location: string;
 };
 
-export interface ApproverInputInfo {
-  name?: string;
-  defaultValue?: string;
-}
+export type AzureResourceGroupSpec = AzureScopeType & {
+  subscription: string;
+  resourceGroup: string;
+  mode?: "Incremental" | "Complete";
+};
 
-export interface Approvers {
-  userGroups: string[];
-  minimumCount: number;
-  disallowPipelineExecutor: boolean;
-}
-
-export interface ArtifactConfig {
+export interface AzureScopeType {
   [key: string]: any;
 }
 
-export interface ArtifactListConfig {
-  primary?: PrimaryArtifact;
-  sidecars?: SidecarArtifactWrapper[];
+export type AzureSubscriptionSpec = AzureScopeType & {
+  subscription: string;
+  location: string;
+};
+
+export interface AzureTemplateFile {
+  store: StoreConfigWrapper;
+}
+
+export type AzureTenantSpec = AzureScopeType & {
+  location: string;
+};
+
+export type AzureWebAppRollbackStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+};
+
+export type AzureWebAppSlotDeploymentStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  webApp: string;
+  deploymentSlot: string;
+};
+
+export type AzureWebAppSwapSlotStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  targetSlot: string;
+};
+
+export type AzureWebAppTrafficShiftStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  traffic: ParameterFieldString;
+};
+
+export interface CloudformationCreateStackStepConfiguration {
+  stackName: string;
+  templateFile: CloudformationTemplateFile;
+  parameters?: CloudformationParametersFileSpec[];
+  connectorRef: string;
+  region: string;
+  roleArn?: string;
+  capabilities?: string[];
+  tags?: CloudformationTags;
+  skipOnStackStatuses?: string[];
+  parameterOverrides?: NGVariable[];
+}
+
+export type CloudformationCreateStackStepInfo = StepSpecType & {
+  provisionerIdentifier: string;
+  delegateSelectors?: string[];
+  metadata?: string;
+  configuration: CloudformationCreateStackStepConfiguration;
+};
+
+export interface CloudformationDeleteStackStepConfiguration {
+  type: string;
+  spec: CloudformationDeleteStackStepConfigurationSpec;
+}
+
+export interface CloudformationDeleteStackStepConfigurationSpec {
+  type?: string;
+}
+
+export type CloudformationDeleteStackStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  metadata?: string;
+  configuration: CloudformationDeleteStackStepConfiguration;
+};
+
+export interface CloudformationParametersFileSpec {
+  identifier: string;
+  store: StoreConfigWrapper;
+}
+
+export interface CloudformationRollbackStepConfiguration {
+  provisionerIdentifier: string;
+}
+
+export type CloudformationRollbackStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  configuration: CloudformationRollbackStepConfiguration;
+  metadata?: string;
+};
+
+export interface CloudformationTags {
+  type: string;
+  spec: CloudformationTagsFileSpec;
+}
+
+export interface CloudformationTagsFileSpec {
+  type?: string;
+}
+
+export interface CloudformationTemplateFile {
+  type: string;
+  spec: CloudformationTemplateFileSpec;
+}
+
+export interface CloudformationTemplateFileSpec {
+  type?: string;
+}
+
+export interface ClusterYaml {
+  identifier: string;
   metadata?: string;
 }
 
-export interface ArtifactOverrideSetWrapper {
-  overrideSet?: ArtifactOverrideSets;
+export type CommandStepInfo = StepSpecType & {
+  onDelegate: boolean;
+  delegateSelectors?: string[];
+  commandUnits?: CommandUnitWrapper[];
+  host?: string;
+  environmentVariables?: NGVariable[];
+  outputVariables?: NGVariable[];
+  metadata?: string;
+};
+
+export interface CommandUnitBaseSpec {
+  type?: string;
 }
 
-export interface ArtifactOverrideSets {
-  identifier?: string;
-  artifacts?: ArtifactListConfig;
-}
-
-export interface BarrierInfoConfig {
+export interface CommandUnitWrapper {
   identifier: string;
+  type: string;
   name: string;
+  spec?: CommandUnitBaseSpec;
 }
 
-export type BarrierStepInfo = StepSpecType & {
-  barrierRef: string;
+export type CopyCommandUnitSpec = CommandUnitBaseSpec & {
+  destinationPath: string;
+  sourceType: "Artifact" | "Config";
 };
-
-export type BitbucketStore = StoreConfig & {
-  connectorRef: string;
-  gitFetchType: "Branch" | "Commit";
-  branch?: string;
-  commitId?: string;
-  paths?: string[];
-  folderPath?: string;
-  repoName?: string;
-  metadata?: string;
-};
-
-export type BranchBuildSpec = BuildSpec & {
-  branch: string;
-};
-
-export interface Build {
-  type: "branch" | "tag" | "PR";
-  spec: BuildSpec;
-}
-
-export interface BuildSpec {
-  [key: string]: any;
-}
-
-export interface CIProperties {
-  codebase?: CodeBase;
-}
-
-export interface Clause {
-  id: string;
-  attribute: string;
-  op: string;
-  values: string[];
-  negate: boolean;
-}
-
-export interface ClauseYamlSpec {
-  attribute?: string;
-  op: string;
-  values: string[];
-}
-
-export interface CodeBase {
-  connectorRef: string;
-  repoName?: string;
-  build: Build;
-  depth?: number;
-  sslVerify?: boolean;
-  prCloneStrategy?: "MergeCommit" | "SourceBranch";
-  resources?: ContainerResource;
-}
-
-export interface Condition {
-  key: string;
-  value: string;
-  operator: "equals" | "not equals" | "in" | "not in";
-}
-
-export interface ContainerResource {
-  limits: Limits;
-}
 
 export type CountInstanceSelection = InstanceSelectionBase & {
   count?: ParameterFieldString;
 };
 
-export interface CriteriaSpec {
-  [key: string]: any;
+export type CreatePRStepInfo = StepSpecType & {
+  shell: "Bash";
+  overrideConfig: boolean;
+  stringMap?: ParameterFieldMapStringString;
+  source?: CreatePRStepUpdateConfigScriptWrapper;
+  delegateSelectors?: string[];
+};
+
+export interface CreatePRStepUpdateConfigScriptBaseSource {
+  type?: string;
 }
 
-export interface CriteriaSpecWrapper {
-  type: "Jexl" | "KeyValues";
-  spec: CriteriaSpec;
+export type CreatePRStepUpdateConfigScriptInlineSource = CreatePRStepUpdateConfigScriptBaseSource & {
+  updateConfigScript?: string;
+};
+
+export interface CreatePRStepUpdateConfigScriptWrapper {
+  type: string;
+  spec: CreatePRStepUpdateConfigScriptBaseSource;
 }
 
 export type DeleteManifestPathSpec = DeleteResourcesBaseSpec & {
@@ -6347,7 +11018,7 @@ export type DeleteReleaseNameSpec = DeleteResourcesBaseSpec & {
 };
 
 export type DeleteResourceNameSpec = DeleteResourcesBaseSpec & {
-  resourceNames?: string[];
+  resourceNames: string[];
 };
 
 export interface DeleteResourcesBaseSpec {
@@ -6360,38 +11031,51 @@ export interface DeleteResourcesWrapper {
 }
 
 export type DeploymentStageConfig = StageInfoConfig & {
-  serviceConfig: ServiceConfig;
-  infrastructure: PipelineInfrastructure;
+  serviceConfig?: ServiceConfig;
+  service?: ServiceYamlV2;
+  services?: ServicesYaml;
+  deploymentType?:
+    | "Kubernetes"
+    | "NativeHelm"
+    | "Ssh"
+    | "WinRm"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "CustomDeployment"
+    | "ECS";
+  gitOpsEnabled?: boolean;
+  environment?: EnvironmentYamlV2;
+  environments?: EnvironmentsYaml;
+  environmentGroup?: EnvironmentGroupYaml;
+  infrastructure?: PipelineInfrastructure;
   execution: ExecutionElementConfig;
 };
 
-export interface Distribution {
-  bucketBy: string;
-  variations: WeightedVariation[];
-}
-
-export interface DistributionYamlSpec {
-  bucketBy: string;
-  variations?: VariationYamlSpec[];
-  clauses?: ClauseYamlSpec[];
-}
-
-export type DockerHubArtifactConfig = ArtifactConfig & {
-  connectorRef: string;
-  imagePath: string;
-  tag?: string;
-  tagRegex?: string;
-  metadata?: string;
+export type EcsCanaryDeleteStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
 };
 
-export type EcrArtifactConfig = ArtifactConfig & {
-  connectorRef: string;
-  region: string;
-  imagePath: string;
-  tag?: string;
-  tagRegex?: string;
-  metadata?: string;
+export type EcsCanaryDeployStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
 };
+
+export type EcsRollingDeployStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  sameAsAlreadyRunningInstances?: boolean;
+  forceNewDeployment?: boolean;
+};
+
+export type EcsRollingRollbackStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+};
+
+export interface EnvironmentGroupYaml {
+  __uuid?: string;
+  envGroupRef: string;
+  environments?: EnvironmentYamlV2[];
+  deployToAll?: boolean;
+  metadata?: string;
+}
 
 export interface EnvironmentYaml {
   name: string;
@@ -6403,15 +11087,34 @@ export interface EnvironmentYaml {
   };
 }
 
+export interface EnvironmentYamlV2 {
+  environmentRef: string;
+  deployToAll?: boolean;
+  infrastructureDefinitions?: InfraStructureDefinitionYaml[];
+  infrastructureDefinition?: InfraStructureDefinitionYaml;
+  environmentInputs?: JsonNode;
+  serviceOverrideInputs?: JsonNode;
+  gitOpsClusters?: ClusterYaml[];
+}
+
+export interface EnvironmentsMetadata {
+  parallel?: boolean;
+}
+
+export interface EnvironmentsYaml {
+  values?: EnvironmentYamlV2[];
+  metadata?: EnvironmentsMetadata;
+}
+
+export interface ExcludeConfig {
+  exclude?: {
+    [key: string]: string;
+  };
+}
+
 export interface ExecutionElementConfig {
   steps: ExecutionWrapperConfig[];
   rollbackSteps?: ExecutionWrapperConfig[];
-}
-
-export interface ExecutionTarget {
-  host?: string;
-  connectorRef?: string;
-  workingDirectory?: string;
 }
 
 export interface ExecutionWrapperConfig {
@@ -6428,119 +11131,34 @@ export interface FailureStrategyActionConfig {
     | "Abort"
     | "StageRollback"
     | "StepGroupRollback"
-    | "ManualIntervention";
+    | "ManualIntervention"
+    | "ProceedWithDefaultValue";
 }
 
 export interface FailureStrategyConfig {
   onFailure: OnFailureConfig;
 }
 
-export type FeatureFlagStageConfig = StageInfoConfig & {};
-
-export type FlagConfigurationStepInfo = StepSpecType & {
-  feature: string;
-  environment: string;
-  instructions: PatchInstruction[];
+export type HarnessFileStoreSource = ShellScriptBaseSource & {
+  file?: string;
 };
 
-export interface FlowControlConfig {
-  barriers?: BarrierInfoConfig[];
+export interface HarnessForConfig {
+  times?: number;
+  maxConcurrency?: number;
+  items?: string[];
+  partitionSize?: number;
+  start?: number;
+  end?: number;
+  unit?: "Percentage" | "Count";
 }
 
-export type GcrArtifactConfig = ArtifactConfig & {
-  connectorRef: string;
-  registryHostname: string;
-  imagePath: string;
-  tag?: string;
-  tagRegex?: string;
-  metadata?: string;
-};
-
-export type GcsStoreConfig = StoreConfig & {
-  connectorRef?: string;
-  bucketName?: string;
-  folderPath?: string;
-  metadata?: string;
-};
-
-export type GitLabStore = StoreConfig & {
-  connectorRef: string;
-  gitFetchType: "Branch" | "Commit";
-  branch?: string;
-  commitId?: string;
-  paths?: string[];
-  folderPath?: string;
-  repoName?: string;
-  metadata?: string;
-};
-
-export type GitStore = StoreConfig & {
-  connectorRef: string;
-  gitFetchType: "Branch" | "Commit";
-  branch?: string;
-  commitId?: string;
-  paths?: string[];
-  folderPath?: string;
-  repoName?: string;
-  metadata?: string;
-};
-
-export type GithubStore = StoreConfig & {
-  connectorRef: string;
-  gitFetchType: "Branch" | "Commit";
-  branch?: string;
-  commitId?: string;
-  paths?: string[];
-  folderPath?: string;
-  repoName?: string;
-  metadata?: string;
-};
-
-export type HarnessApprovalStepInfo = StepSpecType & {
-  approvalMessage: string;
-  includePipelineExecutionHistory: boolean;
-  approvers: Approvers;
-  approverInputs?: ApproverInputInfo[];
-};
-
-export type HelmChartManifest = ManifestAttributes & {
-  store?: StoreConfigWrapper;
-  chartName?: string;
-  chartVersion?: string;
-  helmVersion?: "V2" | "V3";
-  skipResourceVersioning?: boolean;
-  commandFlags?: HelmManifestCommandFlag[];
-  metadata?: string;
-};
-
-export interface HelmManifestCommandFlag {
-  commandType: "Fetch" | "Version" | "Template" | "Pull";
-  flag?: string;
-}
-
-export interface HoldingScope {
-  scope: string;
-  nodeSetupId: string;
-}
-
-export interface HttpHeaderConfig {
-  key?: string;
-  value?: string;
-}
-
-export type HttpStepInfo = StepSpecType & {
-  url: string;
-  method: string;
-  requestBody?: string;
-  assertion?: string;
-  outputVariables?: NGVariable[];
-  headers?: HttpHeaderConfig[];
+export type HelmDeployStepInfo = StepSpecType & {
   delegateSelectors?: string[];
 };
 
-export type HttpStoreConfig = StoreConfig & {
-  connectorRef?: string;
-  metadata?: string;
+export type HelmRollbackStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
 };
 
 export type IgnoreFailureActionConfig = FailureStrategyActionConfig & {
@@ -6552,20 +11170,51 @@ export interface InfraOverrides {
   infrastructureDefinition?: InfrastructureDef;
 }
 
+export interface InfraStructureDefinitionYaml {
+  identifier: string;
+  inputs?: JsonNode;
+  metadata?: string;
+}
+
 export interface InfraUseFromStage {
   stage: string;
   overrides?: InfraOverrides;
 }
 
-export interface Infrastructure {
-  [key: string]: any;
-}
-
 export interface InfrastructureDef {
-  type: "KubernetesDirect" | "KubernetesGcp";
+  type:
+    | "KubernetesDirect"
+    | "KubernetesGcp"
+    | "KubernetesAzure"
+    | "Pdc"
+    | "SshWinRmAzure"
+    | "ServerlessAwsLambda"
+    | "AzureWebApp"
+    | "SshWinRmAws"
+    | "CustomDeployment"
+    | "ECS";
   spec: Infrastructure;
   provisioner?: ExecutionElementConfig;
 }
+
+export type InheritedCloudformationDeleteStackStepConfiguration = CloudformationDeleteStackStepConfigurationSpec & {
+  provisionerIdentifier: string;
+};
+
+export type InlineCloudformationDeleteStackStepConfiguration = CloudformationDeleteStackStepConfigurationSpec & {
+  stackName: string;
+  connectorRef: string;
+  region: string;
+  roleArn?: string;
+};
+
+export type InlineCloudformationTagsFileSpec = CloudformationTagsFileSpec & {
+  content: string;
+};
+
+export type InlineCloudformationTemplateFileSpec = CloudformationTemplateFileSpec & {
+  templateBody: string;
+};
 
 export type InlineTerraformBackendConfigSpec = TerraformBackendConfigSpec & {
   content?: string;
@@ -6574,11 +11223,6 @@ export type InlineTerraformBackendConfigSpec = TerraformBackendConfigSpec & {
 export type InlineTerraformVarFileSpec = TerraformVarFileSpec & {
   content?: string;
 };
-
-export interface InputSetValidator {
-  validatorType?: "ALLOWED_VALUES" | "REGEX";
-  parameters?: string;
-}
 
 export interface InstanceSelectionBase {
   [key: string]: any;
@@ -6589,83 +11233,33 @@ export interface InstanceSelectionWrapper {
   spec?: InstanceSelectionBase;
 }
 
-export type JexlCriteriaSpec = CriteriaSpec & {
-  expression: string;
-};
-
-export type JiraApprovalStepInfo = StepSpecType & {
+export type JenkinsBuildStepInfo = StepSpecType & {
   connectorRef: string;
-  issueKey: string;
-  approvalCriteria: CriteriaSpecWrapper;
-  rejectionCriteria?: CriteriaSpecWrapper;
+  jobName: string;
+  jobParameter?: JenkinsParameterField[];
+  unstableStatusAsSuccess?: boolean;
+  useConnectorUrlForJobExecution?: boolean;
   delegateSelectors?: string[];
+  metadata?: string;
 };
 
-export type JiraCreateStepInfo = StepSpecType & {
-  connectorRef: string;
-  projectKey: string;
-  issueType: string;
-  fields?: JiraField[];
-  delegateSelectors?: string[];
-};
-
-export interface JiraField {
+export interface JenkinsParameterField {
   name?: string;
   value: string;
+  metadata?: string;
 }
-
-export type JiraUpdateStepInfo = StepSpecType & {
-  connectorRef: string;
-  issueKey: string;
-  transitionTo?: TransitionTo;
-  fields?: JiraField[];
-  delegateSelectors?: string[];
-};
 
 export interface JsonNode {
-  float?: boolean;
-  nodeType?:
-    | "ARRAY"
-    | "BINARY"
-    | "BOOLEAN"
-    | "MISSING"
-    | "NULL"
-    | "NUMBER"
-    | "OBJECT"
-    | "POJO"
-    | "STRING";
-  number?: boolean;
-  binary?: boolean;
-  short?: boolean;
-  long?: boolean;
-  valueNode?: boolean;
-  containerNode?: boolean;
-  missingNode?: boolean;
-  integralNumber?: boolean;
-  floatingPointNumber?: boolean;
-  bigDecimal?: boolean;
-  bigInteger?: boolean;
-  textual?: boolean;
-  boolean?: boolean;
-  double?: boolean;
-  object?: boolean;
-  pojo?: boolean;
-  int?: boolean;
-  array?: boolean;
-  null?: boolean;
+  [key: string]: any;
 }
-
-export type K8SDirectInfrastructure = Infrastructure & {
-  connectorRef: string;
-  namespace: string;
-  releaseName: string;
-};
 
 export type K8sApplyStepInfo = StepSpecType & {
   skipDryRun?: boolean;
   skipSteadyStateCheck?: boolean;
   filePaths?: string[];
   delegateSelectors?: string[];
+  skipRendering?: boolean;
+  overrides?: ManifestConfigWrapper[];
 };
 
 export type K8sBGSwapServicesStepInfo = StepSpecType & {
@@ -6695,20 +11289,6 @@ export type K8sDeleteStepInfo = StepSpecType & {
   delegateSelectors?: string[];
 };
 
-export type K8sGcpInfrastructure = Infrastructure & {
-  connectorRef: string;
-  namespace: string;
-  releaseName: string;
-  cluster: string;
-  metadata?: string;
-};
-
-export type K8sManifest = ManifestAttributes & {
-  store?: StoreConfigWrapper;
-  skipResourceVersioning?: ParameterFieldBoolean;
-  metadata?: string;
-};
-
 export type K8sRollingRollbackStepInfo = StepSpecType & {
   skipDryRun?: boolean;
   delegateSelectors?: string[];
@@ -6727,56 +11307,6 @@ export type K8sScaleStepInfo = StepSpecType & {
   delegateSelectors?: string[];
 };
 
-export type KeyValuesCriteriaSpec = CriteriaSpec & {
-  matchAnyCondition?: boolean;
-  conditions: Condition[];
-};
-
-export type KubernetesServiceSpec = ServiceSpec & {
-  metadata?: string;
-};
-
-export type KustomizeManifest = ManifestAttributes & {
-  store?: StoreConfigWrapper;
-  skipResourceVersioning?: ParameterFieldBoolean;
-  pluginPath?: string;
-  metadata?: string;
-};
-
-export interface Limits {
-  memory?: string;
-  cpu?: string;
-}
-
-export interface ManifestAttributes {
-  [key: string]: any;
-}
-
-export interface ManifestConfig {
-  identifier: string;
-  type:
-    | "HelmChart"
-    | "K8sManifest"
-    | "Kustomize"
-    | "OpenshiftParam"
-    | "OpenshiftTemplate"
-    | "Values";
-  spec: ManifestAttributes;
-}
-
-export interface ManifestConfigWrapper {
-  manifest?: ManifestConfig;
-}
-
-export interface ManifestOverrideSetWrapper {
-  overrideSet?: ManifestOverrideSets;
-}
-
-export interface ManifestOverrideSets {
-  identifier?: string;
-  manifests?: ManifestConfigWrapper[];
-}
-
 export interface ManualFailureSpecConfig {
   timeout: string;
   onTimeout: OnTimeoutConfig;
@@ -6791,49 +11321,23 @@ export type MarkAsSuccessFailureActionConfig = FailureStrategyActionConfig & {
   type: "MarkAsSuccess";
 };
 
-export interface NGProperties {
-  ci?: CIProperties;
-}
-
-export interface NGVariable {
-  description?: string;
-  required?: boolean;
-  name?: string;
-  type?: "String" | "Number" | "Secret";
-  metadata?: string;
-}
-
-export interface NGVariableOverrideSetWrapper {
-  overrideSet?: NGVariableOverrideSets;
-}
-
-export interface NGVariableOverrideSets {
-  identifier?: string;
-  variables?: NGVariable[];
-}
-
-export type NativeHelmServiceSpec = ServiceSpec & {
-  metadata?: string;
+export type MatrixConfig = MatrixConfigInterface & {
+  exclude?: ParameterFieldListExcludeConfig;
+  maxConcurrency?: number;
 };
 
-export interface NotificationChannelWrapper {
-  type?: string;
-  spec?: PmsNotificationChannel;
+export interface MatrixConfigInterface {
+  [key: string]: any;
 }
 
-export interface NotificationRules {
-  name?: string;
-  enabled?: boolean;
-  pipelineEvents?: PipelineEvent[];
-  notificationMethod?: ParameterFieldNotificationChannelWrapper;
-}
-
-export type NumberNGVariable = NGVariable & {
-  name?: string;
-  type?: "Number";
-  value: number;
-  default?: number;
+export type MergePRStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  deleteSourceBranch: boolean;
 };
+
+export interface ModuleSource {
+  useConnectorCredentials: ParameterFieldBoolean;
+}
 
 export interface OnFailureConfig {
   errors: (
@@ -6845,6 +11349,8 @@ export interface OnFailureConfig {
     | "Authorization"
     | "Verification"
     | "DelegateProvisioning"
+    | "PolicyEvaluationFailure"
+    | "ExecutionInputTimeoutError"
   )[];
   action: FailureStrategyActionConfig;
 }
@@ -6857,121 +11363,41 @@ export interface OnTimeoutConfig {
   action?: FailureStrategyActionConfig;
 }
 
-export type OpenshiftManifest = ManifestAttributes & {
-  store?: StoreConfigWrapper;
-  skipResourceVersioning?: ParameterFieldBoolean;
-  metadata?: string;
-};
-
-export type OpenshiftParamManifest = ManifestAttributes & {
-  store?: StoreConfigWrapper;
-  metadata?: string;
-};
-
-export type PRBuildSpec = BuildSpec & {
-  number: string;
-};
-
-export interface ParallelStageElementConfig {
-  sections: StageElementWrapperConfig[];
-}
-
 export interface ParallelStepElementConfig {
   sections: ExecutionWrapperConfig[];
 }
 
-export interface ParameterField {
+export interface ParameterFieldListExcludeConfig {
   expressionValue?: string;
   expression?: boolean;
-  value?: { [key: string]: any };
+  value?: ExcludeConfig[];
+  defaultValue?: ExcludeConfig[];
   typeString?: boolean;
   inputSetValidator?: InputSetValidator;
   jsonResponseField?: boolean;
   responseField?: string;
+  executionInput?: boolean;
 }
 
-export interface ParameterFieldBoolean {
+export interface ParameterFieldMapStringString {
   expressionValue?: string;
   expression?: boolean;
-  value?: boolean;
+  value?: {
+    [key: string]: string;
+  };
+  defaultValue?: {
+    [key: string]: string;
+  };
   typeString?: boolean;
   inputSetValidator?: InputSetValidator;
   jsonResponseField?: boolean;
   responseField?: string;
-}
-
-export interface ParameterFieldNotificationChannelWrapper {
-  expressionValue?: string;
-  expression?: boolean;
-  value?: NotificationChannelWrapper;
-  typeString?: boolean;
-  inputSetValidator?: InputSetValidator;
-  jsonResponseField?: boolean;
-  responseField?: string;
-}
-
-export interface ParameterFieldString {
-  expressionValue?: string;
-  expression?: boolean;
-  value?: string;
-  typeString?: boolean;
-  inputSetValidator?: InputSetValidator;
-  jsonResponseField?: boolean;
-  responseField?: string;
-}
-
-export interface PatchInstruction {
-  type?:
-    | "SetFeatureFlagState"
-    | "SetOnVariation"
-    | "SetOffVariation"
-    | "AddRule"
-    | "UpdateRule"
-    | "AddTargetsToVariationTargetMap"
-    | "RemoveTargetsToVariationTargetMap"
-    | "AddSegmentToVariationTargetMap"
-    | "RemoveSegmentsToVariationTargetMap";
+  executionInput?: boolean;
 }
 
 export type PercentageInstanceSelection = InstanceSelectionBase & {
   percentage?: ParameterFieldString;
 };
-
-export interface PipelineConfig {
-  pipeline?: PipelineInfoConfig;
-}
-
-export interface PipelineEvent {
-  type?:
-    | "AllEvents"
-    | "PipelineStart"
-    | "PipelineSuccess"
-    | "PipelineFailed"
-    | "PipelineEnd"
-    | "PipelinePaused"
-    | "StageSuccess"
-    | "StageFailed"
-    | "StageStart"
-    | "StepFailed";
-  forStages?: string[];
-}
-
-export interface PipelineInfoConfig {
-  name: string;
-  identifier: string;
-  flowControl?: FlowControlConfig;
-  description?: string;
-  tags?: {
-    [key: string]: string;
-  };
-  variables?: NGVariable[];
-  properties?: NGProperties;
-  stages?: StageElementWrapperConfig[];
-  notificationRules?: NotificationRules[];
-  orgIdentifier?: string;
-  projectIdentifier?: string;
-  timeout?: string;
-}
 
 export interface PipelineInfrastructure {
   infrastructureDefinition?: InfrastructureDef;
@@ -6982,72 +11408,25 @@ export interface PipelineInfrastructure {
   environmentRef?: string;
 }
 
-export type PmsEmailChannel = PmsNotificationChannel & {
-  userGroups?: string[];
-  recipients?: string[];
+export type ProceedWithDefaultValuesFailureActionConfig = FailureStrategyActionConfig & {
+  type: "ProceedWithDefaultValue";
 };
 
-export type PmsMSTeamChannel = PmsNotificationChannel & {
-  msTeamKeys?: string[];
-  userGroups?: string[];
+export type RemoteCloudformationTagsFileSpec = CloudformationTagsFileSpec & {
+  store: StoreConfigWrapper;
 };
 
-export interface PmsNotificationChannel {
-  [key: string]: any;
-}
-
-export type PmsPagerDutyChannel = PmsNotificationChannel & {
-  userGroups?: string[];
-  integrationKey?: string;
+export type RemoteCloudformationTemplateFileSpec = CloudformationTemplateFileSpec & {
+  store: StoreConfigWrapper;
 };
-
-export type PmsSlackChannel = PmsNotificationChannel & {
-  userGroups?: string[];
-  webhookUrl?: string;
-};
-
-export interface PrimaryArtifact {
-  type: "DockerRegistry" | "Gcr" | "Ecr";
-  spec: ArtifactConfig;
-}
 
 export type RemoteTerraformVarFileSpec = TerraformVarFileSpec & {
   store: StoreConfigWrapper;
 };
 
-export type RemoveSegmentToVariationTargetMapYaml = PatchInstruction & {
-  type: "RemoveSegmentToVariationTargetMap";
-  identifier: string;
-  spec: RemoveSegmentToVariationTargetMapYamlSpec;
-};
-
-export interface RemoveSegmentToVariationTargetMapYamlSpec {
-  variation: string;
-  segments: string[];
-}
-
-export type RemoveTargetsToVariationTargetMapYaml = PatchInstruction & {
-  type: "RemoveTargetsToVariationTargetMap";
-  identifier: string;
-  spec: RemoveTargetsToVariationTargetMapYamlSpec;
-};
-
-export interface RemoveTargetsToVariationTargetMapYamlSpec {
-  variation: string;
-  targets: string[];
-}
-
-export type ResourceConstraintStepInfo = StepSpecType & {
-  name: string;
-  resourceUnit: string;
-  acquireMode: "ENSURE" | "ACCUMULATE";
-  permits: number;
-  holdingScope: HoldingScope;
-};
-
-export interface ResponsePipelineConfig {
+export interface ResponseStageElementConfig {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PipelineConfig;
+  data?: StageElementConfig;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -7063,25 +11442,25 @@ export interface RetryFailureSpecConfig {
   onRetryFailure: OnRetryFailureConfig;
 }
 
-export type S3StoreConfig = StoreConfig & {
-  connectorRef?: string;
-  bucketName?: string;
-  region?: string;
-  folderPath?: string;
-  metadata?: string;
+export type S3UrlCloudformationTemplateFileSpec = CloudformationTemplateFileSpec & {
+  templateUrl: string;
 };
 
-export type SecretNGVariable = NGVariable & {
-  name?: string;
-  type?: "Secret";
-  value: string;
-  default?: string;
+export type ScriptCommandUnitSpec = CommandUnitBaseSpec & {
+  shell: "Bash" | "PowerShell";
+  source: ShellScriptSourceWrapper;
+  tailFiles?: TailFilePattern[];
+  workingDirectory?: string;
 };
 
-export interface Serve {
-  distribution?: Distribution;
-  variation?: string;
-}
+export type ServerlessAwsLambdaDeployStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+  commandOptions?: string;
+};
+
+export type ServerlessAwsLambdaRollbackStepInfo = StepSpecType & {
+  delegateSelectors?: string[];
+};
 
 export interface ServiceConfig {
   useFromStage?: ServiceUseFromStage;
@@ -7091,23 +11470,9 @@ export interface ServiceConfig {
   stageOverrides?: StageOverridesConfig;
 }
 
-export interface ServiceDefinition {
-  type: "Kubernetes";
-  spec: ServiceSpec;
-}
-
 export interface ServiceOverrides {
   name?: string;
   description?: string;
-}
-
-export interface ServiceSpec {
-  variables?: NGVariable[];
-  artifacts?: ArtifactListConfig;
-  manifests?: ManifestConfigWrapper[];
-  manifestOverrideSets?: ManifestOverrideSetWrapper[];
-  artifactOverrideSets?: ArtifactOverrideSetWrapper[];
-  variableOverrideSets?: NGVariableOverrideSetWrapper[];
 }
 
 export interface ServiceUseFromStage {
@@ -7125,34 +11490,19 @@ export interface ServiceYaml {
   };
 }
 
-export type SetFeatureFlagStateYaml = PatchInstruction & {
-  type: "SetFeatureFlagState";
-  identifier: string;
-  spec: SetFeatureFlagStateYamlSpec;
-};
-
-export interface SetFeatureFlagStateYamlSpec {
-  state: string;
+export interface ServiceYamlV2 {
+  serviceRef?: string;
+  useFromStage?: ServiceUseFromStageV2;
+  serviceInputs?: JsonNode;
 }
 
-export type SetOffVariationYaml = PatchInstruction & {
-  type: "SetOffVariation";
-  identifier: string;
-  spec: SetOffVariationYamlSpec;
-};
-
-export interface SetOffVariationYamlSpec {
-  variation: string;
+export interface ServicesMetadata {
+  parallel?: boolean;
 }
 
-export type SetOnVariationYaml = PatchInstruction & {
-  type: "SetOnVariation";
-  identifier: string;
-  spec: SetOnVariationYamlSpec;
-};
-
-export interface SetOnVariationYamlSpec {
-  variation: string;
+export interface ServicesYaml {
+  values?: ServiceYamlV2[];
+  metadata?: ServicesMetadata;
 }
 
 export interface ShellScriptBaseSource {
@@ -7168,44 +11518,22 @@ export interface ShellScriptSourceWrapper {
   spec: ShellScriptBaseSource;
 }
 
-export type ShellScriptStepInfo = StepSpecType & {
-  shell: "Bash" | "PowerShell";
-  source: ShellScriptSourceWrapper;
-  executionTarget?: ExecutionTarget;
-  onDelegate: boolean;
-  delegateSelectors?: string[];
-  outputVariables?: NGVariable[];
-  environmentVariables?: NGVariable[];
-  metadata?: string;
-};
-
-export interface SidecarArtifact {
-  identifier: string;
-  type: "DockerRegistry" | "Gcr" | "Ecr";
-  spec: ArtifactConfig;
-}
-
-export interface SidecarArtifactWrapper {
-  sidecar?: SidecarArtifact;
-}
-
 export interface StageElementConfig {
   identifier: string;
   name: string;
   description?: string;
   when?: StageWhenCondition;
   failureStrategies?: FailureStrategyConfig[];
+  delegateSelectors?: string[];
   variables?: NGVariable[];
   tags?: {
     [key: string]: string;
   };
-  type: string;
+  type?: string;
+  template?: TemplateLinkConfig;
+  skipInstances?: boolean;
+  strategy?: StrategyConfig;
   spec?: StageInfoConfig;
-}
-
-export interface StageElementWrapperConfig {
-  stage?: StageElementConfig;
-  parallel?: ParallelStageElementConfig;
 }
 
 export interface StageInfoConfig {
@@ -7214,11 +11542,9 @@ export interface StageInfoConfig {
 
 export interface StageOverridesConfig {
   variables?: NGVariable[];
-  useVariableOverrideSets?: string[];
-  useArtifactOverrideSets?: string[];
   artifacts?: ArtifactListConfig;
-  useManifestOverrideSets?: string[];
   manifests?: ManifestConfigWrapper[];
+  configFiles?: ConfigFileWrapper[];
 }
 
 export type StageRollbackFailureActionConfig = FailureStrategyActionConfig & {
@@ -7238,16 +11564,18 @@ export interface StepElementConfig {
   failureStrategies?: FailureStrategyConfig[];
   when?: StepWhenCondition;
   type: string;
-  template?: TemplateLinkConfig;
+  strategy?: StrategyConfig;
   spec?: StepSpecType;
 }
 
 export interface StepGroupElementConfig {
   identifier: string;
-  name?: string;
+  name: string;
   when?: StepWhenCondition;
   failureStrategies?: FailureStrategyConfig[];
   steps: ExecutionWrapperConfig[];
+  delegateSelectors?: string[];
+  strategy?: StrategyConfig;
 }
 
 export type StepGroupFailureActionConfig = FailureStrategyActionConfig & {
@@ -7263,31 +11591,22 @@ export interface StepWhenCondition {
   condition?: string;
 }
 
-export interface StoreConfig {
-  [key: string]: any;
+export interface StrategyConfig {
+  matrix?: MatrixConfigInterface;
+  repeat?: HarnessForConfig;
+  parallelism?: number;
 }
 
-export interface StoreConfigWrapper {
-  spec: StoreConfig;
-  metadata?: string;
-  type: "Git" | "Github" | "Bitbucket" | "GitLab" | "Http" | "S3" | "Gcs";
+export interface TailFilePattern {
+  tailFile?: ParameterFieldString;
+  tailPattern?: ParameterFieldString;
 }
-
-export type StringNGVariable = NGVariable & {
-  name?: string;
-  type?: "String";
-  value: string;
-  default?: string;
-};
-
-export type TagBuildSpec = BuildSpec & {
-  tag: string;
-};
 
 export interface TemplateLinkConfig {
   templateRef: string;
   versionLabel?: string;
   templateInputs?: JsonNode;
+  templateVariables?: JsonNode;
 }
 
 export type TerraformApplyStepInfo = StepSpecType & {
@@ -7308,6 +11627,7 @@ export interface TerraformBackendConfigSpec {
 
 export interface TerraformConfigFilesWrapper {
   store: StoreConfigWrapper;
+  moduleSource?: ModuleSource;
 }
 
 export type TerraformDestroyStepInfo = StepSpecType & {
@@ -7335,6 +11655,7 @@ export interface TerraformPlanExecutionData {
   environmentVariables?: NGVariable[];
   command: "Apply" | "Destroy";
   secretManagerRef: string;
+  exportTerraformPlanJson?: boolean;
 }
 
 export type TerraformPlanStepInfo = StepSpecType & {
@@ -7367,50 +11688,9 @@ export interface TerraformVarFileWrapper {
   varFile: TerraformVarFile;
 }
 
-export interface TransitionTo {
-  status: string;
-  transitionName?: string;
-}
-
-export type UpdateRuleYaml = PatchInstruction & {
-  type: "UpdateRule";
-  identifier: string;
-  spec: UpdateRuleYamlSpec;
-};
-
-export interface UpdateRuleYamlSpec {
-  ruleID: string;
-  bucketBy: string;
-  variations?: VariationYamlSpec[];
-  serve?: Serve;
-}
-
-export type ValuesManifest = ManifestAttributes & {
-  store?: StoreConfigWrapper;
-  metadata?: string;
-};
-
-export interface VariationYamlSpec {
-  variation: string;
-  weight: number;
-}
-
-export interface WeightedVariation {
-  variation: string;
-  weight: number;
-}
-
-export interface CDPipelineModuleInfo {
-  serviceIdentifiers?: string[];
-  envIdentifiers?: string[];
-  serviceDefinitionTypes?: string[];
-  environmentTypes?: ("PreProduction" | "Production")[];
-  infrastructureTypes?: string[];
-}
-
-export interface ResponseCDPipelineModuleInfo {
+export interface ResponseStepElementConfig {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: CDPipelineModuleInfo;
+  data?: StepElementConfig;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -7424,11 +11704,106 @@ export interface FeedbackFormDTO {
     | "CV"
     | "CF"
     | "CE"
+    | "STO"
     | "CORE"
     | "PMS"
-    | "TEMPLATESERVICE";
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
   score?: number;
   suggestion?: string;
+}
+
+export interface ClusterResponse {
+  clusterRef?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  accountIdentifier?: string;
+  envRef?: string;
+  linkedAt?: number;
+  scope?: "ACCOUNT" | "ORGANIZATION" | "PROJECT";
+  name?: string;
+}
+
+export interface ResponseClusterResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ClusterResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ClusterRequest {
+  identifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  envRef?: string;
+  scope?: "ACCOUNT" | "ORGANIZATION" | "PROJECT";
+}
+
+export interface ClusterBatchResponse {
+  linked?: number;
+}
+
+export interface ResponseClusterBatchResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ClusterBatchResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ClusterBasicDTO {
+  identifier?: string;
+  name?: string;
+  scope?: "ACCOUNT" | "ORGANIZATION" | "PROJECT";
+}
+
+export interface ClusterBatchRequest {
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  envRef?: string;
+  linkAllClusters?: boolean;
+  searchTerm?: string;
+  clusters?: ClusterBasicDTO[];
+}
+
+export interface ClusterFromGitops {
+  identifier?: string;
+  name?: string;
+  scopeLevel?: "ACCOUNT" | "ORGANIZATION" | "PROJECT";
+}
+
+export interface PageClusterFromGitops {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: ClusterFromGitops[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageClusterFromGitops {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageClusterFromGitops;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface PageClusterResponse {
+  totalPages?: number;
+  totalItems?: number;
+  pageItemCount?: number;
+  pageSize?: number;
+  content?: ClusterResponse[];
+  pageIndex?: number;
+  empty?: boolean;
+}
+
+export interface ResponsePageClusterResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PageClusterResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
 }
 
 export interface HarnessServiceInfoNG {
@@ -7442,6 +11817,51 @@ export interface HarnessServiceInfoNG {
 export interface ResponseOptionalHarnessServiceInfoNG {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   data?: HarnessServiceInfoNG;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface GitOpsInstanceRequest {
+  accountIdentifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  applicationIdentifier?: string;
+  agentIdentifier?: string;
+  envIdentifier?: string;
+  serviceIdentifier?: string;
+  buildId?: string;
+  clusterIdentifier?: string;
+  creationTimestamp: number;
+  lastDeployedAt: number;
+  instanceInfo: K8sBasicInfo;
+  pipelineName?: string;
+  lastExecutedAt?: number;
+  pipelineExecutionId?: string;
+  lastDeployedByName?: string;
+  lastDeployedById?: string;
+}
+
+export interface K8sBasicInfo {
+  namespace: string;
+  podName: string;
+  podId: string;
+  containerList?: K8sContainer[];
+}
+
+export interface K8sContainer {
+  containerId?: string;
+  name?: string;
+  image?: string;
+}
+
+export interface DeleteInstancesRequest {
+  status?: boolean;
+  deletedCount?: number;
+}
+
+export interface ResponseDeleteInstancesRequest {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: DeleteInstancesRequest;
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -7487,7 +11907,8 @@ export interface ContextElement {
     | "AZURE_VMSS_SETUP"
     | "AZURE_WEBAPP_SETUP"
     | "HELM_CHART"
-    | "MANIFEST_VARIABLE";
+    | "MANIFEST_VARIABLE"
+    | "RANCHER_K8S_CLUSTER_CRITERIA";
   uuid?: string;
   name?: string;
 }
@@ -7506,7 +11927,7 @@ export interface DOMStringList {
 
 export interface DelegateMetaInfo {
   id?: string;
-  hostName?: string;
+  host_name?: string;
 }
 
 export interface DelegateResponseData {
@@ -7522,8 +11943,8 @@ export interface Document {
   strictErrorChecking?: boolean;
   documentURI?: string;
   domConfig?: DOMConfiguration;
-  implementation?: DOMImplementation;
   doctype?: DocumentType;
+  implementation?: DOMImplementation;
   prefix?: string;
   nodeName?: string;
   nodeValue?: string;
@@ -7543,10 +11964,10 @@ export interface Document {
 }
 
 export interface DocumentType {
-  notations?: NamedNodeMap;
   entities?: NamedNodeMap;
-  systemId?: string;
   publicId?: string;
+  notations?: NamedNodeMap;
+  systemId?: string;
   internalSubset?: string;
   name?: string;
   prefix?: string;
@@ -7568,8 +11989,8 @@ export interface DocumentType {
 }
 
 export interface Element {
-  schemaTypeInfo?: TypeInfo;
   tagName?: string;
+  schemaTypeInfo?: TypeInfo;
   prefix?: string;
   nodeName?: string;
   nodeValue?: string;
@@ -7639,10 +12060,10 @@ export type HttpStateExecutionData = DelegateResponseData & {
   templateVariable?: {
     [key: string]: { [key: string]: any };
   };
-  executionSummary?: {
+  executionDetails?: {
     [key: string]: ExecutionDataValue;
   };
-  executionDetails?: {
+  executionSummary?: {
     [key: string]: ExecutionDataValue;
   };
 };
@@ -7720,10 +12141,10 @@ export type ScriptStateExecutionData = DelegateResponseData & {
   templateVariable?: {
     [key: string]: { [key: string]: any };
   };
-  executionSummary?: {
+  executionDetails?: {
     [key: string]: ExecutionDataValue;
   };
-  executionDetails?: {
+  executionSummary?: {
     [key: string]: ExecutionDataValue;
   };
 };
@@ -7742,6 +12163,21 @@ export interface JiraProjectBasicNG {
 export interface ResponseListJiraProjectBasicNG {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   data?: JiraProjectBasicNG[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface JiraUserData {
+  accountId?: string;
+  name?: string;
+  displayName?: string;
+  emailAddress?: string;
+  active?: boolean;
+}
+
+export interface ResponseListJiraUserData {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: JiraUserData[];
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -7783,7 +12219,14 @@ export interface JiraFieldNG {
 export interface JiraFieldSchemaNG {
   array?: boolean;
   typeStr: string;
-  type: "string" | "number" | "date" | "datetime" | "timetracking" | "option";
+  type:
+    | "string"
+    | "number"
+    | "date"
+    | "datetime"
+    | "timetracking"
+    | "option"
+    | "user";
   customType?: string;
 }
 
@@ -7833,6 +12276,860 @@ export interface ResponseJiraIssueUpdateMetadataNG {
   correlationId?: string;
 }
 
+export interface OauthAccessTokenResponseDTO {
+  accessTokenRef?: string;
+  refreshTokenRef?: string;
+}
+
+export interface RestResponseOauthAccessTokenResponseDTO {
+  metaData?: {
+    [key: string]: { [key: string]: any };
+  };
+  resource?: OauthAccessTokenResponseDTO;
+  responseMessages?: ResponseMessage[];
+}
+
+export interface OauthAccessTokenDTO {
+  accessToken?: string;
+  refreshToken?: string;
+}
+
+export interface AuthorInfo {
+  name?: string;
+  url?: string;
+}
+
+export interface DashboardWorkloadDeployment {
+  workloadDeploymentInfoList?: WorkloadDeploymentInfo[];
+}
+
+export interface LastWorkloadInfo {
+  startTime?: number;
+  endTime?: number;
+  deploymentType?: string;
+  status?: string;
+  authorInfo?: AuthorInfo;
+  triggerType?: string;
+}
+
+export interface ResponseDashboardWorkloadDeployment {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: DashboardWorkloadDeployment;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface WorkloadCountInfo {
+  count?: number;
+}
+
+export interface WorkloadDateCountInfo {
+  date?: number;
+  execution?: WorkloadCountInfo;
+}
+
+export interface WorkloadDeploymentInfo {
+  serviceName?: string;
+  serviceId?: string;
+  lastExecuted?: LastWorkloadInfo;
+  deploymentTypeList?: string[];
+  totalDeployments?: number;
+  totalDeploymentChangeRate?: number;
+  percentSuccess?: number;
+  rateSuccess?: number;
+  failureRate?: number;
+  failureRateChangeRate?: number;
+  frequency?: number;
+  frequencyChangeRate?: number;
+  lastPipelineExecutionId?: string;
+  workload?: WorkloadDateCountInfo[];
+}
+
+export interface InstanceGroupedByArtifact {
+  artifactVersion?: string;
+  artifactPath?: string;
+  instanceGroupedByEnvironmentList?: InstanceGroupedByEnvironment[];
+}
+
+export interface InstanceGroupedByArtifactList {
+  instanceGroupedByArtifactList?: InstanceGroupedByArtifact[];
+}
+
+export interface InstanceGroupedByEnvironment {
+  envId?: string;
+  envName?: string;
+  instanceGroupedByInfraList?: InstanceGroupedByInfrastructure[];
+}
+
+export interface InstanceGroupedByInfrastructure {
+  infraIdentifier?: string;
+  infraName?: string;
+  count?: number;
+  lastPipelineExecutionId?: string;
+  lastPipelineExecutionName?: string;
+  lastDeployedAt?: string;
+}
+
+export interface ResponseInstanceGroupedByArtifactList {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: InstanceGroupedByArtifactList;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface Deployment {
+  count?: number;
+}
+
+export interface DeploymentDateAndCount {
+  time?: number;
+  deployments?: Deployment;
+}
+
+export interface DeploymentInfo {
+  count?: number;
+  rate?: number;
+  countList?: DeploymentDateAndCount[];
+}
+
+export interface HealthDeploymentDashboard {
+  healthDeploymentInfo?: HealthDeploymentInfo;
+}
+
+export interface HealthDeploymentInfo {
+  total?: TotalDeploymentInfo;
+  success?: DeploymentInfo;
+  failure?: DeploymentInfo;
+  active?: DeploymentInfo;
+}
+
+export interface ResponseHealthDeploymentDashboard {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: HealthDeploymentDashboard;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface TotalDeploymentInfo {
+  count?: number;
+  production?: number;
+  nonProduction?: number;
+  rate?: number;
+  countList?: DeploymentDateAndCount[];
+}
+
+export interface DeploymentChangeRates {
+  failureRate?: number;
+  failureRateChangeRate?: number;
+  frequency?: number;
+  frequencyChangeRate?: number;
+}
+
+export interface DeploymentCount {
+  total?: number;
+  success?: number;
+  failure?: number;
+}
+
+export interface ResponseServiceDeploymentInfoDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceDeploymentInfoDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceDeployment {
+  time?: number;
+  deployments?: DeploymentCount;
+  rate?: DeploymentChangeRates;
+}
+
+export interface ServiceDeploymentInfoDTO {
+  serviceDeploymentList?: ServiceDeployment[];
+}
+
+export interface InstanceCountDetailsByEnvTypeBase {
+  totalInstances?: number;
+  prodInstances?: number;
+  nonProdInstances?: number;
+}
+
+export interface ResponseServiceDetailsInfoDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceDetailsInfoDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceDetailsDTO {
+  serviceName?: string;
+  serviceIdentifier?: string;
+  description?: string;
+  tags?: {
+    [key: string]: string;
+  };
+  deploymentTypeList?: string[];
+  totalDeployments?: number;
+  totalDeploymentChangeRate?: number;
+  successRate?: number;
+  successRateChangeRate?: number;
+  failureRate?: number;
+  failureRateChangeRate?: number;
+  frequency?: number;
+  frequencyChangeRate?: number;
+  instanceCountDetails?: InstanceCountDetailsByEnvTypeBase;
+  lastPipelineExecuted?: ServicePipelineInfo;
+}
+
+export interface ServiceDetailsInfoDTO {
+  serviceDeploymentDetailsList?: ServiceDetailsDTO[];
+}
+
+export interface ServicePipelineInfo {
+  pipelineExecutionId?: string;
+  planExecutionId?: string;
+  identifier?: string;
+  name?: string;
+  status?: string;
+  deployedById?: string;
+  deployedByName?: string;
+  lastExecutedAt?: number;
+}
+
+export interface ResponseServiceDeploymentListInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceDeploymentListInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceDeploymentListInfo {
+  startTime?: number;
+  endTime?: number;
+  totalDeployments?: number;
+  failureRate?: number;
+  frequency?: number;
+  failureRateChangeRate?: number;
+  totalDeploymentsChangeRate?: number;
+  frequencyChangeRate?: number;
+  serviceDeploymentList?: ServiceDeployment[];
+}
+
+export interface ExecutionDeployment {
+  time?: number;
+  deployments?: DeploymentCount;
+}
+
+export interface ExecutionDeploymentInfo {
+  executionDeploymentList?: ExecutionDeployment[];
+}
+
+export interface ResponseExecutionDeploymentInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ExecutionDeploymentInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface DashboardExecutionStatusInfo {
+  failure?: ExecutionStatusInfo[];
+  pending?: ExecutionStatusInfo[];
+  active?: ExecutionStatusInfo[];
+}
+
+export interface EnvironmentDeploymentsInfo {
+  envId?: string;
+  envName?: string;
+  envType?: string;
+  infrastructureDetails?: InfrastructureInfo[];
+}
+
+export interface ExecutionStatusInfo {
+  pipelineName?: string;
+  pipelineIdentifier?: string;
+  startTs?: number;
+  endTs?: number;
+  status?: string;
+  planExecutionId?: string;
+  gitInfo?: GitInfo;
+  triggerType?: string;
+  author?: AuthorInfo;
+  serviceInfoList?: ServiceDeploymentInfo[];
+  environmentInfoList?: EnvironmentDeploymentsInfo[];
+}
+
+export interface GitInfo {
+  sourceBranch?: string;
+  targetBranch?: string;
+  commit?: string;
+  commitID?: string;
+  eventType?: string;
+  repoName?: string;
+}
+
+export interface InfrastructureInfo {
+  infrastructureIdentifier?: string;
+  infrastructureName?: string;
+}
+
+export interface ResponseDashboardExecutionStatusInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: DashboardExecutionStatusInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceDeploymentInfo {
+  serviceName?: string;
+  serviceTag?: string;
+  image?: string;
+  serviceId?: string;
+}
+
+export interface ResponseTimeValuePairListDTOInteger {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: TimeValuePairListDTOInteger;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface TimeValuePair {
+  timestamp?: number;
+  value?: { [key: string]: any };
+}
+
+export interface TimeValuePairInteger {
+  timestamp?: number;
+  value?: number;
+}
+
+export interface TimeValuePairListDTO {
+  timeValuePairList?: TimeValuePairObject[];
+}
+
+export interface TimeValuePairListDTOInteger {
+  timeValuePairList?: TimeValuePairInteger[];
+}
+
+export interface TimeValuePairObject {
+  timestamp?: number;
+  value?: { [key: string]: any };
+}
+
+export interface InstanceCountDetailsByEnvTypeAndServiceId {
+  instanceCountDetailsByEnvTypeBaseMap?: {
+    [key: string]: InstanceCountDetailsByEnvTypeBase;
+  };
+}
+
+export interface ResponseInstanceCountDetailsByEnvTypeAndServiceId {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: InstanceCountDetailsByEnvTypeAndServiceId;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ActiveServiceInstanceSummary {
+  changeRate?: number;
+  countDetails?: InstanceCountDetailsByEnvTypeBase;
+}
+
+export interface ResponseActiveServiceInstanceSummary {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ActiveServiceInstanceSummary;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface BuildIdAndInstanceCount {
+  buildId?: string;
+  count?: number;
+}
+
+export interface EnvBuildIdAndInstanceCountInfo {
+  envId?: string;
+  envName?: string;
+  buildIdAndInstanceCountList?: BuildIdAndInstanceCount[];
+}
+
+export interface EnvBuildIdAndInstanceCountInfoList {
+  envBuildIdAndInstanceCountInfoList?: EnvBuildIdAndInstanceCountInfo[];
+}
+
+export interface ResponseEnvBuildIdAndInstanceCountInfoList {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EnvBuildIdAndInstanceCountInfoList;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export type AwsSshWinrmInstanceInfoDTO = InstanceInfoDTO & {
+  serviceType: string;
+  infrastructureKey: string;
+  host: string;
+};
+
+export type AzureSshWinrmInstanceInfoDTO = InstanceInfoDTO & {
+  serviceType: string;
+  infrastructureKey: string;
+  host: string;
+};
+
+export type AzureWebAppInfrastructureDetails = InfrastructureDetails & {
+  subscriptionId?: string;
+  resourceGroup?: string;
+};
+
+export type AzureWebAppInstanceInfoDTO = InstanceInfoDTO & {
+  subscriptionId: string;
+  resourceGroup: string;
+  appName: string;
+  deploySlot: string;
+  appServicePlanId?: string;
+  instanceType?: string;
+  instanceName?: string;
+  deploySlotId?: string;
+  hostName?: string;
+  instanceIp?: string;
+  instanceState?: string;
+  instanceId?: string;
+};
+
+export type CustomDeploymentInstanceInfoDTO = InstanceInfoDTO & {
+  hostname: string;
+  instanceFetchScript: string;
+  properties?: {
+    [key: string]: { [key: string]: any };
+  };
+};
+
+export interface EcsContainer {
+  containerArn?: string;
+  name?: string;
+  image?: string;
+  runtimeId?: string;
+}
+
+export type EcsInfrastructureDetails = InfrastructureDetails & {
+  region?: string;
+  cluster?: string;
+};
+
+export type EcsInstanceInfoDTO = InstanceInfoDTO & {
+  region: string;
+  clusterArn: string;
+  taskArn: string;
+  taskDefinitionArn: string;
+  launchType?: string;
+  serviceName: string;
+  containers: EcsContainer[];
+  startedAt?: number;
+  startedBy?: string;
+  version?: number;
+  infraStructureKey?: string;
+};
+
+export type GitOpsInstanceInfoDTO = InstanceInfoDTO & {
+  namespace: string;
+  podName: string;
+  appIdentifier?: string;
+  clusterIdentifier?: string;
+  agentIdentifier?: string;
+  podId?: string;
+  containerList: K8sContainer[];
+};
+
+export interface HelmChartInfo {
+  name?: string;
+  version?: string;
+  repoUrl?: string;
+}
+
+export interface InfrastructureDetails {
+  [key: string]: any;
+}
+
+export interface InstanceDetailsByBuildId {
+  buildId?: string;
+  instances?: InstanceDetailsDTO[];
+}
+
+export interface InstanceDetailsDTO {
+  podName?: string;
+  artifactName?: string;
+  connectorRef?: string;
+  infrastructureDetails?: InfrastructureDetails;
+  terraformInstance?: string;
+  deployedAt?: number;
+  deployedById?: string;
+  deployedByName?: string;
+  pipelineExecutionName?: string;
+  instanceInfoDTO?: InstanceInfoDTO;
+}
+
+export interface InstanceInfoDTO {
+  podName?: string;
+  type?: string;
+}
+
+export interface InstancesByBuildIdList {
+  instancesByBuildIdList?: InstanceDetailsByBuildId[];
+}
+
+export type K8sInfrastructureDetails = InfrastructureDetails & {
+  namespace?: string;
+  releaseName?: string;
+};
+
+export type K8sInstanceInfoDTO = InstanceInfoDTO & {
+  namespace: string;
+  releaseName: string;
+  podName: string;
+  podIP?: string;
+  blueGreenColor?: string;
+  containerList: K8sContainer[];
+};
+
+export type NativeHelmInstanceInfoDTO = InstanceInfoDTO & {
+  podName: string;
+  ip?: string;
+  namespace?: string;
+  releaseName?: string;
+  helmChartInfo?: HelmChartInfo;
+  helmVersion?: "V2" | "V3" | "V380";
+};
+
+export type PdcInstanceInfoDTO = InstanceInfoDTO & {
+  serviceType: string;
+  infrastructureKey: string;
+  host: string;
+};
+
+export type ReferenceInstanceInfoDTO = InstanceInfoDTO & {
+  namespace?: string;
+  releaseName?: string;
+};
+
+export interface ResponseInstancesByBuildIdList {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: InstancesByBuildIdList;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export type ServerlessAwsLambdaInfrastructureDetails = InfrastructureDetails & {
+  region?: string;
+  stage?: string;
+};
+
+export type ServerlessAwsLambdaInstanceInfoDTO = InstanceInfoDTO & {
+  serviceName: string;
+  stage: string;
+  functionName: string;
+  region: string;
+  handler?: string;
+  memorySize?: string;
+  runTime?: string;
+  timeout?: number;
+  infraStructureKey?: string;
+};
+
+export type SshWinrmInfrastructureDetails = InfrastructureDetails & {
+  host?: string;
+};
+
+export interface EnvIdCountPair {
+  envId?: string;
+  count?: number;
+}
+
+export interface ResponseTimeValuePairListDTOEnvIdCountPair {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: TimeValuePairListDTOEnvIdCountPair;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface TimeValuePairEnvIdCountPair {
+  timestamp?: number;
+  value?: EnvIdCountPair;
+}
+
+export interface TimeValuePairListDTOEnvIdCountPair {
+  timeValuePairList?: TimeValuePairEnvIdCountPair[];
+}
+
+export interface DeploymentsInfo {
+  deployments?: ExecutionStatusInfo[];
+}
+
+export interface ResponseDeploymentsInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: DeploymentsInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseServiceHeaderInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceHeaderInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceHeaderInfo {
+  name?: string;
+  identifier?: string;
+  description?: string;
+  deploymentTypes?: string[];
+  createdAt?: number;
+  lastModifiedAt?: number;
+}
+
+export interface EnvironmentDeploymentInfo {
+  environmentInfoByServiceId?: EnvironmentInfoByServiceId[];
+}
+
+export interface EnvironmentInfoByServiceId {
+  environmentName?: string;
+  environmentId?: string;
+  artifactImage?: string;
+  tag?: string;
+  serviceName?: string;
+  serviceId?: string;
+  service_startTs?: number;
+  service_endTs?: number;
+}
+
+export interface ResponseEnvironmentDeploymentInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EnvironmentDeploymentInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseServicesDashboardInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServicesDashboardInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceDashboardInfo {
+  name?: string;
+  identifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  accountIdentifier?: string;
+  totalDeploymentsCount?: number;
+  successDeploymentsCount?: number;
+  failureDeploymentsCount?: number;
+  totalDeploymentsChangeRate?: number;
+  instancesCount?: number;
+  instancesCountChangeRate?: number;
+}
+
+export interface ServicesDashboardInfo {
+  serviceDashboardInfoList?: ServiceDashboardInfo[];
+}
+
+export interface LandingDashboardRequestCD {
+  orgProjectIdentifiers: OrgProjectIdentifier[];
+}
+
+export interface OrgProjectIdentifier {
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+}
+
+export interface ProjectDashBoardInfo {
+  projectIdentifier?: string;
+  orgIdentifier?: string;
+  accountId?: string;
+  deploymentsCount?: number;
+  deploymentsCountChangeRate?: number;
+  successDeploymentsCount?: number;
+  failedDeploymentsCount?: number;
+}
+
+export interface ProjectsDashboardInfo {
+  projectDashBoardInfoList?: ProjectDashBoardInfo[];
+}
+
+export interface ResponseProjectsDashboardInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ProjectsDashboardInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface DeploymentStatsSummary {
+  totalCount?: number;
+  totalCountChangeRate?: number;
+  failureRate?: number;
+  failureRateChangeRate?: number;
+  deploymentRate?: number;
+  deploymentRateChangeRate?: number;
+  timeBasedDeploymentInfoList?: TimeBasedDeploymentInfo[];
+}
+
+export interface ResponseDeploymentStatsSummary {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: DeploymentStatsSummary;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface TimeBasedDeploymentInfo {
+  epochTime?: number;
+  totalCount?: number;
+  successCount?: number;
+  failedCount?: number;
+  failureRate?: number;
+}
+
+export interface PipelineExecutionDashboardInfo {
+  name?: string;
+  identifier?: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  accountIdentifier?: string;
+  planExecutionId?: string;
+  startTs?: number;
+}
+
+export interface PipelinesExecutionDashboardInfo {
+  runningExecutions?: PipelineExecutionDashboardInfo[];
+  pendingApprovalExecutions?: PipelineExecutionDashboardInfo[];
+  pendingManualInterventionExecutions?: PipelineExecutionDashboardInfo[];
+  failed24HrsExecutions?: PipelineExecutionDashboardInfo[];
+}
+
+export interface ResponsePipelinesExecutionDashboardInfo {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PipelinesExecutionDashboardInfo;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseServicesCount {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServicesCount;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServicesCount {
+  totalCount?: number;
+  newCount?: number;
+}
+
+export interface EnvCount {
+  totalCount?: number;
+  newCount?: number;
+}
+
+export interface ResponseEnvCount {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: EnvCount;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface Member {
+  value?: string;
+  ref?: string;
+  display?: string;
+}
+
+export interface ScimGroup {
+  id?: string;
+  externalId?: string;
+  meta?: JsonNode;
+  schemas?: string[];
+  displayName?: string;
+  members?: Member[];
+  harnessScopes?: string;
+}
+
+export type AddOperation = PatchOperation & {
+  value?: JsonNode;
+};
+
+export type OktaAddOperation = PatchOperation & {
+  value?: JsonNode;
+};
+
+export type OktaRemoveOperation = PatchOperation & {
+  value?: JsonNode;
+};
+
+export type OktaReplaceOperation = PatchOperation & {
+  value?: JsonNode;
+};
+
+export interface PatchOperation {
+  path?: string;
+}
+
+export interface PatchRequest {
+  id?: string;
+  externalId?: string;
+  meta?: JsonNode;
+  Operations: PatchOperation[];
+  schemas: string[];
+}
+
+export type RemoveOperation = PatchOperation & {
+  value?: JsonNode;
+};
+
+export type ReplaceOperation = PatchOperation & {
+  value?: JsonNode;
+};
+
+export interface ScimUser {
+  schemas?: string[];
+  userName?: string;
+  displayName?: string;
+  active?: boolean;
+  emails?: JsonNode;
+  roles?: JsonNode;
+  name?: JsonNode;
+  groups?: JsonNode;
+  password?: JsonNode;
+  id?: string;
+  externalId?: string;
+  meta?: JsonNode;
+}
+
+export interface ResponseServiceAccountDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceAccountDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceAccountDTO {
+  identifier: string;
+  name: string;
+  email: string;
+  description?: string;
+  tags?: {
+    [key: string]: string;
+  };
+  accountIdentifier: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+}
+
+export interface ResponseListServiceAccountDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceAccountDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
 export interface PageServiceAccountAggregateDTO {
   totalPages?: number;
   totalItems?: number;
@@ -7858,19 +13155,6 @@ export interface ServiceAccountAggregateDTO {
   roleAssignmentsMetadataDTO?: RoleAssignmentMetadataDTO[];
 }
 
-export interface ServiceAccountDTO {
-  identifier: string;
-  name: string;
-  email: string;
-  description?: string;
-  tags?: {
-    [key: string]: string;
-  };
-  accountIdentifier: string;
-  orgIdentifier?: string;
-  projectIdentifier?: string;
-}
-
 export interface ResponseServiceAccountAggregateDTO {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
   data?: ServiceAccountAggregateDTO;
@@ -7878,16 +13162,107 @@ export interface ResponseServiceAccountAggregateDTO {
   correlationId?: string;
 }
 
-export interface ResponseListServiceAccountDTO {
+export interface ResponseListServiceNowFieldNG {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServiceAccountDTO[];
+  data?: ServiceNowFieldNG[];
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
 
-export interface ResponseServiceAccountDTO {
+export interface ServiceNowFieldAllowedValueNG {
+  id?: string;
+  name?: string;
+  value?: string;
+}
+
+export interface ServiceNowFieldNG {
+  key: string;
+  name: string;
+  required?: boolean;
+  schema: ServiceNowFieldSchemaNG;
+  internalType?: string;
+  allowedValues: ServiceNowFieldAllowedValueNG[];
+  custom?: boolean;
+}
+
+export interface ServiceNowFieldSchemaNG {
+  array?: boolean;
+  typeStr: string;
+  type:
+    | "glide_date_time"
+    | "integer"
+    | "boolean"
+    | "string"
+    | "option"
+    | "unknown";
+  customType?: string;
+}
+
+export interface ResponseListServiceNowTicketTypeDTO {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: ServiceAccountDTO;
+  data?: ServiceNowTicketTypeDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceNowTicketTypeDTO {
+  key: string;
+  name: string;
+}
+
+export interface ResponseListServiceNowTemplate {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ServiceNowTemplate[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ServiceNowFieldValueNG {
+  value?: string;
+  displayValue?: string;
+}
+
+export interface ServiceNowTemplate {
+  sys_id: string;
+  name: string;
+  fields: {
+    [key: string]: ServiceNowFieldValueNG;
+  };
+}
+
+export interface ResponseDelegateStatus {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: "SUCCESS" | "IN_PROGRESS" | "FAILURE";
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseScmConnectorResponse {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: ScmConnectorResponse;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ScmConnectorResponse {
+  connectorResponseDTO?: ConnectorResponse;
+  secretResponseWrapper?: SecretResponseWrapper;
+  connectorValidationResult?: ConnectorValidationResult;
+}
+
+export interface ScmConnectorDTO {
+  secret?: SecretDTOV2;
+  connector?: ConnectorInfoDTO;
+}
+
+export interface ResponseSetupStatus {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?:
+    | "SUCCESS"
+    | "DELEGATE_PROVISION_FAILURE"
+    | "K8S_CONNECTOR_PROVISION_FAILURE"
+    | "DOCKER_CONNECTOR_PROVISION_FAILURE"
+    | "PROVISIONING_DISABLED";
   metaData?: { [key: string]: any };
   correlationId?: string;
 }
@@ -7896,8 +13271,8 @@ export type AwsCodeCommitSCMDTO = SourceCodeManagerDTO & {
   authentication: AwsCodeCommitAuthenticationDTO;
 };
 
-export type AzureDevOpsSCMDTO = SourceCodeManagerDTO & {
-  authentication?: GithubAuthentication;
+export type AzureRepoSCMDTO = SourceCodeManagerDTO & {
+  authentication?: AzureRepoAuthentication;
 };
 
 export type BitbucketSCMDTO = SourceCodeManagerDTO & {
@@ -7931,12 +13306,7 @@ export interface SourceCodeManagerDTO {
   createdAt?: number;
   lastModifiedAt?: number;
   authentication?: SourceCodeManagerAuthentication;
-  type?:
-    | "BITBUCKET"
-    | "GITHUB"
-    | "GITLAB"
-    | "AWS_CODE_COMMIT"
-    | "AZURE_DEV_OPS";
+  type?: "BITBUCKET" | "GITHUB" | "GITLAB" | "AWS_CODE_COMMIT" | "AZURE_REPO";
 }
 
 export interface ResponseSourceCodeManagerDTO {
@@ -7946,15 +13316,87 @@ export interface ResponseSourceCodeManagerDTO {
   correlationId?: string;
 }
 
-export interface PollingResponseDTO {
-  pollingResponse?: string[];
-}
-
-export interface ResponsePollingResponseDTO {
+export interface ResponseSettingValueResponseDTO {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PollingResponseDTO;
+  data?: SettingValueResponseDTO;
   metaData?: { [key: string]: any };
   correlationId?: string;
+}
+
+export interface SettingValueResponseDTO {
+  valueType: "String" | "Boolean" | "Number";
+  value: string;
+}
+
+export interface ResponseListSettingUpdateResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: SettingUpdateResponseDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface SettingDTO {
+  identifier: string;
+  name: string;
+  orgIdentifier?: string;
+  projectIdentifier?: string;
+  category:
+    | "CD"
+    | "CI"
+    | "CE"
+    | "CV"
+    | "CF"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
+  groupIdentifier: string;
+  valueType: "String" | "Boolean" | "Number";
+  allowedValues?: string[];
+  allowOverrides: boolean;
+  value?: string;
+  defaultValue?: string;
+  settingSource?: "ACCOUNT" | "ORG" | "PROJECT" | "DEFAULT";
+  isSettingEditable: boolean;
+}
+
+export interface SettingUpdateResponseDTO {
+  identifier?: string;
+  setting: SettingDTO;
+  lastModifiedAt?: number;
+  updateStatus?: boolean;
+  errorMessage?: string;
+}
+
+export interface SettingRequestDTO {
+  identifier?: string;
+  value?: string;
+  allowOverrides: boolean;
+  updateType: "UPDATE" | "RESTORE";
+}
+
+export interface ResponseListSettingResponseDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: SettingResponseDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface SettingResponseDTO {
+  setting: SettingDTO;
+  lastModifiedAt?: number;
+}
+
+export interface SignupDTO {
+  email?: string;
+  password?: string;
+  utmInfo?: UtmInfo;
+  intent?: string;
+  signupAction?: "REGULAR" | "TRIAL" | "SUBSCRIBE";
+  edition?: "COMMUNITY" | "FREE" | "TEAM" | "ENTERPRISE";
+  billingFrequency?: "MONTHLY" | "YEARLY";
 }
 
 export interface RestResponseUserInfo {
@@ -7969,16 +13411,20 @@ export interface OAuthSignupDTO {
   email?: string;
   name?: string;
   utmInfo?: UtmInfo;
-}
-
-export interface SignupDTO {
-  email?: string;
-  password?: string;
-  utmInfo?: UtmInfo;
-  intent?: string;
+  intent?:
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
   signupAction?: "REGULAR" | "TRIAL" | "SUBSCRIBE";
   edition?: "COMMUNITY" | "FREE" | "TEAM" | "ENTERPRISE";
-  billingFrequency?: "MONTHLY" | "YEARLY";
 }
 
 export interface RestResponseVerifyTokenResponseDTO {
@@ -7993,27 +13439,320 @@ export interface VerifyTokenResponseDTO {
   accountIdentifier?: string;
 }
 
-export interface PartialSchemaDTO {
-  schema?: JsonNode;
-  nodeType?: string;
-  nodeName?: string;
-  namespace?: string;
+export interface InvoiceDetailDTO {
+  items?: ItemDTO[];
+  subscriptionId?: string;
+  invoiceId?: string;
+  totalAmount?: number;
+  periodStart?: number;
+  periodEnd?: number;
+  nextPaymentAttempt?: number;
+  amountDue?: number;
+  clientSecret?: string;
+  paymentIntent?: PaymentIntentDetailDTO;
+}
+
+export interface ItemDTO {
+  price?: PriceDTO;
+  description?: string;
+  quantity?: number;
+  amount?: number;
+  proration?: boolean;
+}
+
+export interface NextActionDetailDTO {
+  type?: string;
+  useStripeSdk?: {
+    [key: string]: { [key: string]: any };
+  };
+}
+
+export interface PaymentIntentDetailDTO {
+  id?: string;
+  clientSecret?: string;
+  status?: string;
+  nextAction?: NextActionDetailDTO;
+}
+
+export interface PendingUpdateDetailDTO {
+  expiresAt?: number;
+}
+
+export interface PriceDTO {
+  priceId?: string;
+  currency?: string;
+  tiersDTO?: TiersDTO[];
+  tierMode?: "volume" | "graduated";
+  unitAmount?: number;
+  lookupKey?: string;
+  productId?: string;
+  metaData?: {
+    [key: string]: string;
+  };
+  active?: boolean;
+}
+
+export interface ResponseListSubscriptionDetailDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: SubscriptionDetailDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface SubscriptionDetailDTO {
+  subscriptionId?: string;
+  accountIdentifier?: string;
+  customerId?: string;
+  moduletype?:
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
+  status?: string;
+  cancelAt?: number;
+  canceledAt?: number;
+  clientSecret?: string;
+  pendingUpdate?: PendingUpdateDetailDTO;
+  latestInvoice?: string;
+  latestInvoiceDetail?: InvoiceDetailDTO;
+}
+
+export interface TiersDTO {
+  upTo?: number;
+  unitAmount?: number;
+}
+
+export interface ResponseEnumMapUsageKeyLong {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: {
+    [key: string]: number;
+  };
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface PriceCollectionDTO {
+  prices?: PriceDTO[];
+}
+
+export interface ResponsePriceCollectionDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PriceCollectionDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseSubscriptionDetailDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: SubscriptionDetailDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface AddressDto {
+  line1?: string;
+  line2?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  postalCode?: string;
+}
+
+export interface CustomerDTO {
+  billingEmail?: string;
+  companyName?: string;
+  address?: AddressDto;
+}
+
+export interface FfSubscriptionDTO {
+  accountId?: string;
+  numberOfMau?: number;
+  numberOfDevelopers?: number;
+  paymentFreq?: string;
+  edition?: string;
+  premiumSupport?: boolean;
+  customer?: CustomerDTO;
+}
+
+export interface ItemParams {
+  priceId?: string;
+  quantity?: number;
+  lookupKey?: string;
+}
+
+export interface SubscriptionDTO {
+  customerId?: string;
   moduleType?:
     | "CD"
     | "CI"
     | "CV"
     | "CF"
     | "CE"
+    | "STO"
     | "CORE"
     | "PMS"
-    | "TEMPLATESERVICE";
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
+  paymentMethodId?: string;
+  items?: ItemParams[];
 }
 
-export interface ResponsePartialSchemaDTO {
+export interface ResponseVoid {
   status?: "SUCCESS" | "FAILURE" | "ERROR";
-  data?: PartialSchemaDTO;
+  data?: Void;
   metaData?: { [key: string]: any };
   correlationId?: string;
+}
+
+export interface ResponseInvoiceDetailDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: InvoiceDetailDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface CustomerDetailDTO {
+  customerId?: string;
+  billingEmail?: string;
+  companyName?: string;
+  defaultSource?: string;
+  address?: AddressDto;
+}
+
+export interface ResponseCustomerDetailDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: CustomerDetailDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface StripeBillingDTO {
+  line1?: string;
+  line2?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
+  creditCardId?: string;
+}
+
+export interface CardDTO {
+  id?: string;
+  name?: string;
+  last4?: string;
+  funding?: string;
+  expireMonth?: number;
+  expireYear?: number;
+  cvcCheck?: string;
+  brand?: string;
+  addressCity?: string;
+  addressCountry?: string;
+  addressState?: string;
+  addressZip?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+}
+
+export interface PaymentMethodCollectionDTO {
+  paymentMethods?: CardDTO[];
+}
+
+export interface ResponsePaymentMethodCollectionDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PaymentMethodCollectionDTO;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface PartialSchemaDTO {
+  schema?: JsonNode;
+  nodeType?: string;
+  nodeName?: string;
+  namespace?: string;
+  skipStageSchema?: boolean;
+  moduleType?:
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
+}
+
+export interface ResponseListPartialSchemaDTO {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: PartialSchemaDTO[];
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface ResponseYamlSchemaDetailsWrapper {
+  status?: "SUCCESS" | "FAILURE" | "ERROR";
+  data?: YamlSchemaDetailsWrapper;
+  metaData?: { [key: string]: any };
+  correlationId?: string;
+}
+
+export interface YamlGroup {
+  group?: string;
+}
+
+export interface YamlSchemaDetailsWrapper {
+  yamlSchemaWithDetailsList?: YamlSchemaWithDetails[];
+}
+
+export interface YamlSchemaMetadata {
+  namespace?: string;
+  modulesSupported?: (
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS"
+  )[];
+  featureFlags?: string[];
+  featureRestrictions?: string[];
+  yamlGroup: YamlGroup;
+}
+
+export interface YamlSchemaWithDetails {
+  schema?: JsonNode;
+  schemaClassName?: string;
+  moduleType?:
+    | "CD"
+    | "CI"
+    | "CV"
+    | "CF"
+    | "CE"
+    | "STO"
+    | "CORE"
+    | "PMS"
+    | "TEMPLATESERVICE"
+    | "GOVERNANCE"
+    | "CHAOS";
+  yamlSchemaMetadata?: YamlSchemaMetadata;
+  availableAtOrgLevel?: boolean;
+  availableAtAccountLevel?: boolean;
+  availableAtProjectLevel?: boolean;
 }
 
 export interface ResponseJsonNode {
@@ -8043,21 +13782,35 @@ export interface YamlSnippets {
   yamlSnippets?: YamlSnippetMetaData[];
 }
 
+export type GitOpsInstanceRequestArrayRequestBody = GitOpsInstanceRequest[];
+
 export type ServiceRequestDTORequestBody = ServiceRequestDTO;
 
 export type SignupDTORequestBody = SignupDTO;
 
 export type ApiKeyDTORequestBody = ApiKeyDTO;
 
+export type PatchRequestRequestBody = PatchRequest;
+
 export type TokenDTORequestBody = TokenDTO;
+
+export type PostLdapAuthenticationTestRequestBody = void;
 
 export type OrganizationRequestRequestBody = OrganizationRequest;
 
-export type UploadSamlMetaDataRequestBody = void;
+export type LandingDashboardRequestCDRequestBody = LandingDashboardRequestCD;
+
+export type CustomDeploymentYamlRequestRequestBody = CustomDeploymentYamlRequest;
 
 export type GcrRequestDTORequestBody = GcrRequestDTO;
 
+export type GetBuildDetailsForArtifactoryArtifactWithYamlBodyRequestBody = string;
+
 export type GitOpsProviderRequestBody = GitOpsProvider;
+
+export type UploadSamlMetaDataRequestBody = void;
+
+export type HostValidationParamsRequestBody = HostValidationParams;
 
 export type ProjectRequestRequestBody = ProjectRequest;
 
@@ -8065,17 +13818,31 @@ export type GitSyncConfigRequestBody = GitSyncConfig;
 
 export type DelegateProfileDetailsNgRequestBody = DelegateProfileDetailsNg;
 
-export type WebhookCatcherBodyRequestBody = string;
+export type GetBuildDetailsForAcrArtifactWithYamlBodyRequestBody = string;
 
 export type RoleAssignmentFilterRequestBody = RoleAssignmentFilter;
 
+export type GitFullSyncConfigRequestDTORequestBody = GitFullSyncConfigRequestDTO;
+
+export type CFParametersForAwsBodyRequestBody = string;
+
 export type ServiceAccountDTORequestBody = ServiceAccountDTO;
+
+export type FileStoreRequestRequestBody = void;
+
+export type ConnectorFilterPropertiesRequestBody = ConnectorFilterProperties;
+
+export type LdapSettingsRequestBody = LdapSettings;
 
 export type UserGroupDTORequestBody = UserGroupDTO;
 
 export type FilterDTORequestBody = FilterDTO;
 
+export type SubscriptionDTORequestBody = SubscriptionDTO;
+
 export type AccountDTORequestBody = AccountDTO;
+
+export type EnvironmentGroupRequestDTORequestBody = EnvironmentGroupRequestDTO;
 
 export type ConnectorRequestBody = Connector;
 
@@ -8083,7 +13850,11 @@ export type GitSyncSettingsDTORequestBody = GitSyncSettingsDTO;
 
 export type StartTrialDTORequestBody = StartTrialDTO;
 
+export type LDAPSettingsRequestBody = LDAPSettings;
+
 export type UpdateWhitelistedDomainsBodyRequestBody = string[];
+
+export type AccountSettingsRequestBody = AccountSettings;
 
 export type DockerRequestDTORequestBody = DockerRequestDTO;
 
@@ -8091,19 +13862,35 @@ export type EcrRequestDTORequestBody = EcrRequestDTO;
 
 export type ScopingRuleDetailsNgArrayRequestBody = ScopingRuleDetailsNg[];
 
+export type DelegateGroupTagsRequestBody = DelegateGroupTags;
+
+export type DelegateDownloadRequestRequestBody = DelegateDownloadRequest;
+
 export type EnvironmentRequestDTORequestBody = EnvironmentRequestDTO;
 
-export type SecretRequestWrapperRequestBody = void;
+export type InfrastructureRequestDTORequestBody = InfrastructureRequestDTO;
 
-export type SecretRequestWrapper2RequestBody = SecretRequestWrapper;
+export type SecretRequestWrapperRequestBody = SecretRequestWrapper;
+
+export type SecretRequestWrapper2RequestBody = void;
 
 export type UserFilterRequestBody = UserFilter;
 
 export type ServiceRequestDTOArrayRequestBody = ServiceRequestDTO[];
 
+export type NgSmtpDTORequestBody = NgSmtpDTO;
+
+export type VariableRequestDTORequestBody = VariableRequestDTO;
+
+export type ScimGroupRequestBody = ScimGroup;
+
+export type ScimUserRequestBody = ScimUser;
+
 export type SourceCodeManagerDTORequestBody = SourceCodeManagerDTO;
 
-export type SubscribeBodyRequestBody = string[];
+export type CustomerDTORequestBody = CustomerDTO;
+
+export type YamlSchemaDetailsWrapperRequestBody = YamlSchemaDetailsWrapper;
 
 export interface SignupQueryParams {
   captchaToken?: string;
@@ -8155,6 +13942,10 @@ export const useSignup = (props: UseSignupProps) =>
     void
   >("POST", `/signup`, { base: getConfig("ng/api"), ...props });
 
+export interface CompleteSignupInviteQueryParams {
+  referer?: string;
+}
+
 export interface CompleteSignupInvitePathParams {
   token: string;
 }
@@ -8163,7 +13954,7 @@ export type CompleteSignupInviteProps = Omit<
   MutateProps<
     RestResponseUserInfo,
     Failure | Error,
-    void,
+    CompleteSignupInviteQueryParams,
     void,
     CompleteSignupInvitePathParams
   >,
@@ -8178,7 +13969,7 @@ export const CompleteSignupInvite = ({
   <Mutate<
     RestResponseUserInfo,
     Failure | Error,
-    void,
+    CompleteSignupInviteQueryParams,
     void,
     CompleteSignupInvitePathParams
   >
@@ -8193,7 +13984,7 @@ export type UseCompleteSignupInviteProps = Omit<
   UseMutateProps<
     RestResponseUserInfo,
     Failure | Error,
-    void,
+    CompleteSignupInviteQueryParams,
     void,
     CompleteSignupInvitePathParams
   >,
@@ -8208,7 +13999,7 @@ export const useCompleteSignupInvite = ({
   useMutate<
     RestResponseUserInfo,
     Failure | Error,
-    void,
+    CompleteSignupInviteQueryParams,
     void,
     CompleteSignupInvitePathParams
   >(
