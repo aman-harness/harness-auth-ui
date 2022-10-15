@@ -18,14 +18,18 @@ import {
   OAUTH_PROVIDERS_BY_NAME_MAP
 } from "interfaces/OAuthProviders";
 import SecureStorage from "utils/SecureStorage";
-import { getOAuthFinalUrl } from "utils/SignUpUtils";
+import {
+  getGaClientID,
+  addRefererAndGAId,
+  getOAuthFinalUrl,
+  getSavedRefererURL
+} from "utils/SignUpUtils";
 import telemetry from "telemetry/Telemetry";
 import { CATEGORY, EVENT } from "utils/TelemetryUtils";
 
 const enabledOauthProviders = ["BITBUCKET", "GITLAB", "LINKEDIN", "AZURE"];
 const SignupFormOAuth = ({
-  changeFormType,
-  className
+  changeFormType
 }: {
   changeFormType: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   className?: string;
@@ -40,7 +44,12 @@ const SignupFormOAuth = ({
         oauthProvider: provider.name
       }
     });
-    const finalOauthURL = getOAuthFinalUrl(provider.url, accountId, true);
+    const finalOauthURL = addRefererAndGAId(
+      getOAuthFinalUrl(provider.url, accountId, true),
+      getSavedRefererURL(),
+      getGaClientID()
+    );
+
     window.location.href = finalOauthURL;
   };
   return (

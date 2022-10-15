@@ -12,7 +12,11 @@ import Spinner from "static/icons/spinner/Spinner";
 import { useParams } from "react-router-dom";
 import BasicLayout from "components/BasicLayout/BasicLayout";
 import { EMAIL_VERIFY_STATUS } from "utils/StringUtils";
-import { getSavedRefererURL, handleSignUpSuccess } from "utils/SignUpUtils";
+import {
+  getGaClientID,
+  getSavedRefererURL,
+  handleSignUpSuccess
+} from "utils/SignUpUtils";
 import { handleError } from "utils/ErrorUtils";
 import Text from "components/Text/Text";
 import {
@@ -119,6 +123,7 @@ const VerifyFailed = (
 const CompleteInvitePage = (): React.ReactElement => {
   const { token } = useParams<CompleteSignupInvitePathParams>();
   const refererURL = getSavedRefererURL();
+  const gaClientID = getGaClientID();
   const {
     mutate: completeSignupInvite,
     loading,
@@ -126,7 +131,10 @@ const CompleteInvitePage = (): React.ReactElement => {
   } = useCompleteSignupInvite({
     token: token,
     requestOptions: { headers: { "content-type": "application/json" } },
-    queryParams: { ...(refererURL ? { referer: refererURL } : {}) }
+    queryParams: {
+      ...(refererURL ? { referer: refererURL } : {}),
+      ...(gaClientID ? { gaClientID } : {})
+    }
   });
 
   function getEmailFromUrlSearchParam(): string | null {

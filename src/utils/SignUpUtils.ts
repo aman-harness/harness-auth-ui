@@ -127,3 +127,32 @@ export const getOAuthFinalUrl = (
 export const REFERER_URL_KEY = "refererURL";
 export const getSavedRefererURL = (): string =>
   localStorage.getItem(REFERER_URL_KEY) || "";
+export const getGaClientID = (): string => {
+  try {
+    return (
+      document?.cookie
+        ?.split("; ")
+        ?.find((key: string) => key.includes("_ga="))
+        ?.split(".")
+        ?.slice(2)
+        ?.join(".") || ""
+    );
+  } catch (e) {
+    return "";
+  }
+};
+
+export const addRefererAndGAId = (
+  url: string,
+  refererURL = "",
+  gaClientId = ""
+): string => {
+  let updatedURL = `${url}`;
+  updatedURL =
+    refererURL.length > 0 ? `${updatedURL}&referer=${refererURL}` : updatedURL;
+  updatedURL =
+    gaClientId.length > 0
+      ? `${updatedURL}&gaClientId=${gaClientId}`
+      : updatedURL;
+  return updatedURL;
+};
