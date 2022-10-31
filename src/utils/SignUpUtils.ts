@@ -40,7 +40,7 @@ export async function handleSignUpSuccess(resource?: UserInfo): Promise<void> {
           window.location.href = `${baseUrl}ng/#/account/${resource.defaultAccountId}/cd/home?experience=COMMUNITY`;
           break;
         default:
-          window.location.href = `${baseUrl}ng/#/account/${resource.defaultAccountId}/${intent}/home?source=signup`;
+          window.location.href = `${baseUrl}ng/#/account/${resource.defaultAccountId}/${intent}/home?source=signup&module=${intent}`;
           break;
       }
     } else {
