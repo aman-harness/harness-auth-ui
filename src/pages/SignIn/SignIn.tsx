@@ -114,6 +114,14 @@ const SignIn: React.FC = () => {
         );
         return;
     }
+
+    if (localStorage.getItem("samlTestResponse") === "testing") {
+      if (errorCode === "samltestsuccess") {
+        localStorage.setItem("samlTestResponse", "true");
+      } else {
+        localStorage.setItem("samlTestResponse", "false");
+      }
+    }
   }, []);
 
   const handleLogin = async (formData: LoginFormData) => {
