@@ -47,6 +47,10 @@ const SignupFormWithCredentials = ({
   setCaptchaToken,
   handleRecaptchaError
 }: SignUpFormProps): React.ReactElement => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  React.useEffect(() => {
+    inputRef.current?.focus?.();
+  }, []);
   const accountId = SecureStorage.getItem("acctId") as string;
   const {
     utm_source,
@@ -86,6 +90,7 @@ const SignupFormWithCredentials = ({
           }
         });
       }}
+      inputRef={inputRef}
     />
   );
 

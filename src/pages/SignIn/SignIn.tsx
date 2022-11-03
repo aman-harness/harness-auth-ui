@@ -67,6 +67,7 @@ const SignIn: React.FC = () => {
 
   const { mutate: login, loading } = useLogin({});
   const captchaRef = useRef<ReCAPTCHA>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const history = useHistory();
 
   // this runs once on first mount
@@ -122,6 +123,8 @@ const SignIn: React.FC = () => {
         localStorage.setItem("samlTestResponse", "false");
       }
     }
+
+    inputRef.current?.focus?.();
   }, []);
 
   const handleLogin = async (formData: LoginFormData) => {
@@ -191,6 +194,7 @@ const SignIn: React.FC = () => {
                         placeholder="email@work.com"
                         disabled={loading}
                         validate={validateEmail}
+                        inputRef={inputRef}
                       />
                       <div
                         className="layout-vertical spacing-small"
