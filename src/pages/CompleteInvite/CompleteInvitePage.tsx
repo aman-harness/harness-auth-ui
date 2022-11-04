@@ -123,7 +123,7 @@ const VerifyFailed = (
 const CompleteInvitePage = (): React.ReactElement => {
   const { token } = useParams<CompleteSignupInvitePathParams>();
   const refererURL = getSavedRefererURL();
-  const gaClientID = getGaClientID();
+  const gaClientId = getGaClientID();
   const {
     mutate: completeSignupInvite,
     loading,
@@ -133,7 +133,7 @@ const CompleteInvitePage = (): React.ReactElement => {
     requestOptions: { headers: { "content-type": "application/json" } },
     queryParams: {
       ...(refererURL ? { referer: refererURL } : {}),
-      ...(gaClientID ? { gaClientID } : {})
+      ...(gaClientId ? { gaClientId } : {})
     }
   });
 
