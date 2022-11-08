@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 export function handleError(error: any): void {
   const response = error?.data;
-
+  Bugsnag?.notify(error);
   if (
     response?.responseMessages?.length > 0 &&
     response?.responseMessages[response.responseMessages.length - 1].message
