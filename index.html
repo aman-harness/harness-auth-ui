@@ -28,6 +28,30 @@
     <!-- oauthDisabled -->
     <!-- expectedHostname -->
     <!-- isNewSignupEnabled -->
+    <!-- appDyEUMToken -->
+    <script>
+      if (window.appDyEUMToken) {
+        window["adrum-start-time"] = new Date().getTime();
+        (function (w, d, c) {
+          c.appKey = w.appDyEUMToken;
+          c.adrumExtUrlHttp = "http://cdn.appdynamics.com";
+          c.adrumExtUrlHttps = "https://cdn.appdynamics.com";
+          c.beaconUrlHttp = "http://pdx-col.eum-appdynamics.com";
+          c.beaconUrlHttps = "https://pdx-col.eum-appdynamics.com";
+          c.resTiming = { bufSize: 200, clearResTimingOnBeaconSend: true };
+          c.maxUrlLength = 512;
+          c.spa = { spa2: true };
+          var e = d.createElement("script");
+          e.setAttribute("type", "text/javascript");
+          e.setAttribute("src", "//cdn.appdynamics.com/adrum/adrum-latest.js");
+          d.getElementsByTagName("head")[0].appendChild(e);
+        })(
+          window,
+          document,
+          window["adrum-config"] || (window["adrum-config"] = {})
+        );
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
