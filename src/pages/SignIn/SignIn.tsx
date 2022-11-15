@@ -83,7 +83,8 @@ const SignIn: React.FC = () => {
     switch (errorCode) {
       case "GATEWAY_SSO_REDIRECT_ERROR":
         toast.error(
-          "Unable to sign-in using OAuth because the account is not configured with OAuth authentication."
+          "Authentication failed. Unable to sign-in because either you’re not authorized to login to this account or your account is not configured with OAuth.",
+          { duration: 10000 }
         );
         return;
       case "unauth": {
