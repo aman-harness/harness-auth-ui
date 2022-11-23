@@ -30,7 +30,9 @@
     <!-- isNewSignupEnabled -->
     <!-- appDyEUMToken -->
     <script>
-      if (window.appDyEUMToken) {
+      window.HARNESS_ENABLE_APPDY_EUM =
+        "HARNESS_ENABLE_APPDY_EUM_PLACEHOLDER" === "true";
+      if (window.HARNESS_ENABLE_APPDY_EUM && window.appDyEUMToken) {
         window["adrum-start-time"] = new Date().getTime();
         (function (w, d, c) {
           c.appKey = w.appDyEUMToken;
