@@ -89,6 +89,7 @@ const TwoFactorAuth: React.FC = () => {
               placeholder="6-digit code"
               disabled={loading}
               autoComplete="off"
+              autoFocus
             />
           </div>
 

@@ -27,6 +27,7 @@ interface FieldProps {
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
   infoMessage?: string;
   inputRef?: React.RefObject<HTMLInputElement>;
+  autoFocus?: boolean;
 }
 
 const Field: React.FC<FieldProps> = (props) => {
@@ -40,7 +41,8 @@ const Field: React.FC<FieldProps> = (props) => {
     onBlur,
     initialValue,
     infoMessage,
-    inputRef
+    inputRef,
+    autoFocus
   } = props;
 
   return (
@@ -60,6 +62,7 @@ const Field: React.FC<FieldProps> = (props) => {
               className={cx(showError && css["validation-outline"])}
               onBlur={onBlur}
               ref={inputRef}
+              autoFocus={autoFocus}
             />
             {showError && (
               <span className={cx(css["validation-message"])}>

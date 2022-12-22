@@ -21,8 +21,6 @@ import { EVENT, CATEGORY } from "utils/TelemetryUtils";
 import { useQueryParams } from "hooks/useQueryParams";
 import telemetry from "telemetry/Telemetry";
 import css from "../SignUp.module.css";
-import { Link } from "react-router-dom";
-import RouteDefinitions from "RouteDefinitions";
 import { OAuthProviders, OAuthProviderType } from "interfaces/OAuthProviders";
 import SecureStorage from "utils/SecureStorage";
 import LargeOAuthButton from "./LargeOAuthButton";
@@ -47,10 +45,6 @@ const SignupFormWithCredentials = ({
   setCaptchaToken,
   handleRecaptchaError
 }: SignUpFormProps): React.ReactElement => {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  React.useEffect(() => {
-    inputRef.current?.focus?.();
-  }, []);
   const accountId = SecureStorage.getItem("acctId") as string;
   const {
     utm_source,
@@ -76,6 +70,7 @@ const SignupFormWithCredentials = ({
       placeholder="email@work.com"
       disabled={loading || captchaExecuting}
       validate={validateEmail}
+      autoFocus
       onBlur={(e: FocusEvent<HTMLInputElement>) => {
         telemetry.track({
           event: EVENT.EMAIL_INPUT,
@@ -90,7 +85,6 @@ const SignupFormWithCredentials = ({
           }
         });
       }}
-      inputRef={inputRef}
     />
   );
 

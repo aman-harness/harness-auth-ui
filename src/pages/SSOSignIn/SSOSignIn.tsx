@@ -82,6 +82,7 @@ const SSOSignIn: React.FC = () => {
                   placeholder="email@work.com"
                   disabled={loading}
                   validate={validateEmail}
+                  autoFocus
                 />
                 <input
                   type="submit"

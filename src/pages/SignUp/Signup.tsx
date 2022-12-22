@@ -40,10 +40,7 @@ const SignUp: React.FC = () => {
   const [signupData, setSignupData] = useState({ email: "", password: "" });
   const { mutate: signup, loading } = useSignup({});
   const captchaRef = useRef<ReCAPTCHA>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    inputRef.current?.focus?.();
-  }, []);
+
   const {
     module,
     signupAction,
@@ -178,6 +175,7 @@ const SignUp: React.FC = () => {
       placeholder="email@work.com"
       disabled={loading || captchaExecuting}
       validate={validateEmail}
+      autoFocus
       onBlur={(e: FocusEvent<HTMLInputElement>) => {
         telemetry.track({
           event: EVENT.EMAIL_INPUT,
@@ -192,7 +190,6 @@ const SignUp: React.FC = () => {
           }
         });
       }}
-      inputRef={inputRef}
     />
   );
 

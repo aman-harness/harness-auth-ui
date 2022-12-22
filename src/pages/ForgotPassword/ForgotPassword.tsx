@@ -26,12 +26,9 @@ interface ForgotPasswordFormData {
   email: string;
 }
 
-export default function ForgotPassword() {
+export default function ForgotPassword(): React.ReactElement {
   const { mutate: resetPassword, loading } = useResetPassword({});
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  React.useEffect(() => {
-    inputRef.current?.focus?.();
-  }, []);
+
   const handleReset = async (data: ForgotPasswordFormData) => {
     try {
       const response = await resetPassword({
@@ -77,7 +74,7 @@ export default function ForgotPassword() {
                   placeholder="email@work.com"
                   disabled={loading}
                   validate={validateEmail}
-                  inputRef={inputRef}
+                  autoFocus
                 />
                 <input
                   type="submit"
