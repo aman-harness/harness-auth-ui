@@ -89,29 +89,40 @@ const SignIn: React.FC = () => {
       case "unauth": {
         const message = sessionStorage.getItem("NOT_WHITELISTED_IP_MESSAGE");
         if (message) {
-          toast.error(message);
+          toast.error(message, { duration: 10000 });
         } else {
-          toast.error("Current IP Address is not whitelisted.");
+          toast.error("Current IP Address is not whitelisted.", {
+            duration: 10000
+          });
         }
         sessionStorage.removeItem("NOT_WHITELISTED_IP_MESSAGE");
         return;
       }
       case "invalidsso":
-        toast.error("Invalid SSO Login.");
+        toast.error("Invalid SSO Login.", { duration: 10000 });
         return;
       case "email_verify_fail":
         toast.error(
-          "Email verification failed. Please sign in to resend the email."
+          "Email verification failed. Please sign in to resend the email.",
+          { duration: 10000 }
         );
         return;
       case "INVITE_EXPIRED":
         toast.error(
-          "This invitation URL has expired. Please request for a new invitation from your admin."
+          "This invitation URL has expired. Please request for a new invitation from your admin.",
+          { duration: 10000 }
         );
         return;
       case "INVITE_INVALID":
         toast.error(
-          "We couldn’t find an invitation matching the email address you entered. Please search your email for an invitation from Harness or contact your admin."
+          "We couldn’t find an invitation matching the email address you entered. Please search your email for an invitation from Harness or contact your admin.",
+          { duration: 10000 }
+        );
+        return;
+      case "DOMAIN_WHITELIST_FAILED":
+        toast.error(
+          "User is not authorized to access the account. Please contact your admin.",
+          { duration: 10000 }
         );
         return;
     }
