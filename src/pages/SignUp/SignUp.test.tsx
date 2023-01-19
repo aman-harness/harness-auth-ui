@@ -6,9 +6,9 @@
  */
 
 import React from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, waitFor } from "@testing-library/react";
 
-import SignUp from "./Signup";
+import SignUp from "./SaasExperimentalForms/SignUpExperimental";
 import { TestWrapper, queryByNameAttribute } from "utils/TestUtils";
 import { CATEGORY, PAGE, EVENT } from "utils/TelemetryUtils";
 
@@ -50,6 +50,12 @@ describe("SignUp", () => {
         }
       })
     );
+    const signupFormCredsButton = container.querySelector(
+      ".signupWithEmailButton"
+    );
+    act(() => {
+      fireEvent.click(signupFormCredsButton as Element, {});
+    });
     fireEvent.input(queryByNameAttribute("email", container)!, {
       target: { value: "random@hotmail.com" },
       bubbles: true

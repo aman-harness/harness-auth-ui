@@ -31,7 +31,7 @@ import { getModuleDetails, updateReferer } from "./utils";
 import { URLS } from "interfaces/OAuthProviders";
 import css from "../SignUp.module.css";
 
-interface SignUpFormData {
+export interface SignUpFormData {
   email: string;
   password: string;
 }

@@ -10,7 +10,6 @@ import { Route, HashRouter, Redirect, Switch } from "react-router-dom";
 import { RestfulProvider } from "restful-react";
 import toast, { Toaster } from "react-hot-toast";
 import routes from "./RouteDefinitions";
-import SignUp from "./pages/SignUp/Signup";
 import SignIn from "./pages/SignIn/SignIn";
 import LocalLogin from "./pages/LocalLogin/LocalLogin";
 import SSOSignIn from "./pages/SSOSignIn/SSOSignIn";
@@ -31,6 +30,7 @@ import SignUpCommunity from "./pages/SignUp/SignUpCommunity";
 import SignUpOnPrem from "./pages/SignUp/SignUpOnPrem";
 import SignUpExperimental from "pages/SignUp/SaasExperimentalForms/SignUpExperimental";
 import EmailVerifyPageWithIntent from "pages/SignUp/SaasExperimentalForms/EmailVerification/EmailVerifyPage";
+import SignupV2 from "pages/SignUp/SaasExperimentalForms/SignupV2/SignupV2";
 
 const TOO_MANY_REQUESTS_MESSAGE =
   "Too many requests received, please try again later";
@@ -91,10 +91,7 @@ const AppWithSaasRoutes: React.FC = () => {
     <>
       <Route path={routes.toSignIn()} component={SignIn} />
       <Route path={routes.toLocalLogin()} component={LocalLogin} />
-      <Route
-        path={routes.toSignUp()}
-        component={isNewSignupEnabled() ? SignUpExperimental : SignUp}
-      />
+      <Route path={routes.toSignUp()} component={SignUpExperimental} />
       <Route path={routes.toForgotPassword()} component={ForgotPassword} />
       <Route path={routes.toResetPassword()} component={ResetPassword} />
       <Route path={routes.toSSOSignIn()} component={SSOSignIn} />

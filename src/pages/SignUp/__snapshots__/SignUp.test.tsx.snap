@@ -3,8 +3,68 @@
 exports[`SignUp render 1`] = `
 <div>
   <div
-    class="layout"
+    class="layoutExperimental"
   >
+    <div
+      class="imageColumn"
+      style="background: url(test-file-stub) repeat;"
+    >
+      <img
+        alt=""
+        aria-hidden="true"
+        class="foreground"
+        src="test-file-stub"
+      />
+      <div
+        class="container"
+      >
+        <div>
+          <div
+            class="branding"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="title"
+          >
+            The Modern Software Delivery Platform
+          </div>
+          <div
+            class="tagline"
+            style="color: rgb(2, 120, 213);"
+          >
+            Loved by Developers, Trusted by Businesses
+          </div>
+          <div
+            class="valueProp"
+          >
+            Harness is the industry's first Software Delivery Platform to use AI to simplify your DevOps processes - CI, CD, Feature Flags, Cloud Costs, and much more.
+          </div>
+          <div
+            class="hrmodule"
+            style="background: rgb(2, 120, 213);"
+          />
+        </div>
+        <div
+          class="callout"
+        >
+          <p
+            class="cotext"
+          >
+            Trusted by Developers, DevOps, DevSecOps, Finance and others, across world's leading digital businesses.
+          </p>
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
     <div
       class="cardColumn"
     >
@@ -12,17 +72,8 @@ exports[`SignUp render 1`] = `
         class="card"
       >
         <div
-          class="signup"
+          class="signup experimentSignup"
         >
-          <div
-            class="header"
-          >
-            <img
-              class="logo"
-              src="test-file-stub"
-              width="120"
-            />
-          </div>
           <div
             class="title"
           >
@@ -31,73 +82,255 @@ exports[`SignUp render 1`] = `
           <div
             class="subtitle"
           >
-            and get ship done.
+            Get started for free. No Credit card required.
           </div>
-          <form
-            class="layout-vertical spacing-medium"
+          <div
+            class="oAuthForm"
           >
-            <div
-              class="layout-vertical spacing-small field"
+            <button
+              class="oAuthbutton oauthgoogle"
             >
-              <label>
-                Email
-              </label>
-              <input
-                class=""
-                id="email"
-                name="email"
-                placeholder="email@work.com"
-                value=""
-              />
-            </div>
-            <div
-              class="layout-vertical spacing-small field"
-            >
-              <label>
-                Password
-              </label>
               <div
-                class="pwd"
+                class="logoContainer"
               >
-                <input
-                  class="pwdInput"
-                  id="password"
-                  name="password"
-                  placeholder="Password"
-                  type="password"
-                  value=""
-                />
                 <img
-                  class="pwdIcon"
-                  height="25"
+                  class="buttonImage buttonImage"
                   src="test-file-stub"
-                  width="25"
                 />
               </div>
-              <span
-                class="info-message"
+              <div
+                class="buttonText withIcon"
               >
-                The password must be between 8 and 64 characters long
-              </span>
-            </div>
-            <div />
-            <input
-              class="button primary"
-              type="submit"
-              value="Sign up"
-            />
-          </form>
-          <h2
-            class="lineMessage"
-          >
-            <span
-              class="message"
+                Continue with Google
+              </div>
+            </button>
+            <button
+              class="oAuthbutton oauthgoogle"
             >
-              or sign up with
-            </span>
-          </h2>
+              <div
+                class="logoContainer"
+              >
+                <img
+                  class="buttonImage buttonImage"
+                  src="test-file-stub"
+                />
+              </div>
+              <div
+                class="buttonText withIcon"
+              >
+                Continue with Github
+              </div>
+            </button>
+            <div
+              class="oAuthSection"
+            >
+              <div>
+                <div
+                  class="layout-horizontal spacing-auto fullButtons oAuthIcons oAuthForm sectionWidth"
+                >
+                  <a
+                    class="iconContainer oauthbutton"
+                    href="http://localhost/gateway/api/users/oauth2Redirect?provider=bitbucket&action=signup&isNG=true"
+                  >
+                    <img
+                      class="icon"
+                      height="24"
+                      src="test-file-stub"
+                      width="24"
+                    />
+                    
+                  </a>
+                  <a
+                    class="iconContainer oauthbutton"
+                    href="http://localhost/gateway/api/users/oauth2Redirect?provider=gitlab&action=signup&isNG=true"
+                  >
+                    <img
+                      class="icon"
+                      height="24"
+                      src="test-file-stub"
+                      width="24"
+                    />
+                    
+                  </a>
+                  <a
+                    class="iconContainer oauthbutton"
+                    href="http://localhost/gateway/api/users/oauth2Redirect?provider=linkedin&action=signup&isNG=true"
+                  >
+                    <img
+                      class="icon"
+                      height="24"
+                      src="test-file-stub"
+                      width="24"
+                    />
+                    
+                  </a>
+                  <a
+                    class="iconContainer oauthbutton"
+                    href="http://localhost/gateway/api/users/oauth2Redirect?provider=azure&action=signup&isNG=true"
+                  >
+                    <img
+                      class="icon"
+                      height="24"
+                      src="test-file-stub"
+                      width="24"
+                    />
+                    
+                  </a>
+                </div>
+                <h2
+                  class="lineMessage sectionWidth"
+                >
+                  <span
+                    class="message"
+                  >
+                    OR
+                  </span>
+                </h2>
+              </div>
+            </div>
+            <button
+              class="oAuthbutton signupWithEmailButton"
+            >
+              <div
+                class="buttonText"
+              >
+                Sign up with Email
+              </div>
+            </button>
+          </div>
+          <p
+            class="agreement"
+          >
+            By signing up, you agree to our
+            <a
+              class="link"
+              href="https://harness.io/privacy/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Privacy Policy
+            </a>
+            and our
+            <a
+              class="link"
+              href="https://harness.io/subscriptionterms/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Terms of Use
+            </a>
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          Already have an account?
+          <p
+            class="signintext"
+          >
+            <a
+              href="/signin"
+            >
+              Sign in
+            </a>
+          </p>
+        </div>
+        <img
+          class="imagecd"
+          src="test-file-stub"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SignUp telemetry 1`] = `
+<div>
+  <div
+    class="layoutExperimental"
+  >
+    <div
+      class="imageColumn"
+      style="background: url(test-file-stub) repeat;"
+    >
+      <img
+        alt=""
+        aria-hidden="true"
+        class="foreground"
+        src="test-file-stub"
+      />
+      <div
+        class="container"
+      >
+        <div>
           <div
-            class="layout-horizontal spacing-auto oAuthIcons"
+            class="branding"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="title"
+          >
+            Continuous Integration
+          </div>
+          <div
+            class="tagline"
+            style="color: rgb(43, 177, 242);"
+          >
+            Harness CI is an enterprise ready, cloud native CI product.
+          </div>
+          <div
+            class="valueProp"
+          >
+            An intelligent, container-native CI solution with isolated builds and standardized extensions. Build artifacts smarter and faster.
+          </div>
+          <div
+            class="hrmodule"
+            style="background: rgb(43, 177, 242);"
+          />
+        </div>
+        <div
+          class="callout"
+        >
+          <p
+            class="cotext"
+          >
+            TRUSTED BY THE NEW YORK TIMES, ROBLOX, JOHN DEERE, EBAY AND MANY OTHERS TO RUN THEIR BUILDS AND TEST SUITES BLAZING FAST
+          </p>
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="cardColumn"
+    >
+      <div
+        class="card"
+      >
+        <div
+          class="signup experimentSignup"
+        >
+          <div
+            class="title"
+          >
+            Sign up
+          </div>
+          <div
+            class="subtitle subtitleEmailForm"
+          >
+            Get started for free. No Credit card required.
+          </div>
+          <div
+            class="layout-horizontal spacing-auto oAuthIcons oAuthForm allAuth emailFormMargin"
           >
             <a
               class="iconContainer oauthbutton"
@@ -172,91 +405,8 @@ exports[`SignUp render 1`] = `
               
             </a>
           </div>
-          <div
-            class="disclaimer"
-          >
-            By signing up, you agree to our 
-            <a
-              class="externalLink"
-              href="https://harness.io/privacy/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Privacy Policy 
-            </a>
-            and our 
-            <a
-              class="externalLink"
-              href="https://harness.io/subscriptionterms/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Terms of Use
-            </a>
-          </div>
-          <div
-            class="footer"
-          >
-            Already have an account?
-            <a
-              href="/signin"
-            >
-               Sign in
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="imageColumn"
-      style="background: url(test-file-stub) repeat;"
-    >
-      <img
-        alt=""
-        aria-hidden="true"
-        class="foreground"
-        src="test-file-stub"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`SignUp telemetry 1`] = `
-<div>
-  <div
-    class="layout"
-  >
-    <div
-      class="cardColumn"
-    >
-      <div
-        class="card"
-      >
-        <div
-          class="signup"
-        >
-          <div
-            class="header"
-          >
-            <img
-              class="logo"
-              src="test-file-stub"
-              width="120"
-            />
-          </div>
-          <div
-            class="title"
-          >
-            Sign up
-          </div>
-          <div
-            class="subtitle"
-          >
-            and get ship done.
-          </div>
           <form
-            class="layout-vertical spacing-medium"
+            class="layout-vertical spacing-medium  credsFormInput"
           >
             <div
               class="layout-vertical spacing-small field"
@@ -298,150 +448,62 @@ exports[`SignUp telemetry 1`] = `
                   width="25"
                 />
               </div>
-              <span
-                class="info-message"
-              >
-                The password must be between 8 and 64 characters long
-              </span>
             </div>
             <div />
-            <input
-              class="button primary"
+            <button
+              class="oAuthbutton"
               disabled=""
               type="submit"
-              value="Sign up"
-            />
+            >
+              <div
+                class="buttonText"
+              >
+                Sign up 
+              </div>
+            </button>
           </form>
-          <h2
-            class="lineMessage"
+          <p
+            class="agreement"
           >
-            <span
-              class="message"
-            >
-              or sign up with
-            </span>
-          </h2>
-          <div
-            class="layout-horizontal spacing-auto oAuthIcons"
-          >
+            By signing up, you agree to our
             <a
-              class="iconContainer oauthbutton"
-              href="http://localhost/gateway/api/users/oauth2Redirect?provider=github&action=signup&isNG=true"
-            >
-              <img
-                class="icon"
-                height="24"
-                src="test-file-stub"
-                width="24"
-              />
-              
-            </a>
-            <a
-              class="iconContainer oauthbutton"
-              href="http://localhost/gateway/api/users/oauth2Redirect?provider=bitbucket&action=signup&isNG=true"
-            >
-              <img
-                class="icon"
-                height="24"
-                src="test-file-stub"
-                width="24"
-              />
-              
-            </a>
-            <a
-              class="iconContainer oauthbutton"
-              href="http://localhost/gateway/api/users/oauth2Redirect?provider=gitlab&action=signup&isNG=true"
-            >
-              <img
-                class="icon"
-                height="24"
-                src="test-file-stub"
-                width="24"
-              />
-              
-            </a>
-            <a
-              class="iconContainer oauthbutton"
-              href="http://localhost/gateway/api/users/oauth2Redirect?provider=linkedin&action=signup&isNG=true"
-            >
-              <img
-                class="icon"
-                height="24"
-                src="test-file-stub"
-                width="24"
-              />
-              
-            </a>
-            <a
-              class="iconContainer oauthbutton"
-              href="http://localhost/gateway/api/users/oauth2Redirect?provider=google&action=signup&isNG=true"
-            >
-              <img
-                class="icon"
-                height="24"
-                src="test-file-stub"
-                width="24"
-              />
-              
-            </a>
-            <a
-              class="iconContainer oauthbutton"
-              href="http://localhost/gateway/api/users/oauth2Redirect?provider=azure&action=signup&isNG=true"
-            >
-              <img
-                class="icon"
-                height="24"
-                src="test-file-stub"
-                width="24"
-              />
-              
-            </a>
-          </div>
-          <div
-            class="disclaimer"
-          >
-            By signing up, you agree to our 
-            <a
-              class="externalLink"
+              class="link"
               href="https://harness.io/privacy/"
               rel="noreferrer"
               target="_blank"
             >
-              Privacy Policy 
+              Privacy Policy
             </a>
-            and our 
+            and our
             <a
-              class="externalLink"
+              class="link"
               href="https://harness.io/subscriptionterms/"
               rel="noreferrer"
               target="_blank"
             >
               Terms of Use
             </a>
-          </div>
-          <div
-            class="footer"
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          Already have an account?
+          <p
+            class="signintext"
           >
-            Already have an account?
             <a
               href="/signin"
             >
-               Sign in
+              Sign in
             </a>
-          </div>
+          </p>
         </div>
+        <img
+          class="imagecd"
+          src="test-file-stub"
+        />
       </div>
-    </div>
-    <div
-      class="imageColumn"
-      style="background: url(test-file-stub) repeat;"
-    >
-      <img
-        alt=""
-        aria-hidden="true"
-        class="foreground"
-        src="test-file-stub"
-      />
     </div>
   </div>
 </div>

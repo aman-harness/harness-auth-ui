@@ -152,4 +152,13 @@ const updateReferer = (): void => {
   }
 };
 
-export { getModuleDetails, updateReferer };
+function debounceFn(func: any, delay = 300): () => void {
+  let timerId: number;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+export { getModuleDetails, updateReferer, debounceFn };

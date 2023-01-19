@@ -20,14 +20,15 @@ import {
 import SecureStorage from "utils/SecureStorage";
 import {
   getGaClientID,
-  addRefererAndGAId,
+  addTrackingParams,
   getOAuthFinalUrl,
-  getSavedRefererURL
+  getSavedRefererURL,
+  enabledOauthProviders,
+  getMutinyVisitorToken
 } from "utils/SignUpUtils";
 import telemetry from "telemetry/Telemetry";
 import { CATEGORY, EVENT } from "utils/TelemetryUtils";
 
-const enabledOauthProviders = ["BITBUCKET", "GITLAB", "LINKEDIN", "AZURE"];
 const SignupFormOAuth = ({
   changeFormType
 }: {
@@ -44,10 +45,11 @@ const SignupFormOAuth = ({
         oauthProvider: provider.name
       }
     });
-    const finalOauthURL = addRefererAndGAId(
+    const finalOauthURL = addTrackingParams(
       getOAuthFinalUrl(provider.url, accountId, true),
       getSavedRefererURL(),
-      getGaClientID()
+      getGaClientID(),
+      getMutinyVisitorToken()
     );
 
     window.location.href = finalOauthURL;

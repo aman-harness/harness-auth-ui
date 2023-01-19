@@ -36,6 +36,7 @@ interface SignUpFormProps {
   captchaRef: React.RefObject<ReCAPTCHA>;
   setCaptchaToken: (token: string | null) => void;
   handleRecaptchaError(): void;
+  oAuthBtnsclassName?: string;
 }
 const SignupFormWithCredentials = ({
   onSubmit,
@@ -43,7 +44,8 @@ const SignupFormWithCredentials = ({
   loading,
   captchaRef,
   setCaptchaToken,
-  handleRecaptchaError
+  handleRecaptchaError,
+  oAuthBtnsclassName
 }: SignUpFormProps): React.ReactElement => {
   const accountId = SecureStorage.getItem("acctId") as string;
   const {
@@ -107,7 +109,8 @@ const SignupFormWithCredentials = ({
           css.oAuthIcons,
           css.oAuthForm,
           css.allAuth,
-          css.emailFormMargin
+          css.emailFormMargin,
+          oAuthBtnsclassName
         )}
       >
         {OAuthProviders.map((oAuthProvider: OAuthProviderType) => (

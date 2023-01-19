@@ -18,6 +18,10 @@ declare interface Window {
   expectedHostname: string;
   oauthDisabled: string;
   isNewSignupEnabled: string;
+  mutiny?: {
+    client?: any;
+    visitor?: { token?: string };
+  };
 }
 
 declare enum DEPLOYMENT_TYPE {

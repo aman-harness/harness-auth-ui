@@ -25,5 +25,7 @@ CMD sed -i "s|<\!-- captchaToken -->|<script>window.captchaToken = '$CAPTCHA_TOK
   sed -i "s|<\!-- expectedHostname -->|<script>window.expectedHostname = '$EXPECTED_HOSTNAME'</script>|" index.html && \
   sed -i "s|<\!-- isNewSignupEnabled -->|<script>window.isNewSignupEnabled = '$NEW_SIGNUP_ENABLED'</script>|" index.html && \
   sed -i "s|<\!-- appDyEUMToken -->|<script>window.appDyEUMToken = '$APPDY_EUM_TOKEN'</script>|" index.html && \
+  sed -i "s|IS_MUTINY_ENABLED_PLACEHOLDER|$MUTINY_ENABLED|" index.html && \
+  sed -i "s|<\!-- mutinyToken -->|<script>window.mutinyToken = '$MUTINY_TOKEN'</script>|" index.html && \
   sed -i "s|HARNESS_ENABLE_APPDY_EUM_PLACEHOLDER|$HARNESS_ENABLE_APPDY_EUM_PLACEHOLDER|" index.html && \
   nginx -c /etc/nginx/nginx.conf -g 'daemon off;'

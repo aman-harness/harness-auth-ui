@@ -14,6 +14,7 @@ import BasicLayout from "components/BasicLayout/BasicLayout";
 import { EMAIL_VERIFY_STATUS } from "utils/StringUtils";
 import {
   getGaClientID,
+  getMutinyVisitorToken,
   getSavedRefererURL,
   handleSignUpSuccess
 } from "utils/SignUpUtils";
@@ -124,6 +125,7 @@ const CompleteInvitePage = (): React.ReactElement => {
   const { token } = useParams<CompleteSignupInvitePathParams>();
   const refererURL = getSavedRefererURL();
   const gaClientId = getGaClientID();
+  const visitorToken = getMutinyVisitorToken();
   const {
     mutate: completeSignupInvite,
     loading,
@@ -133,7 +135,8 @@ const CompleteInvitePage = (): React.ReactElement => {
     requestOptions: { headers: { "content-type": "application/json" } },
     queryParams: {
       ...(refererURL ? { referer: refererURL } : {}),
-      ...(gaClientId ? { gaClientId } : {})
+      ...(gaClientId ? { gaClientId } : {}),
+      ...(visitorToken ? { visitorToken } : {})
     }
   });
 

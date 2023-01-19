@@ -29,11 +29,9 @@ export async function handleSignUpSuccess(resource?: UserInfo): Promise<void> {
         properties: { ...(refererURL ? { refererURL } : {}) }
       });
     }
-
     // Disabling this to avoid overloading LS with Harness Support usergroup accounts
     // https://harness.atlassian.net/browse/PL-20761
     // if (resource.accounts) createDefaultExperienceMap(resource.accounts);
-
     if (intent) {
       switch (intent.toUpperCase()) {
         case "COMMUNITY":
@@ -125,6 +123,7 @@ export const getOAuthFinalUrl = (
   }`;
 
 export const REFERER_URL_KEY = "refererURL";
+export const MUTINY_VISITOR_TOKEN_KEY = "visitorToken";
 export const getSavedRefererURL = (): string =>
   localStorage.getItem(REFERER_URL_KEY) || "";
 export const getGaClientID = (): string => {
@@ -142,10 +141,11 @@ export const getGaClientID = (): string => {
   }
 };
 
-export const addRefererAndGAId = (
+export const addTrackingParams = (
   url: string,
   refererURL = "",
-  gaClientId = ""
+  gaClientId = "",
+  visitorToken = ""
 ): string => {
   let updatedURL = `${url}`;
   updatedURL =
@@ -154,5 +154,22 @@ export const addRefererAndGAId = (
     gaClientId.length > 0
       ? `${updatedURL}&gaClientId=${gaClientId}`
       : updatedURL;
+
+  updatedURL =
+    visitorToken.length > 0
+      ? `${updatedURL}&visitorToken=${visitorToken}`
+      : updatedURL;
   return updatedURL;
+};
+
+export const enabledOauthProviders = [
+  "BITBUCKET",
+  "GITLAB",
+  "LINKEDIN",
+  "AZURE"
+];
+
+export const getMutinyVisitorToken = (): string | undefined => {
+  const token = localStorage.getItem("mutiny.user.token") || "";
+  return token;
 };

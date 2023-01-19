@@ -1,0 +1,122 @@
+/*
+ * Copyright 2022 Harness Inc. All rights reserved.
+ * Use of this source code is governed by the PolyForm Shield 1.0.0 license
+ * that can be found in the licenses directory at the root of this repository, also available at
+ * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
+ */
+
+.signupmain {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--spacing-huge) + 25px);
+  padding-top: calc(var(--spacing-huge) + 18px);
+  & .header {
+    display: flex;
+    margin-bottom: var(--spacing-huge);
+    align-items: center;
+    font-size: var(--font-size-medium);
+  }
+
+  & .signupOAuthCard {
+    display: flex;
+    flex-direction: column;
+    padding: 70px 62px;
+    gap: 40px;
+    width: fit-content;
+    height: 60%;
+
+    box-shadow: 0px 2px 4px rgba(40, 41, 61, 0.04),
+      0px 8px 16px rgba(96, 97, 112, 0.16);
+    border-radius: 10px;
+    & .title {
+      font-weight: 600;
+      font-size: xx-large;
+      line-height: 52px;
+    }
+  }
+  & .signupformcard {
+    gap: 0;
+  }
+}
+
+.oAuthForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 350px;
+  justify-content: center !important;
+}
+
+.disclaimer {
+  text-align: center;
+  font-size: var(--font-size-xsmall);
+  line-height: 1.5;
+  color: #4f5162;
+}
+.signinanchor {
+  display: inline-block !important;
+}
+.secondarybutton {
+  background: #fff;
+  border: solid 1px #22222a;
+  color: #000;
+}
+
+.lineMessage {
+  color: var(--dark-300);
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid var(--dark-300);
+  line-height: 1px;
+
+  & .message {
+    font-weight: normal;
+    font-size: var(--font-size-normal);
+    background: var(--light-200);
+    padding: 0 12px;
+  }
+}
+.signinlink {
+  color: var(--black);
+  font-weight: 600;
+  text-align: center;
+  & .accountdisclaimer {
+    padding-right: var(--spacing-small);
+  }
+}
+
+.content {
+  display: flex;
+  gap: 100px;
+
+  & .detailsection {
+    padding: 70px 62px;
+    & .title {
+      font-size: var(--font-size-large);
+    }
+    & .features {
+      padding-inline-start: 0 !important;
+      padding-left: var(--spacing-large) !important;
+      margin-top: var(--spacing-xlarge);
+      font-size: var(--font-size-medium);
+    }
+    & .devcta {
+      font-size: var(--font-size-medium);
+      margin-top: 100px;
+      font-weight: 600;
+    }
+    & .logolist {
+      display: flex;
+      gap: var(--spacing-huge);
+
+      margin-top: var(--spacing-xlarge);
+    }
+    & .ancestrylogo {
+      zoom: 1.4;
+    }
+  }
+}
+
+.oAuthBtnsclassName {
+  margin-bottom: 0px;
+}
