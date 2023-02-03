@@ -54,14 +54,14 @@ const MODULE_TO_DETAILS_MAP: ModuleDetailsMap = {
     logo: ChaosLogo,
     pathImg: PathChaos,
     title: "Chaos Engineering",
-    tagLine: "Blazing Fast Deployment Pipelines in Minutes",
+    tagLine: "Confidently deliver software by proactively building resilience",
     valueProp:
-      "Self-Service Continuous Delivery that enables engineers to deploy on-demand, without a single script",
+      "Harness Chaos Engineering, powered by LitmusChaos, enables developers and SREs to achieve Continuous Resilience™, improve developer productivity, accelerate digital transformation and avoid disasters.",
     callout:
-      "Trusted by 1000s of Developers, driving 17 Million deployments in last 12 months",
+      "Trusted by developers, qa engineers, and site reliability engineers to build resilient software",
     intro:
-      "Define Pipelines that enable you to improve your deployment times, manage all in one place",
-    cta: "Let's Deploy",
+      "Define chaos experiments that enable you to improve software resilience, managed all in one place.",
+    cta: "Test with confidence!",
     color: "#FF006A"
   },
   ci: {
