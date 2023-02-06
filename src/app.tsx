@@ -28,13 +28,20 @@ import {
 } from "utils/DeploymentTypeUtil";
 import SignUpCommunity from "./pages/SignUp/SignUpCommunity";
 import SignUpOnPrem from "./pages/SignUp/SignUpOnPrem";
+import { FFContextProvider } from "@harnessio/ff-react-client-sdk";
 import SignUpExperimental from "pages/SignUp/SaasExperimentalForms/SignUpExperimental";
 import EmailVerifyPageWithIntent from "pages/SignUp/SaasExperimentalForms/EmailVerification/EmailVerifyPage";
 import SignupV2 from "pages/SignUp/SaasExperimentalForms/SignupV2/SignupV2";
+import {
+  getUniqueIdForFF,
+  isCampaignValid,
+  EXPERIMENTS
+} from "utils/SignUpUtils";
+import { useQueryParams } from "hooks/useQueryParams";
+import useSignupABTest, { FLAG_VARIANTS } from "hooks/useSignupABTest";
 
 const TOO_MANY_REQUESTS_MESSAGE =
   "Too many requests received, please try again later";
-
 const initializeApp = () => {
   // initialize bugsnagClient
   if (
@@ -87,11 +94,25 @@ const AppWithOnPremRoutes: React.FC = () => {
 };
 
 const AppWithSaasRoutes: React.FC = () => {
+  const { utm_campaign, module } = useQueryParams<{
+    utm_campaign?: string;
+    module?: string;
+  }>();
+  const runTest = !module && isCampaignValid(utm_campaign);
+  const flagVariant = useSignupABTest({ runTest });
+
   return (
     <>
       <Route path={routes.toSignIn()} component={SignIn} />
       <Route path={routes.toLocalLogin()} component={LocalLogin} />
-      <Route path={routes.toSignUp()} component={SignUpExperimental} />
+      <Route
+        path={routes.toSignUp()}
+        component={
+          flagVariant === FLAG_VARIANTS.VARIANT_A
+            ? SignUpExperimental
+            : SignupV2
+        }
+      />
       <Route path={routes.toForgotPassword()} component={ForgotPassword} />
       <Route path={routes.toResetPassword()} component={ResetPassword} />
       <Route path={routes.toSSOSignIn()} component={SSOSignIn} />
@@ -141,13 +162,23 @@ export function App(): React.ReactElement {
   };
 
   return (
-    <RestfulProvider base="/" onResponse={globalResponseHandler}>
-      <AppErrorBoundary>
-        <Toaster />
-        <HashRouter>
-          <Switch>{renderRoutes()}</Switch>
-        </HashRouter>
-      </AppErrorBoundary>
-    </RestfulProvider>
+    <FFContextProvider
+      apiKey={window.featureFlagsToken}
+      target={{
+        identifier: getUniqueIdForFF(),
+        attributes: {
+          experiment: EXPERIMENTS.SIGNUP_PAGE
+        }
+      }}
+    >
+      <RestfulProvider base="/" onResponse={globalResponseHandler}>
+        <AppErrorBoundary>
+          <Toaster />
+          <HashRouter>
+            <Switch>{renderRoutes()}</Switch>
+          </HashRouter>
+        </AppErrorBoundary>
+      </RestfulProvider>
+    </FFContextProvider>
   );
 }

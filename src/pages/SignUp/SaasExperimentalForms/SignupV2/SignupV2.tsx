@@ -227,11 +227,10 @@ export default function SignupV2(): JSX.Element {
 
     window.location.href = finalOauthURL;
   };
-
   return (
     <div className={css.signupmain}>
       <div className={css.header}>
-        <img src={logo} width={120} className={css.logo} />
+        <img src={logo} width={120} height={40} className={css.logo} />
       </div>
       <div className={css.content}>
         <div
@@ -239,7 +238,7 @@ export default function SignupV2(): JSX.Element {
             [css.signupformcard]: formType === SIGNUPFORM_TYPES.CREDENTIAL_FORM
           })}
         >
-          <div className={css.title}>Get Started for free!</div>
+          <div className={css.title}>Get Started for Free!</div>
           <div className={css.oAuthForm}>
             {formType === SIGNUPFORM_TYPES.OAUTH_FORM ? (
               <>
@@ -293,12 +292,17 @@ export default function SignupV2(): JSX.Element {
             The Modern Software Delivery Platform
           </div>
           <ul className={css.features}>
-            <li id="cta1">CI, CD, Feature Flags, Cloud Costs, etc.</li>
+            <li id="cta1">
+              Continuous Delivery / Integration, Cloud Cost Management, Feature
+              Flags
+            </li>
             <li id="cta2">AI/ML-Driven Workflows</li>
             <li id="cta3"> Developer-First Experience</li>
+            <li id="cta4"> One Pipeline for All</li>
+            <li id="cta5"> Automated Governance &amp; Guardrails</li>
           </ul>
-          <div className={css.devcta} id="tagline">
-            LOVED BY DEVELOPERS, TRUSTED BY BUSINESSES
+          <div className={cx(css.title, css.devcta)} id="tagline">
+            Loved By Developers, Trusted By Businesses
           </div>
           <div className={css.logolist} id="logolist">
             <img src={ebay} width={60} />

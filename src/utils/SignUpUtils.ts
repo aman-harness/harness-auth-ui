@@ -173,3 +173,25 @@ export const getMutinyVisitorToken = (): string | undefined => {
   const token = localStorage.getItem("mutiny.user.token") || "";
   return token;
 };
+
+const FF_VISITOR_TOKEN = "ffVisitorToken";
+export const getUniqueIdForFF = (): string => {
+  const preSavedToken = localStorage.getItem(FF_VISITOR_TOKEN);
+  if (preSavedToken) {
+    return preSavedToken;
+  }
+  const ffVisitorToken =
+    (Math.floor(Math.random() * 25) + 10).toString(36) +
+    Date.now().toString(36) +
+    (Math.floor(Math.random() * 25) + 10).toString(36);
+  localStorage.setItem(FF_VISITOR_TOKEN, ffVisitorToken);
+  return ffVisitorToken;
+};
+
+export const isCampaignValid = (campaign = ""): boolean => {
+  return !window.skipcampaigns.includes(campaign);
+};
+
+export enum EXPERIMENTS {
+  SIGNUP_PAGE = "SIGNUP_PAGE"
+}

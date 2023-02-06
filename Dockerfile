@@ -22,8 +22,10 @@ CMD sed -i "s|<\!-- captchaToken -->|<script>window.captchaToken = '$CAPTCHA_TOK
   sed -i "s|<\!-- oauthDisabled -->|<script>window.oauthDisabled = '$OAUTH_DISABLED'</script>|" index.html && \
   sed -i "s|<\!-- deploymentType -->|<script>window.deploymentType = '$DEPLOYMENT_TYPE'</script>|" index.html && \
   sed -i "s|<\!-- apiUrl -->|<script>window.apiUrl = '$API_URL'</script>|" index.html && \
+  sed -i "s|<\!-- skipcampaigns -->|<script>window.skipcampaigns = '$SKIP_CAMPAIGNS'</script>|" index.html && \
   sed -i "s|<\!-- expectedHostname -->|<script>window.expectedHostname = '$EXPECTED_HOSTNAME'</script>|" index.html && \
   sed -i "s|<\!-- isNewSignupEnabled -->|<script>window.isNewSignupEnabled = '$NEW_SIGNUP_ENABLED'</script>|" index.html && \
+  sed -i "s|<\!-- featureFlagsToken -->|<script>window.featureFlagsToken = '$FF_SDK_TOKEN'</script>|" index.html && \
   sed -i "s|<\!-- appDyEUMToken -->|<script>window.appDyEUMToken = '$APPDY_EUM_TOKEN'</script>|" index.html && \
   sed -i "s|IS_MUTINY_ENABLED_PLACEHOLDER|$MUTINY_ENABLED|" index.html && \
   sed -i "s|<\!-- mutinyToken -->|<script>window.mutinyToken = '$MUTINY_TOKEN'</script>|" index.html && \

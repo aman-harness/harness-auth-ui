@@ -14,7 +14,6 @@
     display: flex;
     margin-bottom: var(--spacing-huge);
     align-items: center;
-    font-size: var(--font-size-medium);
   }
 
   & .signupOAuthCard {
@@ -88,7 +87,7 @@
 .content {
   display: flex;
   gap: 100px;
-
+  justify-content: center;
   & .detailsection {
     padding: 70px 62px;
     & .title {
@@ -99,16 +98,16 @@
       padding-left: var(--spacing-large) !important;
       margin-top: var(--spacing-xlarge);
       font-size: var(--font-size-medium);
+      & > li {
+        margin: var(--spacing-medium) 0;
+      }
     }
     & .devcta {
-      font-size: var(--font-size-medium);
-      margin-top: 100px;
-      font-weight: 600;
+      margin-top: 100px !important;
     }
     & .logolist {
       display: flex;
       gap: var(--spacing-huge);
-
       margin-top: var(--spacing-xlarge);
     }
     & .ancestrylogo {

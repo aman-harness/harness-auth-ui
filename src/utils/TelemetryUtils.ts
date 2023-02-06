@@ -10,7 +10,8 @@ export enum EVENT {
   SIGNIN_SUBMIT = "Signin submitted",
   EMAIL_INPUT = "Email inputted",
   RESEND_VERIFY_EMAIL = "Verify email resent",
-  OAUTH_CLICKED = "Oauth clicked"
+  OAUTH_CLICKED = "Oauth clicked",
+  EXPOSURE = "$exposure"
 }
 
 export enum CATEGORY {
@@ -20,4 +21,8 @@ export enum CATEGORY {
 
 export enum PAGE {
   SIGNUP_PAGE = "Signup"
+}
+
+export enum FF_MAP {
+  TEST_AE_SIGNUP = "TEST_AE_SIGNUP"
 }

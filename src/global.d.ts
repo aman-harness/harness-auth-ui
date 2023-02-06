@@ -22,6 +22,8 @@ declare interface Window {
     client?: any;
     visitor?: { token?: string };
   };
+  featureFlagsToken: string;
+  skipcampaigns: string;
 }
 
 declare enum DEPLOYMENT_TYPE {

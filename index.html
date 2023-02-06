@@ -31,10 +31,21 @@
     <!-- appDyEUMToken -->
     <!-- isMutinyEnabled -->
     <!-- mutinyToken -->
+    <!-- featureFlagsToken -->
+    <!-- skipcampaigns -->
     <script>
       window.HARNESS_ENABLE_APPDY_EUM =
         "HARNESS_ENABLE_APPDY_EUM_PLACEHOLDER" === "true";
       window.IS_MUTINY_ENABLED = "IS_MUTINY_ENABLED_PLACEHOLDER" === "true";
+      if (window.skipcampaigns) {
+        try {
+          window.skipcampaigns = window.skipcampaigns.split(",");
+        } catch (e) {
+          window.skipcampaigns = [];
+        }
+      } else {
+        window.skipcampaigns = [];
+      }
       if (window.HARNESS_ENABLE_APPDY_EUM && window.appDyEUMToken) {
         window["adrum-start-time"] = new Date().getTime();
         (function (w, d, c) {
