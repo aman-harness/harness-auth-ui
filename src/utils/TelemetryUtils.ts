@@ -24,5 +24,6 @@ export enum PAGE {
 }
 
 export enum FF_MAP {
-  TEST_AE_SIGNUP = "TEST_AE_SIGNUP"
+  TEST_AE_SIGNUP = "TEST_AE_SIGNUP",
+  TRACK_EXPOSURE = "TRACK_EXPOSURE"
 }

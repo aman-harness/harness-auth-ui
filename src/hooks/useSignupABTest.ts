@@ -19,8 +19,10 @@ export default function useSignupABTest({
   runTest?: boolean;
 }): string {
   const flagVariant = useFeatureFlag(FF_MAP.TEST_AE_SIGNUP);
+  const trackExposure = useFeatureFlag(FF_MAP.TRACK_EXPOSURE);
   useEffect(() => {
     runTest &&
+      trackExposure &&
       telemetry.track({
         event: EVENT.EXPOSURE,
         properties: {
