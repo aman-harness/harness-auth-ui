@@ -94,11 +94,11 @@ const AppWithOnPremRoutes: React.FC = () => {
 };
 
 const AppWithSaasRoutes: React.FC = () => {
-  const { utm_campaign, module } = useQueryParams<{
-    utm_campaign?: string;
+  const { utm_source, module } = useQueryParams<{
+    utm_source?: string;
     module?: string;
   }>();
-  const runTest = !module && isCampaignValid(utm_campaign);
+  const runTest = !module && isCampaignValid(utm_source);
   const flagVariant = useSignupABTest({ runTest });
 
   return (

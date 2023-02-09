@@ -189,7 +189,7 @@ export const getUniqueIdForFF = (): string => {
 };
 
 export const isCampaignValid = (campaign = ""): boolean => {
-  return !window.skipcampaigns.includes(campaign);
+  return !window.skipcampaigns.includes(campaign.toLocaleLowerCase());
 };
 
 export enum EXPERIMENTS {
