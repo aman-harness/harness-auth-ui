@@ -31,9 +31,10 @@ import {
   Edition,
   getCookieByName,
   SignupAction,
-  getMutinyVisitorToken
+  getMutinyVisitorToken,
+  isCampaignValid
 } from "utils/SignUpUtils";
-import { EVENT, CATEGORY, PAGE } from "utils/TelemetryUtils";
+import { EVENT, CATEGORY, PAGE, FF_MAP } from "utils/TelemetryUtils";
 
 import telemetry from "telemetry/Telemetry";
 import css from "./SignupV2.module.css";
@@ -49,6 +50,7 @@ import { useSignup, SignupDTO } from "services/ng";
 import { handleError } from "utils/ErrorUtils";
 import { debounceFn, updateReferer } from "../utils";
 import SignupV2AuthFooter from "./SignupV2AuthFooter";
+import { useFeatureFlag } from "@harnessio/ff-react-client-sdk";
 
 export default function SignupV2(): JSX.Element {
   const [formType, setFormType] = useState<SIGNUPFORM_TYPES>(
@@ -86,7 +88,10 @@ export default function SignupV2(): JSX.Element {
   const utmContent = utm_content || getCookieByName("utm_content") || "";
   const utmMedium = utm_medium || getCookieByName("utm_medium") || "";
   const utmTerm = utm_term || getCookieByName("utm_term") || "";
+  const runTest = !module && isCampaignValid(utm_source);
 
+  const trackExposure = useFeatureFlag(FF_MAP.TRACK_EXPOSURE);
+  const flagVariant = useFeatureFlag(FF_MAP.TEST_AE_SIGNUP);
   const [captchaExecuting, setCaptchaExecuting] = useState(false);
   useEffect(() => {
     const { email, password } = signupData;
@@ -202,6 +207,16 @@ export default function SignupV2(): JSX.Element {
         ...(refererURL ? { refererURL } : {})
       }
     });
+
+    runTest &&
+      trackExposure &&
+      telemetry.track({
+        event: EVENT.EXPOSURE,
+        properties: {
+          flag_key: FF_MAP.TEST_AE_SIGNUP,
+          variant: flagVariant
+        }
+      });
   }, []);
 
   function handleRecaptchaError() {

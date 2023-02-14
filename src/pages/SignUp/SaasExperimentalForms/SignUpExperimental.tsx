@@ -21,15 +21,17 @@ import {
   Edition,
   getCookieByName,
   getSavedRefererURL,
+  isCampaignValid,
   SignupAction
 } from "utils/SignUpUtils";
-import { CATEGORY, PAGE, EVENT } from "utils/TelemetryUtils";
+import { CATEGORY, PAGE, EVENT, FF_MAP } from "utils/TelemetryUtils";
 import SignupFormWithCredentials from "./SignupFormWithCredentials";
 import SignupFormOAuth from "./SignupFormOAuth";
 import BasicLayoutExperimental from "./BasicLayout/BasicLayoutExperimental";
 import { getModuleDetails, updateReferer } from "./utils";
 import { URLS } from "interfaces/OAuthProviders";
 import css from "../SignUp.module.css";
+import { useFeatureFlag } from "@harnessio/ff-react-client-sdk";
 
 export interface SignUpFormData {
   email: string;
@@ -75,7 +77,9 @@ const SignUpExperimental: React.FC = () => {
   const utmContent = utm_content || getCookieByName("utm_content") || "";
   const utmMedium = utm_medium || getCookieByName("utm_medium") || "";
   const utmTerm = utm_term || getCookieByName("utm_term") || "";
-
+  const runTest = !module && isCampaignValid(utm_source);
+  const trackExposure = useFeatureFlag(FF_MAP.TRACK_EXPOSURE);
+  const flagVariant = useFeatureFlag(FF_MAP.TEST_AE_SIGNUP);
   const moduleDetails = getModuleDetails(module as string);
 
   const [captchaExecuting, setCaptchaExecuting] = useState(false);
@@ -193,6 +197,16 @@ const SignUpExperimental: React.FC = () => {
         ...(refererURL ? { refererURL } : {})
       }
     });
+
+    runTest &&
+      trackExposure &&
+      telemetry.track({
+        event: EVENT.EXPOSURE,
+        properties: {
+          flag_key: FF_MAP.TEST_AE_SIGNUP,
+          variant: flagVariant
+        }
+      });
   }, []);
 
   function handleRecaptchaError() {

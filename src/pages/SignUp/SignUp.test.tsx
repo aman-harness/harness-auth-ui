@@ -15,12 +15,24 @@ import { CATEGORY, PAGE, EVENT } from "utils/TelemetryUtils";
 const pageMock = jest.fn();
 const trackMock = jest.fn();
 
+jest.mock("@harnessio/ff-react-client-sdk", () => ({
+  useFeatureFlag: jest.fn(() => true)
+}));
 jest.mock("telemetry/Telemetry", () => ({
   page: jest.fn().mockImplementation((values) => pageMock(values)),
   track: jest.fn().mockImplementation((values) => trackMock(values)),
   initialized: true
 }));
-
+interface WindowNew extends globalThis.Window {
+  skipCampaigns: string[];
+}
+beforeAll(() => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  globalThis.window = Object.create(window) as WindowNew;
+  // @ts-ignore
+  globalThis.window.skipcampaigns = [] as string[];
+});
 describe("SignUp", () => {
   test("render", () => {
     const { container } = render(
