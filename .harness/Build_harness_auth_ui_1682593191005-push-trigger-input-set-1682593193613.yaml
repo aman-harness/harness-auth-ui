@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_harness_auth_ui_1682593191005-push-trigger-input-set
+  identifier: Build_harness_auth_ui_1682593191005pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_harness_auth_ui_1682593191005
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
